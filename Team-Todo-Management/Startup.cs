@@ -100,7 +100,7 @@ namespace Team_Todo_Management
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Todo}/{action=Index}/{id?}");
             });
         }
     }
