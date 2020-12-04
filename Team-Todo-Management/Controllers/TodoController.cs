@@ -21,7 +21,6 @@ namespace Team_Todo_Management.Controllers
             _context = context;
         }
 
-        [Authorize(Roles = "Boss")]
         public async Task<IActionResult> Index()
         {
             ViewData["PageTitle"] = "This is a list of to do";
