@@ -1,34 +1,25 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26124.0
-MinimumVisualStudioVersion = 15.0.26124.0
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Team-Todo-Management", "Team-Todo-Management\Team-Todo-Management.csproj", "{7654ABB1-5D54-4629-B865-8E2011ECAE19}"
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30711.63
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Team-Todo-Management", "Team-Todo-Management\Team-Todo-Management.csproj", "{035702C0-0E5E-48A5-A29C-0A3996F2E149}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
-		Debug|x64 = Debug|x64
-		Debug|x86 = Debug|x86
 		Release|Any CPU = Release|Any CPU
-		Release|x64 = Release|x64
-		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{035702C0-0E5E-48A5-A29C-0A3996F2E149}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{035702C0-0E5E-48A5-A29C-0A3996F2E149}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{035702C0-0E5E-48A5-A29C-0A3996F2E149}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{035702C0-0E5E-48A5-A29C-0A3996F2E149}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
-	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{7654ABB1-5D54-4629-B865-8E2011ECAE19}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7654ABB1-5D54-4629-B865-8E2011ECAE19}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7654ABB1-5D54-4629-B865-8E2011ECAE19}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{7654ABB1-5D54-4629-B865-8E2011ECAE19}.Debug|x64.Build.0 = Debug|Any CPU
-		{7654ABB1-5D54-4629-B865-8E2011ECAE19}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{7654ABB1-5D54-4629-B865-8E2011ECAE19}.Debug|x86.Build.0 = Debug|Any CPU
-		{7654ABB1-5D54-4629-B865-8E2011ECAE19}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7654ABB1-5D54-4629-B865-8E2011ECAE19}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7654ABB1-5D54-4629-B865-8E2011ECAE19}.Release|x64.ActiveCfg = Release|Any CPU
-		{7654ABB1-5D54-4629-B865-8E2011ECAE19}.Release|x64.Build.0 = Release|Any CPU
-		{7654ABB1-5D54-4629-B865-8E2011ECAE19}.Release|x86.ActiveCfg = Release|Any CPU
-		{7654ABB1-5D54-4629-B865-8E2011ECAE19}.Release|x86.Build.0 = Release|Any CPU
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {0CE1F367-ACC6-44F4-ABA0-523FE1587950}
 	EndGlobalSection
 EndGlobal
