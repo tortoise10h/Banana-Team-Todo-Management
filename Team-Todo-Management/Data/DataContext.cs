@@ -14,7 +14,11 @@ namespace Team_Todo_Management.Data
 {
     public class DataContext : IdentityDbContext<ApplicationUser>
     {
-        public DbSet<Todo> Todo { get; set; }
+        public DbSet<Todo> Todos { get; set; }
+        public DbSet<Media> Medias { get; set; }
+        public DbSet<Comment> Comments { get; set; }
+        public DbSet<Participant> Participants { get; set; }
+        public DbSet<Log> Logs { get; set; }
 
         protected readonly IConfiguration Configuration;
         private readonly IHttpContextAccessor _httpContextAccessor;
@@ -25,10 +29,6 @@ namespace Team_Todo_Management.Data
             Configuration = configuration;
             _httpContextAccessor = httpContextAccessor;
         }
-
-        //public DataContext()
-        //{
-        //}
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
@@ -65,13 +65,13 @@ namespace Team_Todo_Management.Data
                 if (entity.State == EntityState.Added)
                 {
                     ((BaseModel)entity.Entity).CreatedAt = DateTime.UtcNow;
-                    ((BaseModel)entity.Entity).CreatedBy = _httpContextAccessor.HttpContext.User.Claims.Count() > 0
+                    ((BaseModel)entity.Entity).CreatedById = _httpContextAccessor.HttpContext.User.Claims.Count() > 0
                         ? _httpContextAccessor.HttpContext.User.Claims.First(x => x.Type == "id").Value
                         : null;
                 }
 
                 ((BaseModel)entity.Entity).LastModifiedAt = DateTime.UtcNow;
-                ((BaseModel)entity.Entity).LastModifiedBy = _httpContextAccessor.HttpContext.User.Claims.Count() > 0
+                ((BaseModel)entity.Entity).LastModifiedById = _httpContextAccessor.HttpContext.User.Claims.Count() > 0
                         ? _httpContextAccessor.HttpContext.User.Claims.First(x => x.Type == "id").Value
                         : null;
             }

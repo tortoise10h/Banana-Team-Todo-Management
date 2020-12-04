@@ -12,7 +12,6 @@ using Team_Todo_Management.Models;
 
 namespace Team_Todo_Management.Controllers
 {
-    //[Authorize]
     public class TodoController : Controller
     {
         private readonly DataContext _context;
@@ -26,7 +25,7 @@ namespace Team_Todo_Management.Controllers
         public async Task<IActionResult> Index()
         {
             ViewData["PageTitle"] = "This is a list of to do";
-            return View(await _context.Todo.ToListAsync());
+            return View(await _context.Todos.ToListAsync());
         }
 
         // GET: Todo/Details/5
@@ -79,7 +78,7 @@ namespace Team_Todo_Management.Controllers
                 return NotFound();
             }
 
-            var todo = await _context.Todo.FindAsync(id);
+            var todo = await _context.Todos.FindAsync(id);
             if (todo == null)
             {
                 return NotFound();
@@ -130,7 +129,7 @@ namespace Team_Todo_Management.Controllers
                 return NotFound();
             }
 
-            var todo = await _context.Todo
+            var todo = await _context.Todos
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (todo == null)
             {
@@ -145,15 +144,15 @@ namespace Team_Todo_Management.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var todo = await _context.Todo.FindAsync(id);
-            _context.Todo.Remove(todo);
+            var todo = await _context.Todos.FindAsync(id);
+            _context.Todos.Remove(todo);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool TodoExists(int id)
         {
-            return _context.Todo.Any(e => e.Id == id);
+            return _context.Todos.Any(e => e.Id == id);
         }
     }
 }
