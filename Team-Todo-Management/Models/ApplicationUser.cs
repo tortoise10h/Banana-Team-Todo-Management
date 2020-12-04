@@ -11,5 +11,9 @@ namespace Team_Todo_Management.Models
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public DateTime CreatedAt { get; set; }
+
+        public ICollection<Todo> Todos { get; set; }
+        public ICollection<Participant> Participants { get; set; }
+        public ICollection<Log> Logs { get; set; }
     }
 }

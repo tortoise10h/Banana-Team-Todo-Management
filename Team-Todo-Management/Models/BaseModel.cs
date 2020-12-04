@@ -8,9 +8,9 @@ namespace Team_Todo_Management.Models
     public class BaseModel
     {
         public DateTime CreatedAt { get; set; }
-        public string CreatedBy { get; set; }
+        public string CreatedById { get; set; }
         public DateTime LastModifiedAt { get; set; }
-        public string LastModifiedBy { get; set; }
+        public string LastModifiedById { get; set; }
         public bool IsDeleted { get; set; }
     }
 }

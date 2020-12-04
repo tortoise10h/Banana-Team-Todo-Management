@@ -1,6 +1,6 @@
 using System;
 
-namespace Team_Todo_Management.Models
+namespace Team_Todo_Management.ViewModels
 {
     public class ErrorViewModel
     {
