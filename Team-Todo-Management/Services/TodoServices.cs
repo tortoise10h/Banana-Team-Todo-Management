@@ -29,7 +29,14 @@ namespace Team_Todo_Management.Services
         public async Task Create(Todo todo, ApplicationUser currentUser)
         {
             todo.Status = TodoStatusEnum.New;
-            todo.PersonInChargeId = currentUser.Id;
+
+            /** If the person who create this task is not boss then assign him/her to 
+             * person in charge of this task */
+            var isStaff = await _userManager.IsInRoleAsync(currentUser, RoleNameEnum.Staff);
+            if (isStaff)
+            {
+                todo.PersonInChargeId = currentUser.Id;
+            }
 
             await _context.Todos.AddAsync(todo);
             await _context.SaveChangesAsync();

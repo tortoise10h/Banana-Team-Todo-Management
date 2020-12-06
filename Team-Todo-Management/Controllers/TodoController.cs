@@ -49,17 +49,13 @@ namespace Team_Todo_Management.Controllers
             {
                 return NotFound();
             }
-
-            ViewBag.Messag = "Hello world bro";
-            var tempTodo = new Todo
+            var todo = await _context.Todos.FindAsync(id);
+            if (todo == null)
             {
-                Id = 1,
-                Name = "Login feature",
-                Scope = TodoScopeEnum.Private
-            };
-            ViewBag.LuckyNumber = 10;
+                return NotFound();
+            }
 
-            return View(tempTodo);
+            return View(todo);
         }
 
         [HttpGet]
