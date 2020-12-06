@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
     <link rel="stylesheet" href="~/css/global-custom.css" />
+    <link rel="stylesheet" href="~/css/todo.css" />
     @RenderSection("CustomStyles", false)
 </head>
 <body>
@@ -36,7 +37,7 @@
                             @*Use form for button logout because we need to send a POST request*@
                             <form method="POST" asp-controller="Auth" asp-action="Logout">
                                 <button type="submit" class="btn btn-link" style="color: #f65058ff">
-                                    Logout (@User.Identity.Name)
+                                    Logout
                                 </button>
                             </form>
                         </li>
