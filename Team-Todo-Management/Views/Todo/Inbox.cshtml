@@ -1,0 +1,69 @@
+﻿@model IEnumerable<TodoViewModel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+@section CustomStyles 
+{
+    <link href="@Url.Content("~/css/todo.css")" rel="stylesheet" type="text/css" />
+}
+
+ <div class="border-bottom">
+    <h2>Inbox</h2>
+ </div>
+
+
+<div class="container">
+    <div class="float-right my-2">
+        <a class="btn btn-primary" asp-action="Create">Create a new task</a>
+    </div>
+    <div class="clearfix"></div>
+    @foreach (var item in Model)
+    {
+        <div style="background: #fff" class="p-3 my-2 box-shadow d-flex">
+            <div class="px-3" style="flex-basis: 10%">
+                <input style="width: 1.2em; height: 1.2em" class="mt-2" type="checkbox" />
+            </div>
+
+            <div style="flex-basis: 70%">
+                <p>
+                    <a class="text-dark" asp-action="Edit" asp-controller="Todo" asp-route-id="@item.Id">
+                        @item.Name
+                    </a>
+                </p>
+                <small>Created at: @item.CreatedAt.ToLongDateString()</small>
+                <p>Person in charge: <strong>@item.PersonInChargeName</strong></p>
+                <p>@item.StartDate ~ @item.EndDate</p>
+                <div>
+                    @if(item.Description != null &&
+                        item.Description.Equals("") == false)
+                    {
+                        <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-justify-left" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" d="M2 12.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5z" />
+                        </svg>
+                    }
+                </div>
+            </div>
+            <div style="flex-basis: 20%">
+                <div>
+                    <span class="badge badge-success">@item.StatusName</span>
+                    <span class="badge badge-info">@item.ScopeName</span>
+                </div>
+                <div>
+                    <a
+                       class="text-dark"
+                       asp-action="Edit"
+                       asp-controller="Todo"
+                       asp-route-id="@item.Id"
+                       data-toggle="tooltip" title="Edit this todo">
+                        <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-pencil-square" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456l-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
+                            <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z" />
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    }
+</div>
