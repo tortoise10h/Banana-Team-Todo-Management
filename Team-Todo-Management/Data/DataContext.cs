@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
 using Team_Todo_Management.Extensions;
@@ -65,15 +66,13 @@ namespace Team_Todo_Management.Data
                 if (entity.State == EntityState.Added)
                 {
                     ((BaseModel)entity.Entity).CreatedAt = DateTime.UtcNow;
-                    ((BaseModel)entity.Entity).CreatedById = _httpContextAccessor.HttpContext.User.Claims.Count() > 0
-                        ? _httpContextAccessor.HttpContext.User.Claims.First(x => x.Type == "id").Value
-                        : null;
+                    ((BaseModel)entity.Entity).CreatedById = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value
+                        ?? null;
                 }
 
                 ((BaseModel)entity.Entity).LastModifiedAt = DateTime.UtcNow;
-                ((BaseModel)entity.Entity).LastModifiedById = _httpContextAccessor.HttpContext.User.Claims.Count() > 0
-                        ? _httpContextAccessor.HttpContext.User.Claims.First(x => x.Type == "id").Value
-                        : null;
+                ((BaseModel)entity.Entity).LastModifiedById = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value
+                        ?? null;
             }
         }
     }

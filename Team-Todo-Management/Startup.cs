@@ -1,3 +1,4 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -12,7 +13,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Team_Todo_Management.Data;
+using Team_Todo_Management.IServices;
 using Team_Todo_Management.Models;
+using Team_Todo_Management.Services;
 
 namespace Team_Todo_Management
 {
@@ -32,7 +35,6 @@ namespace Team_Todo_Management
         public void ConfigureServices(IServiceCollection services)
         {
             /** Identity configuration */
-            //services.AddScoped<SignInManager<ApplicationUser>, SignInManager<ApplicationUser>>();
             services
                 .AddAuthentication(IdentityConstants.ApplicationScheme)
                 .AddCookie(IdentityConstants.ApplicationScheme, options =>
@@ -65,6 +67,11 @@ namespace Team_Todo_Management
 
             /** For General */
             services.AddHttpContextAccessor();
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+            services.AddAutoMapper(typeof(Startup));
+
+            /** For Business Services */
+            services.AddScoped<ITodoServices, TodoServices>();
 
         }
 
@@ -100,7 +107,7 @@ namespace Team_Todo_Management
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Todo}/{action=Index}/{id?}");
+                    pattern: "{controller=Todo}/{action=Inbox}/{id?}");
             });
         }
     }
