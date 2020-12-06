@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Team_Todo_Management.Data;
 
 namespace Team_Todo_Management.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20201206033118_AllowStartDateAndEndDateOfTodoNullable")]
+    partial class AllowStartDateAndEndDateOfTodoNullable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -49,14 +51,14 @@ namespace Team_Todo_Management.Migrations
                         new
                         {
                             Id = "c2d4b743-d9da-443c-9f5a-c2682750c805",
-                            ConcurrencyStamp = "144e5d39-c2ed-4fe4-b51c-3ef607d6c480",
+                            ConcurrencyStamp = "37278a68-eccc-4c55-a817-fa8facf5212b",
                             Name = "Boss",
                             NormalizedName = "boss"
                         },
                         new
                         {
                             Id = "b979036b-d165-4bea-b6b6-16b22a3f54dd",
-                            ConcurrencyStamp = "f467c7eb-e2a7-46e1-9f39-8c3793042c1f",
+                            ConcurrencyStamp = "6e314d07-f525-4e68-bbbc-364f2738d590",
                             Name = "Staff",
                             NormalizedName = "staff"
                         });
@@ -306,7 +308,7 @@ namespace Team_Todo_Management.Migrations
                         {
                             Id = "e9012ef1-cd3c-49a1-8726-7f8f8aba9f98",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "824fcfef-5fae-4d77-9b49-cf0bcb50c8a6",
+                            ConcurrencyStamp = "110391da-0c82-44db-842d-b15002ccd996",
                             CreatedAt = new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "lilsuperadmin@gmail.com",
                             EmailConfirmed = true,
@@ -315,7 +317,7 @@ namespace Team_Todo_Management.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "LILSUPERADMIN@GMAIL.COM",
                             NormalizedUserName = "LILSUPERADMIN@GMAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEAnA7EMLjUrv0CDudJv3ABDlweprJxhnjqn5b1ZXobvuWMgdRG+rvpVOv4IKDSjVlA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEAP9mDt0Df4ivMvMHvnD+cAtkNQt8UUmo+WetzK+e01t7Q9MY+ccn1QJUsWYhQwaMw==",
                             PhoneNumber = "0901234573",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
@@ -326,7 +328,7 @@ namespace Team_Todo_Management.Migrations
                         {
                             Id = "3b488e0f-eb92-4994-a555-cbe4ecdf3672",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "d9fd4770-5704-4da1-a6fd-355d8133a977",
+                            ConcurrencyStamp = "db7bbacf-3d91-4c6b-b0ca-e8e2be6f198a",
                             CreatedAt = new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "yungadmin@gmail.com",
                             EmailConfirmed = true,
@@ -335,7 +337,7 @@ namespace Team_Todo_Management.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "YUNGADMIN@GMAIL.COM",
                             NormalizedUserName = "YUNGADMIN@GMAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEALdaFiNu2nYqE+RHbNWFHOADyOObaqZbwDpcxlz0kesAl++8QfjDxObTdv542YuHQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEGI/lfRjQ0qvApaeKAaZqb3JIEfPQc+4/5p1cEELOFWKb3ktRA251QXOHJX4YoBRyA==",
                             PhoneNumber = "0901234576",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
@@ -346,7 +348,7 @@ namespace Team_Todo_Management.Migrations
                         {
                             Id = "52999f6b-a605-45b0-b98f-b8880fc46027",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "7cd52a91-0aed-4710-9a01-32d1e0a611bc",
+                            ConcurrencyStamp = "c30fccbf-6f05-40a7-9995-287a923154e7",
                             CreatedAt = new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "trankieuloan@gmail.com",
                             EmailConfirmed = true,
@@ -355,7 +357,7 @@ namespace Team_Todo_Management.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "TRANKIEULOAN@GMAIL.COM",
                             NormalizedUserName = "TRANKIEULOAN@GMAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEGKfxVWl9WlOs1DoBGxQRI0wxVSSZxi1A+xC5fH14xN3yAKVVYZJliboJdo542PQfA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEGeo3ZwJ8wvz2W1UdD8a/QKdTZ7FrruJxNulMDD1o6WJl0V3Fr3UVMIWDWZusADBGg==",
                             PhoneNumber = "0901234581",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
@@ -366,7 +368,7 @@ namespace Team_Todo_Management.Migrations
                         {
                             Id = "39b465e2-c398-494f-bb62-d1eb02aa5471",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "f4e18f44-54a0-4f4a-9870-389bc348a1fa",
+                            ConcurrencyStamp = "f075f851-36c1-415b-b931-b6bc9b2183d8",
                             CreatedAt = new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "phamvinhson@gmail.com",
                             EmailConfirmed = true,
@@ -375,7 +377,7 @@ namespace Team_Todo_Management.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "PHAMVINHSON@GMAIL.COM",
                             NormalizedUserName = "PHAMVINHSON@GMAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAELt3RyPS+LLSpmnxV2StKKvZExxuVGeNeziKSsbX8MGGkn+JECm0l1HPWo481h9gFg==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEBKBy4YooS/nnEObobrUW2buXDu2Kjj3dzUGs5vQGLGUvupLU0YeTOOg5ykQUWRlQA==",
                             PhoneNumber = "0901234586",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
@@ -386,7 +388,7 @@ namespace Team_Todo_Management.Migrations
                         {
                             Id = "cc2a0eb3-8736-441d-9130-5b421db3ac0e",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "424c20fa-30d5-4c0a-8d24-519246c056b8",
+                            ConcurrencyStamp = "72527f32-7330-4cc2-9841-12deefab222d",
                             CreatedAt = new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "caobaquat@gmail.com",
                             EmailConfirmed = true,
@@ -395,7 +397,7 @@ namespace Team_Todo_Management.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "CAOBAQUAT@GMAIL.COM",
                             NormalizedUserName = "CAOBAQUAT@GMAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEDQ+5HYBsmgp8FuXUsiBdKyMmYHcYEwXVCqSbMqn5AyFD9qW8CSjwa+S3tfg0IS8xA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEFP9nOBwdNrF8P5/g4Kj/VCQ3HT5Ax6tQ+TF4MNInC/Pk4ql+Go5nl4Gnggyv8h+Bg==",
                             PhoneNumber = "0901234570",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
@@ -406,7 +408,7 @@ namespace Team_Todo_Management.Migrations
                         {
                             Id = "423e498c-fc67-4853-ac4f-f3cd91d32e87",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "0e993e41-17a8-43b5-8ebb-0dc5d05f258f",
+                            ConcurrencyStamp = "17566af0-914c-4b52-b59d-319d248100c1",
                             CreatedAt = new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "huynhtranthanh@gmail.com",
                             EmailConfirmed = true,
@@ -415,7 +417,7 @@ namespace Team_Todo_Management.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "HUYNHTRANTHANH@GMAIL.COM",
                             NormalizedUserName = "HUYNHTRANTHANH@GMAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEL7jRDL7lmkN5w5LdeLIy+qBJrr+Ze45AChkoLa6+7SRs7egDgiN0ihMfA3pyLNhBw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEDr7SikDidbYwMJYG3vecr6KjYbVigPHkjiFi9rWzJBX0f/vxcLtMINLHVVViwMbYA==",
                             PhoneNumber = "0901234571",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
@@ -426,7 +428,7 @@ namespace Team_Todo_Management.Migrations
                         {
                             Id = "78c5228f-f600-4545-abcd-f4cc21d18e4c",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "3bcda830-74ef-4ba3-bf25-d23ae69ca130",
+                            ConcurrencyStamp = "74a8915f-e1b1-4ea2-be0a-1a2c11d0630f",
                             CreatedAt = new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "nguyenthanhlong@gmail.com",
                             EmailConfirmed = true,
@@ -435,7 +437,7 @@ namespace Team_Todo_Management.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "NGUYENTHANHLONG@GMAIL.COM",
                             NormalizedUserName = "NGUYENTHANHLONG@GMAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAENON5dceDrbQiX7COVlNML00qN7nBqw5YWK94CpJegzKu1eEsUe4qBuMTCqoQn7VcQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEGqCQGCeHeA80uY/NBUnr3KILJ0O1KZlUSWAajB5XsPpifcKKttfINVG58dEGPjJzg==",
                             PhoneNumber = "0901234568",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
@@ -446,7 +448,7 @@ namespace Team_Todo_Management.Migrations
                         {
                             Id = "6665ddaa-72f9-4f90-a6b1-43eb68dea610",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "d16c8856-89ad-48a7-8298-ef5fa88d3759",
+                            ConcurrencyStamp = "972e7006-217d-41a6-a4c2-9285e8db253e",
                             CreatedAt = new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "hoxuanhuong@gmail.com",
                             EmailConfirmed = true,
@@ -455,7 +457,7 @@ namespace Team_Todo_Management.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "HOXUANHUONG@GMAIL.COM",
                             NormalizedUserName = "HOXUANHUONG@GMAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEAjo+9QnMiMC3Aw0pkIXBS3shIfYMPrjPu1UP6jgdTcYeoD5IbC57UGRFM2jN6m1vg==",
+                            PasswordHash = "AQAAAAEAACcQAAAAENM49u9Pt4ALttX4O+1/Zrj6sYuyHUJPZuqYBDx+J1DfI0iALVdEBH6FC9q22f4/bQ==",
                             PhoneNumber = "0901234583",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
@@ -466,7 +468,7 @@ namespace Team_Todo_Management.Migrations
                         {
                             Id = "6b30cb05-12f7-46c2-b95f-8d783c1f9eb1",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "a6fea4fe-4e56-449a-b67c-b48234e40092",
+                            ConcurrencyStamp = "c8a8543c-2a2d-4395-9a13-417227c52ce0",
                             CreatedAt = new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "nguyenhue@gmail.com",
                             EmailConfirmed = true,
@@ -475,7 +477,7 @@ namespace Team_Todo_Management.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "NGUYENHUE@GMAIL.COM",
                             NormalizedUserName = "NGUYENHUE@GMAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEGqkJPdOqNZuNsnIIWkybmuAeTykysP+y5XUZqgiWf3ymZW41M4stZvuMg1JttSqMA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEJ78RXzHhz5VtyHzeVzu0bLDqOZpw6q3hFtxWeOXmhOgAFBLofz43ZL0OAUNWkZNFg==",
                             PhoneNumber = "0901234564",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
@@ -486,7 +488,7 @@ namespace Team_Todo_Management.Migrations
                         {
                             Id = "308da0db-e863-4814-8930-de3540e5406d",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "1083030b-ca3c-4f2c-9fab-59c940ecc756",
+                            ConcurrencyStamp = "c71d56f6-9ec9-4d1f-be94-6b3ae17446bf",
                             CreatedAt = new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "phungthanhdo@gmail.com",
                             EmailConfirmed = true,
@@ -495,7 +497,7 @@ namespace Team_Todo_Management.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "PHUNGTHANHDO@GMAIL.COM",
                             NormalizedUserName = "PHUNGTHANHDO@GMAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEOwbKuzq0RGSKKvI6vMb5AKV1WvG88Ugtc3TIUWxWNaP55OEkozdSlu6eBofBSZokw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEAl0I7f1ccIeUGBlpb9zCK1MgxjNGFgthEsg5ZtLGvGBhp5x/WinE5MeL/eq6dgR/A==",
                             PhoneNumber = "0901234572",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
@@ -506,7 +508,7 @@ namespace Team_Todo_Management.Migrations
                         {
                             Id = "927e4f6a-62ed-4e13-b002-7e133eb47bbc",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "b3b7ea1f-968e-4d84-8395-f6017c684601",
+                            ConcurrencyStamp = "57075d87-7a3f-44ef-b05b-bc3c0993fe9c",
                             CreatedAt = new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "phantantrung@gmail.com",
                             EmailConfirmed = true,
@@ -515,7 +517,7 @@ namespace Team_Todo_Management.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "PHANTANTRUNG@GMAIL.COM",
                             NormalizedUserName = "PHANTANTRUNG@GMAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEDbnKt8xw6zRUTlZhLlDUhSaScrV1hinV2UTBE9oH9/rKgl1LOEiuUfUCIO/vaU5hA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEAoi/L14ZZPl+6ZW92ZCUemZ9SH4nWgbYiFHdqKz5oFTU4HIAhs52jRphRUThLvsdQ==",
                             PhoneNumber = "0901234561",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
@@ -526,7 +528,7 @@ namespace Team_Todo_Management.Migrations
                         {
                             Id = "e7610feb-110c-47d0-9a88-1bfdc12742a4",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "0aed2e0e-99ed-4fdf-bfce-1f0bbd7ad4aa",
+                            ConcurrencyStamp = "0f633316-ec98-499a-b481-5521e4631b73",
                             CreatedAt = new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "truongtuantu@gmail.com",
                             EmailConfirmed = true,
@@ -535,7 +537,7 @@ namespace Team_Todo_Management.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "TRUONGTUANTU@GMAIL.COM",
                             NormalizedUserName = "TRUONGTUANTU@GMAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEHXNNOLYWBKgJTUUfZM+mVRZOpxE7nHqtk6hJKDjTfwYJNiZnmeawk5ads1SqLX6uQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEFbhcDRNZExSmCCgtssGY9xqVfxam84jyhgWNBD7yQ8Xe8PFEAKtlwMlqJLY5XywAw==",
                             PhoneNumber = "0901234578",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
@@ -708,9 +710,6 @@ namespace Team_Todo_Management.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("CreatedById")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("EndDate")

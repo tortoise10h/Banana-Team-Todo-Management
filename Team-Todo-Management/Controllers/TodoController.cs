@@ -1,33 +1,46 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Team_Todo_Management.Common.Enum;
 using Team_Todo_Management.Data;
+using Team_Todo_Management.IServices;
 using Team_Todo_Management.Models;
+using Team_Todo_Management.ViewModels;
 
 namespace Team_Todo_Management.Controllers
 {
     public class TodoController : Controller
     {
+        private readonly ITodoServices _todoServices;
         private readonly DataContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IMapper _mapper;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public TodoController(DataContext context)
+        public TodoController(DataContext context, ITodoServices todoServices, IMapper mapper, IHttpContextAccessor httpContextAccessor, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _todoServices = todoServices;
+            _mapper = mapper;
+            _httpContextAccessor = httpContextAccessor;
+            _userManager = userManager;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Inbox()
         {
-            ViewData["PageTitle"] = "This is a list of to do";
-            return View(await _context.Todos.ToListAsync());
+            var result = await _todoServices.GetInboxTodos();
+
+            return View(result);
         }
 
-        // GET: Todo/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -47,26 +60,25 @@ namespace Team_Todo_Management.Controllers
             return View(tempTodo);
         }
 
-        // GET: Todoes/Create
+        [HttpGet]
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Todoes/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,StartDate,EndDate,Status,Scope,CreatedAt,CreatedBy,LastModifiedAt,LastModifiedBy,IsDeleted")] Todo todo)
+        public async Task<IActionResult> Create(TodoCreateModel createModel)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(todo);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                ApplicationUser currentUser = await _userManager.GetUserAsync(User);
+                var todoModel = _mapper.Map<Todo>(createModel);
+
+                await _todoServices.Create(todoModel, currentUser);
+
+                return RedirectToAction(nameof(Inbox));
             }
-            return View(todo);
+            return View(createModel);
         }
 
         // GET: Todoes/Edit/5

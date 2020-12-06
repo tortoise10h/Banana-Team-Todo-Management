@@ -1,0 +1,55 @@
+﻿@model Todo;
+
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+ <div class="my-2">
+     <!-- Button trigger modal -->
+     <div class="float-right">
+         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createTaskModal">
+             Create a task
+         </button>
+     </div>
+
+     <!-- Modal -->
+     <div class="modal fade" id="createTaskModal" tabindex="-1" aria-labelledby="createTaskModalLabel" aria-hidden="true">
+         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+             <div class="modal-content">
+                 <div class="modal-header">
+                     <h5 class="modal-title" id="createTaskModalLabel">Fill all this form to create a new task</h5>
+                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                         <span aria-hidden="true">&times;</span>
+                     </button>
+                 </div>
+                 <div class="modal-body">
+                     <form action="" method="post">
+                        <div class="form-group">
+                            <label asp-for="Name"></label>
+                            <input asp-for="Name" class="form-control" placeholder="Name" />
+                            <span asp-validation-for="Name" class="text-danger"></span>
+                        </div>
+
+                         <div class="d-flex">
+                            <div class="form-group">
+                                <label asp-for="StartDate"></label>
+                                <input type="datetime" asp-for="StartDate" class="form-control" placeholder="StartDate" />
+                                <span asp-validation-for="StartDate" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label asp-for="EndDate"></label>
+                                <input type="datetime" asp-for="EndDate" class="form-control" placeholder="EndDate" />
+                                <span asp-validation-for="EndDate" class="text-danger"></span>
+                            </div>
+                         </div>
+
+                         <button type="submit" class="btn btn-primary btn-block">Create</button>
+                     </form>
+                 </div>
+             </div>
+         </div>
+     </div>
+ </div>
