@@ -1,62 +1,80 @@
-﻿@model Team_Todo_Management.Models.Todo
+﻿@model TodoUpdateModel;
 
 @{
     ViewData["Title"] = "Edit";
+
+    
 }
 
 
 @*Todo Info*@
 <div class="container">
-    <h1 class="border-bottom">Task Information</h1>
+    @await Html.PartialAsync(
+        "_TitleAndGoBackBtnPartial",
+        new ViewDataDictionary(ViewData) { { "PageH1Title", "Task Information" } }) 
     <form asp-action="Edit" asp-controller="Todo" method="post">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="form-group">
-            <label asp-for="Name" class="control-label"></label>
-            <input asp-for="Name" class="form-control" />
-            <span asp-validation-for="Name" class="text-danger"></span>
+            <label asp-for="@Model.TodoInfo.Name" class="control-label"></label>
+            <input asp-for="@Model.TodoInfo.Name" class="form-control" />
+            <span asp-validation-for="@Model.TodoInfo.Name" class="text-danger"></span>
         </div>
         <div class="form-group">
-            <label asp-for="Description" class="control-label"></label>
-            <textarea asp-for="Description" class="form-control" rows="3"></textarea>
-            <span asp-validation-for="Description" class="text-danger"></span>
+            <label asp-for="@Model.TodoInfo.Description" class="control-label"></label>
+            <textarea asp-for="@Model.TodoInfo.Description" class="form-control" rows="3"></textarea>
+            <span asp-validation-for="@Model.TodoInfo.Description" class="text-danger"></span>
         </div>
         <div class="row">
             <div class="form-group col">
-                <label asp-for="StartDate" class="control-label"></label>
-                <input asp-for="StartDate" class="form-control" />
-                <span asp-validation-for="StartDate" class="text-danger"></span>
+                <label asp-for="@Model.TodoInfo.StartDate" class="control-label"></label>
+                <input asp-for="@Model.TodoInfo.StartDate" class="form-control" />
+                <span asp-validation-for="@Model.TodoInfo.StartDate" class="text-danger"></span>
             </div>
             <div class="form-group col">
-                <label asp-for="EndDate" class="control-label"></label>
-                <input asp-for="EndDate" class="form-control" />
-                <span asp-validation-for="EndDate" class="text-danger"></span>
+                <label asp-for="@Model.TodoInfo.EndDate" class="control-label"></label>
+                <input asp-for="@Model.TodoInfo.EndDate" class="form-control" />
+                <span asp-validation-for="@Model.TodoInfo.EndDate" class="text-danger"></span>
             </div>
         </div>
         <div class="row">
-            <div class="form-group col">
-                <label asp-for="Status" class="control-label"></label>
-                <select asp-for="Status" class="form-control">
-                    <option value="1">New</option>
-                    <option value="2">Processing</option>
-                    <option value="3">Done</option>
-                    <option value="4">Overdue</option>
-                    <option value="5">Cancelled</option>
-                </select>
-                <span asp-validation-for="Scope" class="text-danger"></span>
+            <div class="form-group col-md-6">
+                <label asp-for="@Model.TodoInfo.PersonInChargeId" class="control-label"></label>
+                @if(User.IsInRole("Boss"))
+                {
+                    <select 
+                            class="form-control"
+                            asp-for="@Model.TodoInfo.PersonInChargeId"
+                            asp-items="@(new SelectList(Model.AllUsers,"Id","FullName"))">
+                        <option>Please select one</option>
+                    </select>
+                }
+                else
+                {
+                    <p class="p-2 border rounded" style="background: #fff">@Model.TodoInfo.PersonInCharge.FullName</p>
+                    <input type="hidden" asp-for="@Model.TodoInfo.PersonInChargeId" value="@Model.TodoInfo.PersonInChargeId"/>
+                }
+                <span asp-validation-for="@Model.TodoInfo.PersonInChargeId" class="text-danger"></span>
             </div>
-            <div class="form-group col">
-                <label asp-for="Scope" class="control-label"></label>
-                <select asp-for="Scope" class="form-control">
-                    <option value="1">Public</option>
-                    <option value="2">Private</option>
+            <div class="form-group col-md-3">
+                <label asp-for="@Model.TodoInfo.Status" class="control-label"></label>
+                <select asp-for="@Model.TodoInfo.Status"
+                        class="form-control"
+                        asp-items="Html.GetEnumSelectList<TodoStatusEnum>()">
                 </select>
-                <span asp-validation-for="Scope" class="text-danger"></span>
+                <span asp-validation-for="@Model.TodoInfo.Status" class="text-danger"></span>
+            </div>
+            <div class="form-group col-md-3">
+                <label asp-for="@Model.TodoInfo.Scope" class="control-label"></label>
+                <select asp-for="@Model.TodoInfo.Scope"
+                        class="form-control"
+                        asp-items="Html.GetEnumSelectList<TodoScopeEnum>()">
+                </select>
+                <span asp-validation-for="@Model.TodoInfo.Scope" class="text-danger"></span>
             </div>
         </div>
-        <div class="form-group float-right mt-2">
-            <input type="submit" value="Update" class="btn btn-primary" />
+        <div class="form-group mt-2">
+            <input type="submit" value="Update task information" class="btn btn-primary btn-block" />
         </div>
-        <div class="clearfix"></div>
     </form>
 
     @*Participant list*@
@@ -64,19 +82,68 @@
         <div class="pr-4">
             <h1 class="border-bottom">Participants</h1>
             <div class="mb-2">
-                <div>
-                    John Doe
+                <div class="d-flex align-items-center">
+                    <div style="flex-basis: 80%">
+                        <p class="no-margin-padding">John Doe</p>
+                    </div>
+                    <div class="px-2" style="flex-basis: 20%">
+                        <button class="text-danger btn">
+                            <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-x" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
+                            </svg>
+                        </button>
+                    </div>
                 </div>
-                <div>
-                    Lil Pun
+                <div class="d-flex align-items-center">
+                    <div style="flex-basis: 80%">
+                        <p class="no-margin-padding">John Doe</p>
+                    </div>
+                    <div class="px-2" style="flex-basis: 20%">
+                        <button class="text-danger btn">
+                            <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-x" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
+                            </svg>
+                        </button>
+                    </div>
                 </div>
             </div>
-            <button 
+            <!-- Button trigger modal -->
+            <button
                     type="button"
+                    class="btn btn-primary"
+                    data-toggle="modal"
                     id="addNewParticipantBtn"
-                    class="btn btn-primary">
+                    data-target="#addNewParticipantModal">
                 Add new participant
             </button>
+
+            <!-- Add participant -->
+            <div class="modal fade" id="addNewParticipantModal" tabindex="-1" aria-labelledby="addNewParticipantModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="addNewParticipantModalLabel">Add new participant</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="d-flex">
+                                <div class="px-2" style="flex-basis: 15%">
+                                    <input style="width: 1.2em; height: 1.2em" class="mt-2" type="checkbox" />
+                                </div>
+                                <div class="px-2" style="flex-basis: 85%">
+                                    <p class="no-margin-padding">John doe</p>
+                                    <small>johndoe@gmail.com</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary">Add</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="pl-4">
             <h1 class="border-bottom">Attachment</h1>
@@ -162,10 +229,6 @@
         </form>
     </div>
 </div>*@
-
-<div>
-    <a href="##" onClick="history.go(-1); return false;">Go back</a>
-</div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

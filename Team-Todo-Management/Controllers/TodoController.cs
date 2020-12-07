@@ -17,6 +17,7 @@ using Team_Todo_Management.ViewModels;
 
 namespace Team_Todo_Management.Controllers
 {
+    [Authorize]
     public class TodoController : Controller
     {
         private readonly ITodoServices _todoServices;
@@ -36,7 +37,8 @@ namespace Team_Todo_Management.Controllers
 
         public async Task<IActionResult> Inbox()
         {
-            var result = await _todoServices.GetInboxTodos();
+            ApplicationUser currentUser = await _userManager.GetUserAsync(User);
+            var result = await _todoServices.GetInboxTodos(currentUser);
 
             return View(result);
         }
@@ -81,7 +83,7 @@ namespace Team_Todo_Management.Controllers
             return View(createModel);
         }
 
-        // GET: Todoes/Edit/5
+        [HttpGet]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -89,22 +91,32 @@ namespace Team_Todo_Management.Controllers
                 return NotFound();
             }
 
-            var todo = await _context.Todos.FindAsync(id);
+            var todo = await _context.Todos
+                .Include(x => x.PersonInCharge)
+                .SingleOrDefaultAsync(x => x.Id == id);
             if (todo == null)
             {
                 return NotFound();
             }
-            return View(todo);
+
+            var users = await _context.Users.ToListAsync();
+
+            TodoUpdateModel updateModel = new TodoUpdateModel
+            {
+                TodoInfo = _mapper.Map<TodoInfoEditModel>(todo),
+                AllUsers = _mapper.Map<List<UserViewModel>>(users)
+            };
+
+            return View(updateModel);
         }
 
-        // POST: Todoes/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,StartDate,EndDate,Status,Scope,CreatedAt,CreatedBy,LastModifiedAt,LastModifiedBy,IsDeleted")] Todo todo)
+        public async Task<IActionResult> Edit(int id, TodoUpdateModel updateModel)
         {
-            if (id != todo.Id)
+            var todo = await _context.Todos
+                .SingleOrDefaultAsync(x => x.Id == id);
+            if (todo == null)
             {
                 return NotFound();
             }
@@ -113,7 +125,8 @@ namespace Team_Todo_Management.Controllers
             {
                 try
                 {
-                    _context.Update(todo);
+                    _mapper.Map<TodoInfoEditModel, Todo>(updateModel.TodoInfo, todo);
+                    _context.Todos.Update(todo);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -127,9 +140,12 @@ namespace Team_Todo_Management.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Inbox));
             }
-            return View(todo);
+
+            var users = await _context.Users.ToListAsync();
+            updateModel.AllUsers = _mapper.Map<List<UserViewModel>>(users);
+            return View(updateModel);
         }
 
         // GET: Todoes/Delete/5
