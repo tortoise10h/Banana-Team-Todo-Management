@@ -72,6 +72,7 @@ namespace Team_Todo_Management
 
             /** For Business Services */
             services.AddScoped<ITodoServices, TodoServices>();
+            services.AddScoped<IUserServices, UserServices>();
 
         }
 
