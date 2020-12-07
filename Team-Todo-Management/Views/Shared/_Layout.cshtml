@@ -37,16 +37,13 @@
                             @*Use form for button logout because we need to send a POST request*@
                             <form method="POST" asp-controller="Auth" asp-action="Logout">
                                 <button type="submit" class="btn btn-link" style="color: #f65058ff">
-                                    Logout
+                                    Logout (@User.Identity.Name)
                                 </button>
                             </form>
                         </li>
                     }
                     else
                     {
-                        <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-controller="Auth" asp-action="Register">Register</a>
-                        </li>
                         <li class="nav-item">
                             <a class="nav-link text-light" asp-area="" asp-controller="Auth" asp-action="Login">Login</a>
                         </li>
@@ -57,8 +54,7 @@
         </nav>
     </header>
     <div class="d-flex" style="background: #fafbfc">
-        <aside
-               style="min-width: 305px; height: calc(100vh)">
+        <aside style="min-width: 305px; height: calc(100vh)">
             <ul style="list-style-type: none" class="p-2 ml-5 mr-2 my-2">
                 <li class="mb-4">
                     <a class="text-dark" asp-action="Inbox" asp-controller="Todo">
@@ -89,9 +85,9 @@
                 <li class="mb-4">
                     <a class="text-dark">
                         <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-calendar2-week" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                          <path fill-rule="evenodd" d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM2 2a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1H2z"/>
-                          <path d="M2.5 4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5H3a.5.5 0 0 1-.5-.5V4zM11 7.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm-3 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm-5 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm3 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1z"/>
-                        </svg>                       
+                            <path fill-rule="evenodd" d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM2 2a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1H2z" />
+                            <path d="M2.5 4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5H3a.5.5 0 0 1-.5-.5V4zM11 7.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm-3 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm-5 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm3 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1z" />
+                        </svg>
                         This Week Tasks
                     </a>
                 </li>
@@ -106,16 +102,16 @@
                         Assigned Tasks
                     </a>
                 </li>
-                @if(User.IsInRole("Boss"))
+                @if (User.IsInRole("Boss"))
                 {
-                    <li class="mb-4">
-                        <a class="text-dark">
-                            <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-person-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd" d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
-                            </svg>
-                            Manage Users
-                        </a>
-                    </li>
+    <li class="mb-4">
+        <a class="text-dark">
+            <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-person-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
+            </svg>
+            Manage Users
+        </a>
+    </li>
                     <li class="mb-4">
                         <a class="text-dark">
                             <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-card-heading" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
@@ -125,17 +121,34 @@
                             </svg>
                             Log
                         </a>
-                    </li>
-                }
+                    </li>}
             </ul>
         </aside>
         <main role="main" class="p-4" style="width: 100%">
             @RenderBody()
         </main>
+        <!-- Global error modal -->
+        <div class="modal fade" id="globalErrorModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-body d-flex">
+                        <div style="flex-basis: 20%" class="p-2">
+                            <svg class="text-danger" width="2.2em" height="2.2em" viewBox="0 0 16 16" class="bi bi-x-circle-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z" />
+                            </svg>
+                        </div>
+                        <div style="flex-basis: 80%" id="globalErrorContent" class="mt-2">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/common.js" asp-append-version="true"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @RenderSection("Scripts", required: false)
 </body>
