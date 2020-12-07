@@ -34,7 +34,7 @@ namespace Team_Todo_Management.Data
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
             /** Connect to database here */
-            options.UseSqlServer("Server=MINH-COMPUTER\\SQLEXPRESS;Database=todos_db;User Id=sa;Password=12345678a@");
+            options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
