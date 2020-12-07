@@ -9,6 +9,7 @@
 
 @*Todo Info*@
 <div class="container">
+    <input type="hidden" value="@Model.TodoId" id="todoIdHidden" />
     @await Html.PartialAsync(
         "_TitleAndGoBackBtnPartial",
         new ViewDataDictionary(ViewData) { { "PageH1Title", "Task Information" } }) 
@@ -79,40 +80,34 @@
 
     @*Participant list*@
     <div class="d-flex flex-fill justify-content-between">
-        <div class="pr-4">
-            <h1 class="border-bottom">Participants</h1>
+        <div class="pr-4" style="flex-basis: 40%">
+            <h1 class="border-bottom mb-2">Participants</h1>
             <div class="mb-2">
-                <div class="d-flex align-items-center">
-                    <div style="flex-basis: 80%">
-                        <p class="no-margin-padding">John Doe</p>
+                @foreach (var participant in Model.Participants)
+                {
+                    <div class="d-flex align-items-center mb-2">
+                        <div style="flex-basis: 80%">
+                            <p class="no-margin-padding">@participant.FullName</p>
+                            <small>@participant.Email</small>
+                        </div>
+                        <div class="px-2" style="flex-basis: 20%">
+                            <button
+                                    style="outline: none"
+                                    class="text-danger btn remove-a-participant-btn"
+                                    value="@participant.Id">
+                                <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-x" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd" d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
+                                </svg>
+                            </button>
+                        </div>
                     </div>
-                    <div class="px-2" style="flex-basis: 20%">
-                        <button class="text-danger btn">
-                            <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-x" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd" d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
-                            </svg>
-                        </button>
-                    </div>
-                </div>
-                <div class="d-flex align-items-center">
-                    <div style="flex-basis: 80%">
-                        <p class="no-margin-padding">John Doe</p>
-                    </div>
-                    <div class="px-2" style="flex-basis: 20%">
-                        <button class="text-danger btn">
-                            <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-x" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd" d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
-                            </svg>
-                        </button>
-                    </div>
-                </div>
+                 }
             </div>
             <!-- Button trigger modal -->
             <button
                     type="button"
-                    class="btn btn-primary"
+                    class="btn btn-primary btn-block"
                     data-toggle="modal"
-                    id="addNewParticipantBtn"
                     data-target="#addNewParticipantModal">
                 Add new participant
             </button>
@@ -128,24 +123,37 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <div class="d-flex">
-                                <div class="px-2" style="flex-basis: 15%">
-                                    <input style="width: 1.2em; height: 1.2em" class="mt-2" type="checkbox" />
+                            @foreach (var item in Model.UsersNotInTodo)
+                            {
+                                <div class="d-flex mb-3">
+                                    <div class="px-2" style="flex-basis: 15%">
+                                        <input 
+                                               value="@item.Id"
+                                               style="width: 1.2em; height: 1.2em"
+                                               class="mt-2 user-not-in-todo-checkbox"
+                                               type="checkbox" />
+                                        <input class="user-not-in-todo-hidden" type="hidden" name="selectedUserId" value="@item.Id" />
+                                    </div>
+                                    <div class="px-2" style="flex-basis: 85%">
+                                        <p class="no-margin-padding">@item.FullName</p>
+                                        <small>@item.Email</small>
+                                    </div>
                                 </div>
-                                <div class="px-2" style="flex-basis: 85%">
-                                    <p class="no-margin-padding">John doe</p>
-                                    <small>johndoe@gmail.com</small>
-                                </div>
-                            </div>
+                            }
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-primary">Add</button>
+                            <button 
+                                id="addNewParticipantsBtn"
+                                type="button"
+                                class="btn btn-primary">
+                                Add
+                            </button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="pl-4">
+        <div class="pr-4" style="flex-basis: 40%">
             <h1 class="border-bottom">Attachment</h1>
             <div class="mb-2">
                 <div>
@@ -158,7 +166,7 @@
             <button 
                     type="button"
                     id="addNewAttachmentBtn"
-                    class="btn btn-primary">
+                    class="btn btn-primary btn-block">
                 Add new attachment
             </button>
         </div>
@@ -166,70 +174,7 @@
     </div>
 </div>
 
-@*<h4>Todo</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="StartDate" class="control-label"></label>
-                <input asp-for="StartDate" class="form-control" />
-                <span asp-validation-for="StartDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="EndDate" class="control-label"></label>
-                <input asp-for="EndDate" class="form-control" />
-                <span asp-validation-for="EndDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Status" class="control-label"></label>
-                <select asp-for="Status" class="form-control"></select>
-                <span asp-validation-for="Status" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Scope" class="control-label"></label>
-                <select asp-for="Scope" class="form-control"></select>
-                <span asp-validation-for="Scope" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CreatedAt" class="control-label"></label>
-                <input asp-for="CreatedAt" class="form-control" />
-                <span asp-validation-for="CreatedAt" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CreatedById" class="control-label"></label>
-                <input asp-for="CreatedById" class="form-control" />
-                <span asp-validation-for="CreatedById" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="LastModifiedAt" class="control-label"></label>
-                <input asp-for="LastModifiedAt" class="form-control" />
-                <span asp-validation-for="LastModifiedAt" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="LastModifiedById" class="control-label"></label>
-                <input asp-for="LastModifiedById" class="form-control" />
-                <span asp-validation-for="LastModifiedById" class="text-danger"></span>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="IsDeleted" /> @Html.DisplayNameFor(model => model.IsDeleted)
-                </label>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
-</div>*@
-
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="~/js/edit-todo-script.js" asp-append-version="true"></script>
 }

@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using Team_Todo_Management.Common.Enum;
 using Team_Todo_Management.Data;
@@ -21,18 +22,20 @@ namespace Team_Todo_Management.Controllers
     public class TodoController : Controller
     {
         private readonly ITodoServices _todoServices;
+        private readonly IUserServices _userServices;
         private readonly DataContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IMapper _mapper;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public TodoController(DataContext context, ITodoServices todoServices, IMapper mapper, IHttpContextAccessor httpContextAccessor, UserManager<ApplicationUser> userManager)
+        public TodoController(DataContext context, ITodoServices todoServices, IMapper mapper, IHttpContextAccessor httpContextAccessor, UserManager<ApplicationUser> userManager, IUserServices userServices)
         {
             _context = context;
             _todoServices = todoServices;
             _mapper = mapper;
             _httpContextAccessor = httpContextAccessor;
             _userManager = userManager;
+            _userServices = userServices;
         }
 
         public async Task<IActionResult> Inbox()
@@ -89,18 +92,25 @@ namespace Team_Todo_Management.Controllers
 
             var todo = await _context.Todos
                 .Include(x => x.PersonInCharge)
+                .Include(x => x.Participants)
                 .SingleOrDefaultAsync(x => x.Id == id);
             if (todo == null)
             {
                 return NotFound();
             }
 
-            var users = await _context.Users.ToListAsync();
+            var users = await _userServices.GetAllUsers();
+            var userIdsInTodo = todo.Participants.Select(x => x.UserId);
+            var usersInTodo = users.Where(x => userIdsInTodo.Contains(x.Id));
+            var usersNotInTodo = users.Except(usersInTodo);
 
             TodoUpdateModel updateModel = new TodoUpdateModel
             {
+                TodoId = todo.Id,
                 TodoInfo = _mapper.Map<TodoInfoEditModel>(todo),
-                AllUsers = _mapper.Map<List<UserViewModel>>(users)
+                AllUsers = _mapper.Map<List<UserViewModel>>(users),
+                Participants = _mapper.Map<List<UserViewModel>>(usersInTodo),
+                UsersNotInTodo = _mapper.Map<List<UserViewModel>>(usersNotInTodo)
             };
 
             return View(updateModel);
@@ -139,10 +149,72 @@ namespace Team_Todo_Management.Controllers
                 return RedirectToAction(nameof(Inbox));
             }
 
-            var users = await _context.Users.ToListAsync();
+            /** Prepare info for edit page when update process is failed */
+            var participants = await _context.Participants
+                .Where(x => x.TodoId == todo.Id)
+                .ToListAsync();
+            var users = await _userServices.GetAllUsers();
+            var userIdsInTodo = participants.Select(x => x.UserId);
+            var usersInTodo = users.Where(x => userIdsInTodo.Contains(x.Id));
+            var usersNotInTodo = users.Except(usersInTodo);
+
+            updateModel.TodoId = todo.Id;
             updateModel.AllUsers = _mapper.Map<List<UserViewModel>>(users);
+            updateModel.UsersNotInTodo = _mapper.Map<List<UserViewModel>>(usersInTodo);
+            updateModel.Participants = _mapper.Map<List<UserViewModel>>(usersNotInTodo);
             return View(updateModel);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> AddTodoParticipants(
+            [FromRoute] int id,
+            [FromBody] AddTodoParticipantsModel model)
+        {
+            var todo = await _context.Todos
+                .SingleOrDefaultAsync(x => x.Id == id);
+            if (todo == null)
+            {
+                return NotFound(); 
+            }
+
+            if (ModelState.IsValid)
+            {
+                ApplicationUser currentUser = await _userManager.GetUserAsync(User);
+                var result = await _todoServices.AddParticipantsToTodo(
+                    currentUser,
+                    model.SelectedUserIds,
+                    todo);
+
+                return Ok(result);
+            }
+
+            return RedirectToAction("Edit", new { id = todo.Id });
+        }
+
+        //[HttpDelete]
+        //public async Task<IActionResult> RemoveAParticipant(
+        //    [FromRoute] int id)
+        //{
+        //    var todo = await _context.Todos
+        //        .SingleOrDefaultAsync(x => x.Id == id);
+        //    if (todo == null)
+        //    {
+        //        return NotFound(); 
+        //    }
+
+        //    if (ModelState.IsValid)
+        //    {
+        //        ApplicationUser currentUser = await _userManager.GetUserAsync(User);
+        //        var result = await _todoServices.AddParticipantsToTodo(
+        //            currentUser,
+        //            model.SelectedUserIds,
+        //            todo);
+
+        //        return Ok(result);
+        //    }
+
+        //    return RedirectToAction("Edit", new { id = todo.Id });
+        //}
 
         // GET: Todoes/Delete/5
         public async Task<IActionResult> Delete(int? id)

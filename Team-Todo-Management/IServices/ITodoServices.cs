@@ -11,5 +11,9 @@ namespace Team_Todo_Management.IServices
     {
         Task Create(Todo todo, ApplicationUser currentUser);
         Task<List<TodoViewModel>> GetInboxTodos(ApplicationUser currentUser);
+        Task<AjaxResultViewModel> AddParticipantsToTodo(
+            ApplicationUser currentUser,
+            List<string> selectedUserIds,
+            Todo todo);
     }
 }
