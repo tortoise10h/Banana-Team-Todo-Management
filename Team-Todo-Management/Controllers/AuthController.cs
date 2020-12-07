@@ -41,7 +41,7 @@ namespace Team_Todo_Management.Controllers
 
                 if (result.Succeeded)
                 {
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Inbox", "Todo");
                 }
 
                 ModelState.AddModelError(string.Empty, "Email or password is incorrect");

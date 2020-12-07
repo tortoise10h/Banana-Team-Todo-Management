@@ -18,6 +18,9 @@ namespace Team_Todo_Management.MapperProfile
 
             CreateMap<Todo, TodoViewModel>();
             CreateMap<TodoViewModel, Todo>();
+            
+            CreateMap<Todo, TodoInfoEditModel>();
+            CreateMap<TodoInfoEditModel, Todo>();
 
             /** User */
             CreateMap<ApplicationUser, UserViewModel>();

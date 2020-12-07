@@ -4,14 +4,10 @@
     ViewData["Title"] = "Create a new task";
 }
 
-<h1>Create</h1>
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
-<h4>Todo</h4>
-<hr />
 <div class="container">
+    @await Html.PartialAsync(
+        "_TitleAndGoBackBtnPartial",
+        new ViewDataDictionary(ViewData) { { "PageH1Title", "Create a new task" } }) 
     <form asp-action="Create">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="form-group">

@@ -10,6 +10,6 @@ namespace Team_Todo_Management.IServices
     public interface ITodoServices
     {
         Task Create(Todo todo, ApplicationUser currentUser);
-        Task<List<TodoViewModel>> GetInboxTodos();
+        Task<List<TodoViewModel>> GetInboxTodos(ApplicationUser currentUser);
     }
 }

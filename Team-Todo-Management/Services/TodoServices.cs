@@ -35,9 +35,10 @@ namespace Team_Todo_Management.Services
             await _context.SaveChangesAsync();
         }
 
-        public async Task<List<TodoViewModel>> GetInboxTodos()
+        public async Task<List<TodoViewModel>> GetInboxTodos(ApplicationUser currentUser)
         { 
             var listOfTodo = await _context.Todos
+                .Where(x => x.PersonInChargeId == currentUser.Id)
                 .Include(x => x.PersonInCharge)
                 .OrderByDescending(x => x.CreatedAt)
                 .ToListAsync();

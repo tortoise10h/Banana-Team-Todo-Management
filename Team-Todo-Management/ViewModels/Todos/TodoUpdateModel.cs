@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 
 namespace Team_Todo_Management.ViewModels
 {
-    public class TodoEditModel
+    public class TodoUpdateModel
     {
         public TodoInfoEditModel TodoInfo { get; set; }
-        public UserViewModel User { get; set; }
+        public List<UserViewModel> AllUsers { get; set; }
     }
 }
