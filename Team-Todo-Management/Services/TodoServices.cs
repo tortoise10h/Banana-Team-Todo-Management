@@ -107,5 +107,38 @@ namespace Team_Todo_Management.Services
 
             return new AjaxResultViewModel(true, "");
         }
+
+        public async Task<AjaxResultViewModel> RemoveAParticipantFromTodo(
+            ApplicationUser currentUser,
+            int todoId,
+            string participantUserId)
+        {
+            /** Make sure valid participant */
+            var participant = await _context.Participants
+                .Include(x => x.Todo)
+                .SingleOrDefaultAsync(x => x.UserId == participantUserId &&
+                    x.TodoId == todoId);
+
+            if (participant == null)
+            {
+                return new AjaxResultViewModel(false, "A selected participant does not exist");
+            }
+
+            /** Make sure user who request is valid  
+              only allow user who is person in charge and boss */
+            if (participant.Todo.PersonInChargeId != currentUser.Id)
+            {
+                bool isBoss = await _userManager.IsInRoleAsync(currentUser, RoleNameEnum.Boss);
+                if (!isBoss)
+                {
+                    return new AjaxResultViewModel(false, "You don't have a permission to remove a participant of this task");
+                }
+            }
+
+            _context.Participants.Remove(participant);
+            await _context.SaveChangesAsync();
+
+            return new AjaxResultViewModel(true, "");
+        }
     }
 }

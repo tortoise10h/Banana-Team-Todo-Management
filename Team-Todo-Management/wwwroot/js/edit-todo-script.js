@@ -5,7 +5,6 @@
         selectedUserIds.push(checkedBoxes[i].value);
     }
     const todoId = document.getElementById('todoIdHidden').value;
-    console.log(`TodoId: ${todoId}`);
 
     if (selectedUserIds.length == 0) {
         hideModalAndShowErrorModalWithContent(
@@ -32,8 +31,24 @@
 
 }
 
-const removeAParticipantAction = (e) => {
-    alert(e.currentTarget.value);
+const removeAParticipantAction = async (e) => {
+    const selectedParticipantId = e.currentTarget.value;
+    const todoId = document.getElementById('todoIdHidden').value;
+
+    const result = await sendAjaxRequest(
+        `/Todo/RemoveAParticipant/${selectedParticipantId}`,
+        'POST',
+        {
+            todoId: parseInt(todoId)
+        }
+    );
+
+    if (result && !result.isSuccess) {
+        addContentToGlobalErrorModal(result.data);
+        showGlobalErrorModal();
+    } else {
+        window.location.href = `/Todo/Edit/${todoId}`;
+    }
 }
 
 const addNewParticipantsBtn = document.getElementById('addNewParticipantsBtn');
