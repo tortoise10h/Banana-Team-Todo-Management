@@ -191,30 +191,26 @@ namespace Team_Todo_Management.Controllers
             return RedirectToAction("Edit", new { id = todo.Id });
         }
 
-        //[HttpDelete]
-        //public async Task<IActionResult> RemoveAParticipant(
-        //    [FromRoute] int id)
-        //{
-        //    var todo = await _context.Todos
-        //        .SingleOrDefaultAsync(x => x.Id == id);
-        //    if (todo == null)
-        //    {
-        //        return NotFound(); 
-        //    }
+        [HttpPost]
+        public async Task<IActionResult> RemoveAParticipant(
+            [FromRoute] string id,
+            [FromBody] RemoveAParticipantFromTodoModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                ApplicationUser currentUser = await _userManager.GetUserAsync(User);
+                var result = await _todoServices.RemoveAParticipantFromTodo(
+                    currentUser,
+                    model.TodoId,
+                    id);
 
-        //    if (ModelState.IsValid)
-        //    {
-        //        ApplicationUser currentUser = await _userManager.GetUserAsync(User);
-        //        var result = await _todoServices.AddParticipantsToTodo(
-        //            currentUser,
-        //            model.SelectedUserIds,
-        //            todo);
-
-        //        return Ok(result);
-        //    }
-
-        //    return RedirectToAction("Edit", new { id = todo.Id });
-        //}
+                return Ok(result);
+            }
+            else
+            {
+                return Ok(new AjaxResultViewModel(false, "There is something wrong, please try again"));
+            }
+        }
 
         // GET: Todoes/Delete/5
         public async Task<IActionResult> Delete(int? id)

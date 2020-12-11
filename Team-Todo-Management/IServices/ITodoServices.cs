@@ -15,5 +15,9 @@ namespace Team_Todo_Management.IServices
             ApplicationUser currentUser,
             List<string> selectedUserIds,
             Todo todo);
+        Task<AjaxResultViewModel> RemoveAParticipantFromTodo(
+            ApplicationUser currentUser,
+            int todoId,
+            string participantUserId);
     }
 }
