@@ -46,6 +46,14 @@ namespace Team_Todo_Management.Controllers
             return View(result);
         }
 
+        public async Task<IActionResult> TodayTasks()
+        {
+            ApplicationUser currentUser = await _userManager.GetUserAsync(User);
+            var result = await _todoServices.GetTodayTodos(currentUser);
+
+            return View(result);
+        }
+
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
