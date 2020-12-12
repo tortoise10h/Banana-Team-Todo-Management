@@ -8,7 +8,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Team_Todo_Management.Common.Enum;
 using Team_Todo_Management.Data;
+using Team_Todo_Management.IServices;
 using Team_Todo_Management.Models;
 using Team_Todo_Management.ViewModels;
 
@@ -21,13 +23,15 @@ namespace Team_Todo_Management.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IMapper _mapper;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IActivityServices _activityServices;
 
-        public UserController(DataContext context, UserManager<ApplicationUser> userManager, IMapper mapper, IHttpContextAccessor httpContextAccessor)
+        public UserController(DataContext context, UserManager<ApplicationUser> userManager, IMapper mapper, IHttpContextAccessor httpContextAccessor, IActivityServices activityServices)
         {
             _context = context;
             _userManager = userManager;
             _mapper = mapper;
             _httpContextAccessor = httpContextAccessor;
+            _activityServices = activityServices;
         }
 
         [HttpGet]
@@ -75,6 +79,7 @@ namespace Team_Todo_Management.Controllers
             if (ModelState.IsValid)
             {
                 var hasher = new PasswordHasher<ApplicationUser>();
+                ApplicationUser currentUser = await _userManager.GetUserAsync(User);
                 var newUser = new ApplicationUser
                 {
                     Id = Guid.NewGuid().ToString(),
@@ -102,6 +107,17 @@ namespace Team_Todo_Management.Controllers
 
                 await _context.Users.AddAsync(newUser);
                 await _context.UserRoles.AddAsync(newUserRole);
+
+                await _activityServices.TrackActivity(
+                    currentUser.FirstName,
+                    currentUser.LastName,
+                    currentUser.Email,
+                    ActivityTypeEnum.CreateUser,
+                    $"{newUser.LastName} {newUser.FirstName} ({newUser.Email}) with role {createModel.RoleName}",
+                    currentUser.Id,
+                    _context
+                );
+
                 await _context.SaveChangesAsync();
 
                 return RedirectToAction(nameof(List));
@@ -124,6 +140,7 @@ namespace Team_Todo_Management.Controllers
             }
 
             var userRole = await _userManager.GetRolesAsync(user);
+
             UserUpdateModel updateModel = new UserUpdateModel
             {
                 UserId = user.Id,
@@ -151,6 +168,8 @@ namespace Team_Todo_Management.Controllers
             {
                 try
                 {
+                    ApplicationUser currentUser = await _userManager.GetUserAsync(User);
+
                     user.FirstName = updateModel.FirstName;
                     user.LastName = updateModel.LastName;
                     user.UserName = updateModel.Email;
@@ -161,6 +180,18 @@ namespace Team_Todo_Management.Controllers
 
                     await _userManager.RemoveFromRoleAsync(user, userRole[0]);
                     await _userManager.AddToRoleAsync(user, updateModel.RoleName);
+
+                    await _activityServices.TrackActivity(
+                        currentUser.FirstName,
+                        currentUser.LastName,
+                        currentUser.Email,
+                        ActivityTypeEnum.UpdateUser,
+                        $"{user.LastName} {user.FirstName} ({user.Email})",
+                        currentUser.Id,
+                        _context
+                    );
+
+                    await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -180,9 +211,11 @@ namespace Team_Todo_Management.Controllers
             }
 
             var userInTodos = await _context.Todos.FirstOrDefaultAsync(x => x.PersonInChargeId == user.Id);
+            ApplicationUser currentUser = await _userManager.GetUserAsync(User);
+
             if (userInTodos != null)
             {
-                TempData["Message"] = "User " +user.Email+ " has been already in use";
+                TempData["Message"] = "User " + user.Email + " has been already in use";
                 return RedirectToAction(nameof(List));
             }
 
@@ -193,7 +226,20 @@ namespace Team_Todo_Management.Controllers
                 return RedirectToAction(nameof(List));
             }
 
+            await _activityServices.TrackActivity(
+                currentUser.FirstName,
+                currentUser.LastName,
+                currentUser.Email,
+                ActivityTypeEnum.DeleteUser,
+                $"{user.LastName} {user.FirstName} ({user.Email})",
+                currentUser.Id,
+                _context
+            );
+
+            await _context.SaveChangesAsync();
+
             await _userManager.DeleteAsync(user);
+
             TempData["Message"] = "Delete user " + user.Email + " successfully";
             return RedirectToAction(nameof(List));
         }

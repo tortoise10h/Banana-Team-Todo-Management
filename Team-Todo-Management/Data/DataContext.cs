@@ -19,7 +19,7 @@ namespace Team_Todo_Management.Data
         public DbSet<Media> Medias { get; set; }
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Participant> Participants { get; set; }
-        public DbSet<Log> Logs { get; set; }
+        public DbSet<Activity> Activities { get; set; }
 
         protected readonly IConfiguration Configuration;
         private readonly IHttpContextAccessor _httpContextAccessor;

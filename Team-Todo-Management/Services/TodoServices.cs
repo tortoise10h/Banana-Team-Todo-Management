@@ -18,12 +18,18 @@ namespace Team_Todo_Management.Services
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly DataContext _context;
         private readonly IMapper _mapper;
+        private readonly IActivityServices _activityServices;
 
-        public TodoServices(UserManager<ApplicationUser> userManager, DataContext context, IMapper mapper)
+        public TodoServices(
+            UserManager<ApplicationUser> userManager,
+            DataContext context,
+            IMapper mapper,
+            IActivityServices activityServices)
         {
             _userManager = userManager;
             _context = context;
             _mapper = mapper;
+            _activityServices = activityServices;
         }
 
         public async Task Create(Todo todo, ApplicationUser currentUser)
@@ -32,7 +38,48 @@ namespace Team_Todo_Management.Services
             todo.PersonInChargeId = currentUser.Id;
 
             await _context.Todos.AddAsync(todo);
+
+            await _activityServices.TrackActivity(
+                currentUser.FirstName,
+                currentUser.LastName,
+                currentUser.Email,
+                ActivityTypeEnum.CreateTodo,
+                $"{todo.Name}",
+                currentUser.Id,
+                _context
+            );
+
             await _context.SaveChangesAsync();
+        }
+
+        public async Task UpdateTodo(
+            TodoInfoEditModel updatedInfo,
+            Todo oldTodo,
+            ApplicationUser currentUser,
+            DataContext ctx)
+        {
+            string oldName = oldTodo.Name;
+            oldTodo.Name = updatedInfo.Name;
+            oldTodo.StartDate = updatedInfo.StartDate;
+            oldTodo.EndDate = updatedInfo.EndDate;
+            oldTodo.PersonInChargeId = updatedInfo.PersonInChargeId;
+            oldTodo.Description = updatedInfo.Description;
+            oldTodo.Status = updatedInfo.Status;
+            oldTodo.Scope = updatedInfo.Scope;
+            // _mapper.Map<TodoInfoEditModel, Todo>(updatedInfo, oldTodo);
+            ctx.Todos.Update(oldTodo);
+
+            await _activityServices.TrackActivity(
+                currentUser.FirstName,
+                currentUser.LastName,
+                currentUser.Email,
+                ActivityTypeEnum.UpdateTodo,
+                $"{oldName}",
+                currentUser.Id,
+                ctx
+            );
+
+            await ctx.SaveChangesAsync();
         }
 
         public async Task<List<TodoViewModel>> GetInboxTodos(ApplicationUser currentUser)
@@ -51,9 +98,9 @@ namespace Team_Todo_Management.Services
         {
             DateTime startOfTheDay = DateTime.Today;
             DateTime tomorrow = DateTime.Today.AddDays(1);
-            
+
             var listOfTodo = await _context.Todos
-                .Where(x => x.PersonInChargeId == currentUser.Id && 
+                .Where(x => x.PersonInChargeId == currentUser.Id &&
                     x.StartDate >= startOfTheDay &&
                     x.StartDate < tomorrow)
                 .Include(x => x.PersonInCharge)
@@ -109,9 +156,14 @@ namespace Team_Todo_Management.Services
             }
 
             /** Create new participant for the todo */
+            string activityDescription = "";
             List<Participant> newParticipants = new List<Participant>();
             foreach (var userId in selectedUserIds)
             {
+                /** For activity description */
+                var user = usersToAdd.SingleOrDefault(x => x.Id == userId);
+                activityDescription += $"{user.LastName} {user.FirstName} ({user.Email}), ";
+
                 newParticipants.Add(
                     new Participant
                     {
@@ -120,7 +172,21 @@ namespace Team_Todo_Management.Services
                     });
             }
 
+
+            /** Remove the last 2 redundant characters after loop: comma (,) and space ( ) */
+            activityDescription = activityDescription.Substring(0, activityDescription.Length - 2);
+            activityDescription += $" to the task \"{todo.Name}\"";
+
             await _context.Participants.AddRangeAsync(newParticipants);
+            await _activityServices.TrackActivity(
+                currentUser.FirstName,
+                currentUser.LastName,
+                currentUser.Email,
+                ActivityTypeEnum.AddParticipantsToTodo,
+                activityDescription,
+                currentUser.Id,
+                _context
+            );
             await _context.SaveChangesAsync();
 
             return new AjaxResultViewModel(true, "");
@@ -134,6 +200,7 @@ namespace Team_Todo_Management.Services
             /** Make sure valid participant */
             var participant = await _context.Participants
                 .Include(x => x.Todo)
+                .Include(x => x.User)
                 .SingleOrDefaultAsync(x => x.UserId == participantUserId &&
                     x.TodoId == todoId);
 
@@ -153,6 +220,19 @@ namespace Team_Todo_Management.Services
                 }
             }
 
+            string activityDescription = $"{participant.User.LastName} {participant.User.FirstName} ";
+            activityDescription += $"({participant.User.Email}) from the task ";
+            activityDescription += $"\"{participant.Todo.Name}\"";
+
+            await _activityServices.TrackActivity(
+                            currentUser.FirstName,
+                            currentUser.LastName,
+                            currentUser.Email,
+                            ActivityTypeEnum.RemoveAParticipantFromTodo,
+                            activityDescription,
+                            currentUser.Id,
+                            _context
+                        );
             _context.Participants.Remove(participant);
             await _context.SaveChangesAsync();
 
