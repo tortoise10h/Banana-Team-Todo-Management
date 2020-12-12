@@ -42,7 +42,7 @@ namespace Team_Todo_Management
                     options.SlidingExpiration = true;
                     options.LoginPath = "/Auth/Login/";
                     options.AccessDeniedPath = "/Auth/Forbidden/";
-                }); 
+                });
             services.Configure<IdentityOptions>(options =>
             {
                 options.Password.RequireDigit = false;
@@ -73,6 +73,7 @@ namespace Team_Todo_Management
             /** For Business Services */
             services.AddScoped<ITodoServices, TodoServices>();
             services.AddScoped<IUserServices, UserServices>();
+            services.AddScoped<IActivityServices, ActivityServices>();
 
         }
 

@@ -8,7 +8,7 @@ using Team_Todo_Management.ViewModels;
 
 namespace Team_Todo_Management.MapperProfile
 {
-    public class ViewModelAndModel: Profile
+    public class ViewModelAndModel : Profile
     {
         public ViewModelAndModel()
         {
@@ -18,7 +18,7 @@ namespace Team_Todo_Management.MapperProfile
 
             CreateMap<Todo, TodoViewModel>();
             CreateMap<TodoViewModel, Todo>();
-            
+
             CreateMap<Todo, TodoInfoEditModel>();
             CreateMap<TodoInfoEditModel, Todo>();
 
@@ -31,6 +31,9 @@ namespace Team_Todo_Management.MapperProfile
 
             CreateMap<ApplicationUser, UserUpdateModel>();
             CreateMap<UserUpdateModel, ApplicationUser>();
+
+            /** Activity */
+            CreateMap<Activity, ActivityViewModel>();
         }
     }
 }

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Team_Todo_Management.Migrations
 {
-    public partial class FullEntitiesV1 : Migration
+    public partial class FirstMigrations : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -68,6 +68,35 @@ namespace Team_Todo_Management.Migrations
                         principalTable: "AspNetRoles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Activity",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CreatedAt = table.Column<DateTime>(nullable: false),
+                    CreatedById = table.Column<string>(nullable: true),
+                    LastModifiedAt = table.Column<DateTime>(nullable: false),
+                    LastModifiedById = table.Column<string>(nullable: true),
+                    IsDeleted = table.Column<bool>(nullable: false),
+                    FirstName = table.Column<string>(nullable: true),
+                    LastName = table.Column<string>(nullable: true),
+                    Email = table.Column<string>(nullable: true),
+                    Description = table.Column<string>(nullable: true),
+                    UserId = table.Column<string>(nullable: true),
+                    ActivityType = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Activity", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Activity_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -156,32 +185,6 @@ namespace Team_Todo_Management.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Log",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    CreatedAt = table.Column<DateTime>(nullable: false),
-                    CreatedById = table.Column<string>(nullable: true),
-                    LastModifiedAt = table.Column<DateTime>(nullable: false),
-                    LastModifiedById = table.Column<string>(nullable: true),
-                    IsDeleted = table.Column<bool>(nullable: false),
-                    UserFullName = table.Column<string>(nullable: true),
-                    UserId = table.Column<string>(nullable: true),
-                    LogType = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Log", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Log_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Todo",
                 columns: table => new
                 {
@@ -193,17 +196,19 @@ namespace Team_Todo_Management.Migrations
                     LastModifiedById = table.Column<string>(nullable: true),
                     IsDeleted = table.Column<bool>(nullable: false),
                     Name = table.Column<string>(nullable: true),
-                    StartDate = table.Column<DateTime>(nullable: false),
-                    EndDate = table.Column<DateTime>(nullable: false),
+                    StartDate = table.Column<DateTime>(nullable: true),
+                    EndDate = table.Column<DateTime>(nullable: true),
                     Status = table.Column<int>(nullable: false),
-                    Scope = table.Column<int>(nullable: false)
+                    Scope = table.Column<int>(nullable: false),
+                    Description = table.Column<string>(nullable: true),
+                    PersonInChargeId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Todo", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Todo_AspNetUsers_CreatedById",
-                        column: x => x.CreatedById,
+                        name: "FK_Todo_AspNetUsers_PersonInChargeId",
+                        column: x => x.PersonInChargeId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -303,8 +308,9 @@ namespace Team_Todo_Management.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "c2d4b743-d9da-443c-9f5a-c2682750c805", "762f7eb7-9363-48c5-84d8-b98c32ad4cba", "Boss", "boss" },
-                    { "b979036b-d165-4bea-b6b6-16b22a3f54dd", "d34e0c21-ae47-4939-82cc-e5978674f0a8", "Staff", "staff" }
+                    { "c2d4b743-d9da-443c-9f5a-c2682750c805", "6d9985b5-a091-40f9-9a30-5d4147343456", "Boss", "boss" },
+                    { "b979036b-d165-4bea-b6b6-16b22a3f54dd", "7c12fc1e-848d-4c8c-b5f3-cb021956be1f", "Staff", "staff" },
+                    { "04df88e4-3cee-11eb-adc1-0242ac120002", "7c84ba73-b3e4-44c1-a218-cbd300d923db", "Admin", "admin" }
                 });
 
             migrationBuilder.InsertData(
@@ -312,18 +318,17 @@ namespace Team_Todo_Management.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "CreatedAt", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { "e9012ef1-cd3c-49a1-8726-7f8f8aba9f98", 0, "fd0aa69c-511d-45b2-8b96-c1679c8fd06e", new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "lilsuperadmin@gmail.com", true, "Super Admin", "Lil", false, null, "LILSUPERADMIN@GMAIL.COM", "LILSUPERADMIN@GMAIL.COM", "AQAAAAEAACcQAAAAEBTTIuDw1Ko70SLW2oA0oVB5G+qvrqd5u08U5oR5x25CvDAwZu1IZtUd7XSJjINAwA==", "0901234573", false, "", false, "lilsuperadmin@gmail.com" },
-                    { "3b488e0f-eb92-4994-a555-cbe4ecdf3672", 0, "fdfab85e-160b-48f4-b3b3-de195194cae5", new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "yungadmin@gmail.com", true, "Admin", "Yung", false, null, "YUNGADMIN@GMAIL.COM", "YUNGADMIN@GMAIL.COM", "AQAAAAEAACcQAAAAEKiFmod83gZTmoI3xnC2diJHW0idDBm4wqtfzIjTRRxUG0gnqePvMOdSwgsfJCR0Zw==", "0901234576", false, "", false, "yungadmin@gmail.com" },
-                    { "52999f6b-a605-45b0-b98f-b8880fc46027", 0, "48e061a4-c7b6-4dda-8cf5-980c0af601a5", new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "trankieuloan@gmail.com", true, "Loan", "Trần Kiều", false, null, "TRANKIEULOAN@GMAIL.COM", "TRANKIEULOAN@GMAIL.COM", "AQAAAAEAACcQAAAAEHAI6s3HXyzULc7UzIIDsqD2PnTVTkizu07d1b/SDUsdjznpVADCsdriBL57Ms+WYA==", "0901234581", false, "", false, "trankieuloan@gmail.com" },
-                    { "39b465e2-c398-494f-bb62-d1eb02aa5471", 0, "a7cc0d1e-9813-4733-9b97-32323bc4ca1b", new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "phamvinhson@gmail.com", true, "Sơn", "Phạm Vĩnh", false, null, "PHAMVINHSON@GMAIL.COM", "PHAMVINHSON@GMAIL.COM", "AQAAAAEAACcQAAAAEDfBkYa8v/k5Wl5LyAF4t6YAjehPcYNHB1SQ5OeMJDpL74cRUcXuOvtQc9t6Uw5Mcw==", "0901234586", false, "", false, "phamvinhson@gmail.com" },
-                    { "cc2a0eb3-8736-441d-9130-5b421db3ac0e", 0, "b5b3b1f4-034b-4b18-a4dc-520592d617d8", new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "caobaquat@gmail.com", true, "Quát", "Cao Bá", false, null, "CAOBAQUAT@GMAIL.COM", "CAOBAQUAT@GMAIL.COM", "AQAAAAEAACcQAAAAEGvO+zRbfeSJqpaB3nzMHAdtHWCorr1ufZOPgv6/1JwFYfrB/0DZW7Mfimf1DrbnQw==", "0901234570", false, "", false, "caobaquat@gmail.com" },
-                    { "423e498c-fc67-4853-ac4f-f3cd91d32e87", 0, "a9516c9d-abd7-4fa6-9936-86aed2c5dcad", new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "huynhtranthanh@gmail.com", true, "Thành", "Huỳnh Trấn", false, null, "HUYNHTRANTHANH@GMAIL.COM", "HUYNHTRANTHANH@GMAIL.COM", "AQAAAAEAACcQAAAAEKU6du2l5YPK7cb7nVD/uPbI8USuFg/AAUNwNq4eKeJ1YUhBhbHXmn3N/PjlLD8Vyw==", "0901234571", false, "", false, "huynhtranthanh@gmail.com" },
-                    { "78c5228f-f600-4545-abcd-f4cc21d18e4c", 0, "86fa1925-578c-47e5-b358-513ee3fee5a1", new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "nguyenthanhlong@gmail.com", true, "Long", "Nguyễn Thành", false, null, "NGUYENTHANHLONG@GMAIL.COM", "NGUYENTHANHLONG@GMAIL.COM", "AQAAAAEAACcQAAAAEHeBmDKe4Y8QAlckvTNBvbJ0TQgkcFnlTReHeiRcqj7dd4n85P1WsNTUCnNdHh/PTg==", "0901234568", false, "", false, "nguyenthanhlong@gmail.com" },
-                    { "6665ddaa-72f9-4f90-a6b1-43eb68dea610", 0, "1b7dea1e-05cf-4a2f-999b-f1c33abca12e", new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "hoxuanhuong@gmail.com", true, "Hương", "Hồ Xuân", false, null, "HOXUANHUONG@GMAIL.COM", "HOXUANHUONG@GMAIL.COM", "AQAAAAEAACcQAAAAEFe2rfOIACivnYLQRqI6DZNU4xGahvQaaMfsdZeOdxI7R6tx2ffrjw7rnlU4N4WkXg==", "0901234583", false, "", false, "hoxuanhuong@gmail.com" },
-                    { "6b30cb05-12f7-46c2-b95f-8d783c1f9eb1", 0, "2e3d2778-5fc8-4d6e-92f9-d3902d26e681", new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "nguyenhue@gmail.com", true, "Huệ", "Nguyễn", false, null, "NGUYENHUE@GMAIL.COM", "NGUYENHUE@GMAIL.COM", "AQAAAAEAACcQAAAAEEA7xE/XoZlKQL8Bagfl7dHdAPFrU+9Enoqi07cT9eR1Id4BTyER9na4oEKomeu9uw==", "0901234564", false, "", false, "nguyenhue@gmail.com" },
-                    { "308da0db-e863-4814-8930-de3540e5406d", 0, "23e084ba-2a33-4a92-b44f-028d8925e0da", new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "phungthanhdo@gmail.com", true, "Độ", "Phùng Thanh", false, null, "PHUNGTHANHDO@GMAIL.COM", "PHUNGTHANHDO@GMAIL.COM", "AQAAAAEAACcQAAAAEC8vv+7m+b+tMz/sF/t9OYt0CZkONDdiODQoNomdrkfjyqS7JIJr1+ABMk/fbkIx9Q==", "0901234572", false, "", false, "phungthanhdo@gmail.com" },
-                    { "927e4f6a-62ed-4e13-b002-7e133eb47bbc", 0, "293f5287-bf40-437f-b7d9-b973faca8eac", new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "phantantrung@gmail.com", true, "Trung", "Phan Tấn", false, null, "PHANTANTRUNG@GMAIL.COM", "PHANTANTRUNG@GMAIL.COM", "AQAAAAEAACcQAAAAEPXc5NLIluD7/5Vim8udQGylOafYeZTK+zr6GSY86uev3uhP4rubrXqZ3+3tHUozdg==", "0901234561", false, "", false, "phantantrung@gmail.com" },
-                    { "e7610feb-110c-47d0-9a88-1bfdc12742a4", 0, "ef6f75c2-4989-469a-83c0-feed58f037c8", new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "truongtuantu@gmail.com", true, "Tú", "Trương Tuấn", false, null, "TRUONGTUANTU@GMAIL.COM", "TRUONGTUANTU@GMAIL.COM", "AQAAAAEAACcQAAAAEFnCBil7CxtJZTMY3wuTomEwrFrD3vgpTRnXFRpL5Jv6BzUxFjX8dYGPFfEwElqwYg==", "0901234578", false, "", false, "truongtuantu@gmail.com" }
+                    { "3b488e0f-eb92-4994-a555-cbe4ecdf3672", 0, "14dbb7cc-2327-4140-89b2-ed40ca72d571", new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "yungadmin@gmail.com", true, "Admin", "Yung", false, null, "YUNGADMIN@GMAIL.COM", "YUNGADMIN@GMAIL.COM", "AQAAAAEAACcQAAAAEFH2iyAH65yT8PgZfmoRhnecP1TqXctisEetfCUEsVWROQO0oQLI70TDjK5VJdIg4w==", "0901234576", false, "", false, "yungadmin@gmail.com" },
+                    { "52999f6b-a605-45b0-b98f-b8880fc46027", 0, "6da566a2-a40e-4885-a321-f17f47fb1a13", new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "trankieuloan@gmail.com", true, "Loan", "Trần Kiều", false, null, "TRANKIEULOAN@GMAIL.COM", "TRANKIEULOAN@GMAIL.COM", "AQAAAAEAACcQAAAAELkvxbj6wMuzJXOf6jsArD0clWEvGeOqUKGO9/fccrXvw1VzSnJYEXaeQiVQW73AbQ==", "0901234581", false, "", false, "trankieuloan@gmail.com" },
+                    { "39b465e2-c398-494f-bb62-d1eb02aa5471", 0, "9ec43dc8-6f87-4baf-9b57-7043cf1ead69", new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "phamvinhson@gmail.com", true, "Sơn", "Phạm Vĩnh", false, null, "PHAMVINHSON@GMAIL.COM", "PHAMVINHSON@GMAIL.COM", "AQAAAAEAACcQAAAAEPbuRhaVNLX3UGXlijxrTe+KaHUh+HEz8D428PbaNFDZLhKJeDWlvrwROkssdrVIvw==", "0901234586", false, "", false, "phamvinhson@gmail.com" },
+                    { "cc2a0eb3-8736-441d-9130-5b421db3ac0e", 0, "f3ea4780-ea32-4b64-a883-84f26fd121ef", new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "caobaquat@gmail.com", true, "Quát", "Cao Bá", false, null, "CAOBAQUAT@GMAIL.COM", "CAOBAQUAT@GMAIL.COM", "AQAAAAEAACcQAAAAEB2PzoZ0crOC9zE8QKqb3uySzGxgu4I/ofilvCuNrjidHt/M82LwUp5VKvVQJ1zCLA==", "0901234570", false, "", false, "caobaquat@gmail.com" },
+                    { "423e498c-fc67-4853-ac4f-f3cd91d32e87", 0, "5dc8b20c-4bbb-421d-bac3-fe934a7c1c25", new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "huynhtranthanh@gmail.com", true, "Thành", "Huỳnh Trấn", false, null, "HUYNHTRANTHANH@GMAIL.COM", "HUYNHTRANTHANH@GMAIL.COM", "AQAAAAEAACcQAAAAEFqRcbov4iK+o6607seTQzgzueG+TgYam8mgNQld0AOkTfehq+IQPZr45r1OWkQ+FA==", "0901234571", false, "", false, "huynhtranthanh@gmail.com" },
+                    { "78c5228f-f600-4545-abcd-f4cc21d18e4c", 0, "710e0a06-5e7a-4d10-a2e2-a68e9ee3e3e6", new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "nguyenthanhlong@gmail.com", true, "Long", "Nguyễn Thành", false, null, "NGUYENTHANHLONG@GMAIL.COM", "NGUYENTHANHLONG@GMAIL.COM", "AQAAAAEAACcQAAAAEMgytALmcOT/+Dx1OOj3DrDkX05D7kDP+TcQjyB3R+kR1La/GSfb5krNRaPHIJeHxQ==", "0901234568", false, "", false, "nguyenthanhlong@gmail.com" },
+                    { "6665ddaa-72f9-4f90-a6b1-43eb68dea610", 0, "649dbdd0-bbc0-4fb2-a548-620423922f34", new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "hoxuanhuong@gmail.com", true, "Hương", "Hồ Xuân", false, null, "HOXUANHUONG@GMAIL.COM", "HOXUANHUONG@GMAIL.COM", "AQAAAAEAACcQAAAAEA4iqFJE0pjIQkgpz9YMZkujnsTqmaR9Pt4CRBXyQrJZKFopks/Up3e8LpNsk4yzYQ==", "0901234583", false, "", false, "hoxuanhuong@gmail.com" },
+                    { "6b30cb05-12f7-46c2-b95f-8d783c1f9eb1", 0, "d724783a-546e-4cbc-9b0a-64f447cf00b1", new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "nguyenhue@gmail.com", true, "Huệ", "Nguyễn", false, null, "NGUYENHUE@GMAIL.COM", "NGUYENHUE@GMAIL.COM", "AQAAAAEAACcQAAAAEJRFYjGFjokLfgpj90j7J91LdK+zJDrqgqvCuVwDsTJmsZuk3WknZ9RNanMOxEahTQ==", "0901234564", false, "", false, "nguyenhue@gmail.com" },
+                    { "308da0db-e863-4814-8930-de3540e5406d", 0, "49c7caa3-056a-4a1a-9f32-1f54bcd919f4", new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "phungthanhdo@gmail.com", true, "Độ", "Phùng Thanh", false, null, "PHUNGTHANHDO@GMAIL.COM", "PHUNGTHANHDO@GMAIL.COM", "AQAAAAEAACcQAAAAEJcWTpv9FrVVzaNGR/IQQc1YMQlDJ4pp127BvzLQQ/QUmeucfSACWED8IvEnkyxQwg==", "0901234572", false, "", false, "phungthanhdo@gmail.com" },
+                    { "927e4f6a-62ed-4e13-b002-7e133eb47bbc", 0, "15472dea-e6eb-4dea-a8c9-36d58f4efef5", new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "phantantrung@gmail.com", true, "Trung", "Phan Tấn", false, null, "PHANTANTRUNG@GMAIL.COM", "PHANTANTRUNG@GMAIL.COM", "AQAAAAEAACcQAAAAEEWN/9t/K4ET3s9F9LcTXqVsjQCYXm6fL8n1TsNDwiUaUQABrJZR9YD3f7ieiIgFzg==", "0901234561", false, "", false, "phantantrung@gmail.com" },
+                    { "e7610feb-110c-47d0-9a88-1bfdc12742a4", 0, "2aa1f3bf-b016-4953-ad3f-855a38a0b731", new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "truongtuantu@gmail.com", true, "Tú", "Trương Tuấn", false, null, "TRUONGTUANTU@GMAIL.COM", "TRUONGTUANTU@GMAIL.COM", "AQAAAAEAACcQAAAAEBP+oDoDO++OLQa6PIRWeynFnhb+ayu7cNk0f7Rl3ofi5YetMoDk0Xcs2VOtI8FS5g==", "0901234578", false, "", false, "truongtuantu@gmail.com" }
                 });
 
             migrationBuilder.InsertData(
@@ -331,8 +336,7 @@ namespace Team_Todo_Management.Migrations
                 columns: new[] { "UserId", "RoleId" },
                 values: new object[,]
                 {
-                    { "e9012ef1-cd3c-49a1-8726-7f8f8aba9f98", "c2d4b743-d9da-443c-9f5a-c2682750c805" },
-                    { "3b488e0f-eb92-4994-a555-cbe4ecdf3672", "c2d4b743-d9da-443c-9f5a-c2682750c805" },
+                    { "3b488e0f-eb92-4994-a555-cbe4ecdf3672", "04df88e4-3cee-11eb-adc1-0242ac120002" },
                     { "52999f6b-a605-45b0-b98f-b8880fc46027", "c2d4b743-d9da-443c-9f5a-c2682750c805" },
                     { "39b465e2-c398-494f-bb62-d1eb02aa5471", "c2d4b743-d9da-443c-9f5a-c2682750c805" },
                     { "cc2a0eb3-8736-441d-9130-5b421db3ac0e", "b979036b-d165-4bea-b6b6-16b22a3f54dd" },
@@ -344,6 +348,11 @@ namespace Team_Todo_Management.Migrations
                     { "927e4f6a-62ed-4e13-b002-7e133eb47bbc", "b979036b-d165-4bea-b6b6-16b22a3f54dd" },
                     { "e7610feb-110c-47d0-9a88-1bfdc12742a4", "b979036b-d165-4bea-b6b6-16b22a3f54dd" }
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Activity_UserId",
+                table: "Activity",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -395,11 +404,6 @@ namespace Team_Todo_Management.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Log_UserId",
-                table: "Log",
-                column: "UserId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Media_TodoId",
                 table: "Media",
                 column: "TodoId");
@@ -415,13 +419,16 @@ namespace Team_Todo_Management.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Todo_CreatedById",
+                name: "IX_Todo_PersonInChargeId",
                 table: "Todo",
-                column: "CreatedById");
+                column: "PersonInChargeId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "Activity");
+
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 
@@ -439,9 +446,6 @@ namespace Team_Todo_Management.Migrations
 
             migrationBuilder.DropTable(
                 name: "Comment");
-
-            migrationBuilder.DropTable(
-                name: "Log");
 
             migrationBuilder.DropTable(
                 name: "Media");
