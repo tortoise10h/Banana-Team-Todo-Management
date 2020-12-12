@@ -155,23 +155,8 @@ namespace Team_Todo_Management.Controllers
 
             if (ModelState.IsValid)
             {
-                try
-                {
-                    _mapper.Map<TodoInfoEditModel, Todo>(updateModel.TodoInfo, todo);
-                    _context.Todos.Update(todo);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!TodoExists(todo.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
+                ApplicationUser currentUser = await _userManager.GetUserAsync(User);
+                await _todoServices.UpdateTodo(updateModel.TodoInfo, todo, currentUser, _context);
                 return RedirectToAction(nameof(Inbox));
             }
 
@@ -200,7 +185,7 @@ namespace Team_Todo_Management.Controllers
                 .SingleOrDefaultAsync(x => x.Id == id);
             if (todo == null)
             {
-                return NotFound(); 
+                return NotFound();
             }
 
             if (ModelState.IsValid)

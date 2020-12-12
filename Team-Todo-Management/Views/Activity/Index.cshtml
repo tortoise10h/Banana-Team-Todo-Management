@@ -1,0 +1,156 @@
+﻿@model ActivityListViewModel
+
+@{
+
+    ViewData["Title"] = "Activity List";
+}
+
+<div class="page-title-box border-bottom">
+    <h4 class="page-title">
+        All Users <a class="btn btn-success btn-sm ml-3" asp-controller="User" asp-action="Create">Add New User</a>
+    </h4>
+</div>
+
+@if (Model.Activites.Any())
+{
+    <table class="table table-bordered table-striped" style="width:100%">
+        <thead>
+            <tr>
+                <th>
+                    Detail
+                </th>
+                <th>
+                    Type
+                </th>
+                <th>
+                    At a time
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var activity in Model.Activites)
+            {
+                <tr>
+                    @switch (activity.ActivityType)
+                    {
+                        case ActivityTypeEnum.CreateTodo:
+                            {
+                                <td width="60%">
+                                    <strong>@activity.LastName @activity.FirstName</strong>
+                                    (@activity.Email) created a new task name
+                                    "@activity.Description"
+                                    at @activity.CreatedAt.ToLocalTime().ToString("dd/MM/yyyy HH:mm:ss")
+                                </td>
+                                <td width="20%">Create a new task</td>
+                                break;
+                            }
+                        case ActivityTypeEnum.UpdateTodo:
+                            {
+                                <td width="60%">
+                                    <strong>@activity.LastName @activity.FirstName</strong>
+                                    (@activity.Email) update a task name
+                                    "@activity.Description"
+                                    at @activity.CreatedAt.ToLocalTime().ToString("dd/MM/yyyy HH:mm:ss")
+                                </td>
+                                <td width="20%">Update task</td>
+                                break;
+                            }
+                        case ActivityTypeEnum.AddParticipantsToTodo:
+                            {
+                                <td width="60%">
+                                    <strong>@activity.LastName @activity.FirstName</strong>
+                                    (@activity.Email) added
+                                    @activity.Description
+                                    at @activity.CreatedAt.ToLocalTime().ToString("dd/MM/yyyy HH:mm:ss")
+                                </td>
+                                <td width="20%">Add new participants</td>
+                                break;
+                            }
+                        case ActivityTypeEnum.RemoveAParticipantFromTodo:
+                            {
+                                <td width="60%">
+                                    <strong>@activity.LastName @activity.FirstName</strong>
+                                    (@activity.Email) removed
+                                    @activity.Description
+                                    at @activity.CreatedAt.ToLocalTime().ToString("dd/MM/yyyy HH:mm:ss")
+                                </td>
+                                <td width="20%">Remove a participant</td>
+                                break;
+                            }
+                        case ActivityTypeEnum.CreateUser:
+                            {
+                                <td width="60%">
+                                    <strong>@activity.LastName @activity.FirstName</strong>
+                                    (@activity.Email) created a new user
+                                    @activity.Description
+                                    at @activity.CreatedAt.ToLocalTime().ToString("dd/MM/yyyy HH:mm:ss")
+                                </td>
+                                <td width="20%">Create new user</td>
+                                break;
+                            }
+                        case ActivityTypeEnum.UpdateUser:
+                            {
+                                <td width="60%">
+                                    <strong>@activity.LastName @activity.FirstName</strong>
+                                    (@activity.Email) updated information of a user
+                                    @activity.Description
+                                    at @activity.CreatedAt.ToLocalTime().ToString("dd/MM/yyyy HH:mm:ss")
+                                </td>
+                                <td width="20%">Update user</td>
+                                break;
+                            }
+                        case ActivityTypeEnum.DeleteUser:
+                            {
+                                <td width="60%">
+                                    <strong>@activity.LastName @activity.FirstName</strong>
+                                    (@activity.Email) deleted the user
+                                    @activity.Description
+                                    at @activity.CreatedAt.ToLocalTime().ToString("dd/MM/yyyy HH:mm:ss")
+                                </td>
+                                <td width="20%">Delete user</td>
+                                break;
+                            }
+                    }
+                    <td width="20%">@activity.CreatedAt.ToLocalTime().ToString("dd/MM/yyyy HH:mm:ss")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <nav class="float-right" aria-label="Page navigation example">
+        <ul class="pagination">
+            <li class="page-item">
+                <a class="page-link" asp-action="Index" asp-controller="Activity" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            @for (int i = 1; i <= Model.TotalPage; i++)
+            {
+                <li class="page-item">
+                    <a asp-action="Index" asp-controller="Activity" asp-route-page="@i" class="page-link">
+                        @i
+                    </a>
+                </li>
+            }
+            <li class="page-item">
+                <a class="page-link" asp-action="Index" asp-controller="Activity" asp-route-page="@Model.TotalPage"
+                    aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+}
+else
+{
+    <h1>
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" class="bi bi-info-circle"
+            viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+            <path
+                d="M8.93 6.588l-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588z" />
+            <circle cx="8" cy="4.5" r="1" />
+        </svg>
+        No activities found
+    </h1>
+
+}

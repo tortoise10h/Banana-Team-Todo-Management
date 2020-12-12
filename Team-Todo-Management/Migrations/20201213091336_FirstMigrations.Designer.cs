@@ -10,8 +10,8 @@ using Team_Todo_Management.Data;
 namespace Team_Todo_Management.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20201206102402_AddFieldDescription")]
-    partial class AddFieldDescription
+    [Migration("20201213091336_FirstMigrations")]
+    partial class FirstMigrations
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -51,16 +51,23 @@ namespace Team_Todo_Management.Migrations
                         new
                         {
                             Id = "c2d4b743-d9da-443c-9f5a-c2682750c805",
-                            ConcurrencyStamp = "144e5d39-c2ed-4fe4-b51c-3ef607d6c480",
+                            ConcurrencyStamp = "6d9985b5-a091-40f9-9a30-5d4147343456",
                             Name = "Boss",
                             NormalizedName = "boss"
                         },
                         new
                         {
                             Id = "b979036b-d165-4bea-b6b6-16b22a3f54dd",
-                            ConcurrencyStamp = "f467c7eb-e2a7-46e1-9f39-8c3793042c1f",
+                            ConcurrencyStamp = "7c12fc1e-848d-4c8c-b5f3-cb021956be1f",
                             Name = "Staff",
                             NormalizedName = "staff"
+                        },
+                        new
+                        {
+                            Id = "04df88e4-3cee-11eb-adc1-0242ac120002",
+                            ConcurrencyStamp = "7c84ba73-b3e4-44c1-a218-cbd300d923db",
+                            Name = "Admin",
+                            NormalizedName = "admin"
                         });
                 });
 
@@ -151,13 +158,8 @@ namespace Team_Todo_Management.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = "e9012ef1-cd3c-49a1-8726-7f8f8aba9f98",
-                            RoleId = "c2d4b743-d9da-443c-9f5a-c2682750c805"
-                        },
-                        new
-                        {
                             UserId = "3b488e0f-eb92-4994-a555-cbe4ecdf3672",
-                            RoleId = "c2d4b743-d9da-443c-9f5a-c2682750c805"
+                            RoleId = "04df88e4-3cee-11eb-adc1-0242ac120002"
                         },
                         new
                         {
@@ -228,6 +230,53 @@ namespace Team_Todo_Management.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
+                });
+
+            modelBuilder.Entity("Team_Todo_Management.Models.Activity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("ActivityType")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedById")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FirstName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("LastModifiedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("LastModifiedById")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Activity");
                 });
 
             modelBuilder.Entity("Team_Todo_Management.Models.ApplicationUser", b =>
@@ -306,29 +355,9 @@ namespace Team_Todo_Management.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "e9012ef1-cd3c-49a1-8726-7f8f8aba9f98",
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "824fcfef-5fae-4d77-9b49-cf0bcb50c8a6",
-                            CreatedAt = new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "lilsuperadmin@gmail.com",
-                            EmailConfirmed = true,
-                            FirstName = "Super Admin",
-                            LastName = "Lil",
-                            LockoutEnabled = false,
-                            NormalizedEmail = "LILSUPERADMIN@GMAIL.COM",
-                            NormalizedUserName = "LILSUPERADMIN@GMAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEAnA7EMLjUrv0CDudJv3ABDlweprJxhnjqn5b1ZXobvuWMgdRG+rvpVOv4IKDSjVlA==",
-                            PhoneNumber = "0901234573",
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "",
-                            TwoFactorEnabled = false,
-                            UserName = "lilsuperadmin@gmail.com"
-                        },
-                        new
-                        {
                             Id = "3b488e0f-eb92-4994-a555-cbe4ecdf3672",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "d9fd4770-5704-4da1-a6fd-355d8133a977",
+                            ConcurrencyStamp = "14dbb7cc-2327-4140-89b2-ed40ca72d571",
                             CreatedAt = new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "yungadmin@gmail.com",
                             EmailConfirmed = true,
@@ -337,7 +366,7 @@ namespace Team_Todo_Management.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "YUNGADMIN@GMAIL.COM",
                             NormalizedUserName = "YUNGADMIN@GMAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEALdaFiNu2nYqE+RHbNWFHOADyOObaqZbwDpcxlz0kesAl++8QfjDxObTdv542YuHQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEFH2iyAH65yT8PgZfmoRhnecP1TqXctisEetfCUEsVWROQO0oQLI70TDjK5VJdIg4w==",
                             PhoneNumber = "0901234576",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
@@ -348,7 +377,7 @@ namespace Team_Todo_Management.Migrations
                         {
                             Id = "52999f6b-a605-45b0-b98f-b8880fc46027",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "7cd52a91-0aed-4710-9a01-32d1e0a611bc",
+                            ConcurrencyStamp = "6da566a2-a40e-4885-a321-f17f47fb1a13",
                             CreatedAt = new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "trankieuloan@gmail.com",
                             EmailConfirmed = true,
@@ -357,7 +386,7 @@ namespace Team_Todo_Management.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "TRANKIEULOAN@GMAIL.COM",
                             NormalizedUserName = "TRANKIEULOAN@GMAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEGKfxVWl9WlOs1DoBGxQRI0wxVSSZxi1A+xC5fH14xN3yAKVVYZJliboJdo542PQfA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAELkvxbj6wMuzJXOf6jsArD0clWEvGeOqUKGO9/fccrXvw1VzSnJYEXaeQiVQW73AbQ==",
                             PhoneNumber = "0901234581",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
@@ -368,7 +397,7 @@ namespace Team_Todo_Management.Migrations
                         {
                             Id = "39b465e2-c398-494f-bb62-d1eb02aa5471",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "f4e18f44-54a0-4f4a-9870-389bc348a1fa",
+                            ConcurrencyStamp = "9ec43dc8-6f87-4baf-9b57-7043cf1ead69",
                             CreatedAt = new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "phamvinhson@gmail.com",
                             EmailConfirmed = true,
@@ -377,7 +406,7 @@ namespace Team_Todo_Management.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "PHAMVINHSON@GMAIL.COM",
                             NormalizedUserName = "PHAMVINHSON@GMAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAELt3RyPS+LLSpmnxV2StKKvZExxuVGeNeziKSsbX8MGGkn+JECm0l1HPWo481h9gFg==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEPbuRhaVNLX3UGXlijxrTe+KaHUh+HEz8D428PbaNFDZLhKJeDWlvrwROkssdrVIvw==",
                             PhoneNumber = "0901234586",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
@@ -388,7 +417,7 @@ namespace Team_Todo_Management.Migrations
                         {
                             Id = "cc2a0eb3-8736-441d-9130-5b421db3ac0e",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "424c20fa-30d5-4c0a-8d24-519246c056b8",
+                            ConcurrencyStamp = "f3ea4780-ea32-4b64-a883-84f26fd121ef",
                             CreatedAt = new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "caobaquat@gmail.com",
                             EmailConfirmed = true,
@@ -397,7 +426,7 @@ namespace Team_Todo_Management.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "CAOBAQUAT@GMAIL.COM",
                             NormalizedUserName = "CAOBAQUAT@GMAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEDQ+5HYBsmgp8FuXUsiBdKyMmYHcYEwXVCqSbMqn5AyFD9qW8CSjwa+S3tfg0IS8xA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEB2PzoZ0crOC9zE8QKqb3uySzGxgu4I/ofilvCuNrjidHt/M82LwUp5VKvVQJ1zCLA==",
                             PhoneNumber = "0901234570",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
@@ -408,7 +437,7 @@ namespace Team_Todo_Management.Migrations
                         {
                             Id = "423e498c-fc67-4853-ac4f-f3cd91d32e87",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "0e993e41-17a8-43b5-8ebb-0dc5d05f258f",
+                            ConcurrencyStamp = "5dc8b20c-4bbb-421d-bac3-fe934a7c1c25",
                             CreatedAt = new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "huynhtranthanh@gmail.com",
                             EmailConfirmed = true,
@@ -417,7 +446,7 @@ namespace Team_Todo_Management.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "HUYNHTRANTHANH@GMAIL.COM",
                             NormalizedUserName = "HUYNHTRANTHANH@GMAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEL7jRDL7lmkN5w5LdeLIy+qBJrr+Ze45AChkoLa6+7SRs7egDgiN0ihMfA3pyLNhBw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEFqRcbov4iK+o6607seTQzgzueG+TgYam8mgNQld0AOkTfehq+IQPZr45r1OWkQ+FA==",
                             PhoneNumber = "0901234571",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
@@ -428,7 +457,7 @@ namespace Team_Todo_Management.Migrations
                         {
                             Id = "78c5228f-f600-4545-abcd-f4cc21d18e4c",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "3bcda830-74ef-4ba3-bf25-d23ae69ca130",
+                            ConcurrencyStamp = "710e0a06-5e7a-4d10-a2e2-a68e9ee3e3e6",
                             CreatedAt = new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "nguyenthanhlong@gmail.com",
                             EmailConfirmed = true,
@@ -437,7 +466,7 @@ namespace Team_Todo_Management.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "NGUYENTHANHLONG@GMAIL.COM",
                             NormalizedUserName = "NGUYENTHANHLONG@GMAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAENON5dceDrbQiX7COVlNML00qN7nBqw5YWK94CpJegzKu1eEsUe4qBuMTCqoQn7VcQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEMgytALmcOT/+Dx1OOj3DrDkX05D7kDP+TcQjyB3R+kR1La/GSfb5krNRaPHIJeHxQ==",
                             PhoneNumber = "0901234568",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
@@ -448,7 +477,7 @@ namespace Team_Todo_Management.Migrations
                         {
                             Id = "6665ddaa-72f9-4f90-a6b1-43eb68dea610",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "d16c8856-89ad-48a7-8298-ef5fa88d3759",
+                            ConcurrencyStamp = "649dbdd0-bbc0-4fb2-a548-620423922f34",
                             CreatedAt = new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "hoxuanhuong@gmail.com",
                             EmailConfirmed = true,
@@ -457,7 +486,7 @@ namespace Team_Todo_Management.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "HOXUANHUONG@GMAIL.COM",
                             NormalizedUserName = "HOXUANHUONG@GMAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEAjo+9QnMiMC3Aw0pkIXBS3shIfYMPrjPu1UP6jgdTcYeoD5IbC57UGRFM2jN6m1vg==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEA4iqFJE0pjIQkgpz9YMZkujnsTqmaR9Pt4CRBXyQrJZKFopks/Up3e8LpNsk4yzYQ==",
                             PhoneNumber = "0901234583",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
@@ -468,7 +497,7 @@ namespace Team_Todo_Management.Migrations
                         {
                             Id = "6b30cb05-12f7-46c2-b95f-8d783c1f9eb1",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "a6fea4fe-4e56-449a-b67c-b48234e40092",
+                            ConcurrencyStamp = "d724783a-546e-4cbc-9b0a-64f447cf00b1",
                             CreatedAt = new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "nguyenhue@gmail.com",
                             EmailConfirmed = true,
@@ -477,7 +506,7 @@ namespace Team_Todo_Management.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "NGUYENHUE@GMAIL.COM",
                             NormalizedUserName = "NGUYENHUE@GMAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEGqkJPdOqNZuNsnIIWkybmuAeTykysP+y5XUZqgiWf3ymZW41M4stZvuMg1JttSqMA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEJRFYjGFjokLfgpj90j7J91LdK+zJDrqgqvCuVwDsTJmsZuk3WknZ9RNanMOxEahTQ==",
                             PhoneNumber = "0901234564",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
@@ -488,7 +517,7 @@ namespace Team_Todo_Management.Migrations
                         {
                             Id = "308da0db-e863-4814-8930-de3540e5406d",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "1083030b-ca3c-4f2c-9fab-59c940ecc756",
+                            ConcurrencyStamp = "49c7caa3-056a-4a1a-9f32-1f54bcd919f4",
                             CreatedAt = new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "phungthanhdo@gmail.com",
                             EmailConfirmed = true,
@@ -497,7 +526,7 @@ namespace Team_Todo_Management.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "PHUNGTHANHDO@GMAIL.COM",
                             NormalizedUserName = "PHUNGTHANHDO@GMAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEOwbKuzq0RGSKKvI6vMb5AKV1WvG88Ugtc3TIUWxWNaP55OEkozdSlu6eBofBSZokw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEJcWTpv9FrVVzaNGR/IQQc1YMQlDJ4pp127BvzLQQ/QUmeucfSACWED8IvEnkyxQwg==",
                             PhoneNumber = "0901234572",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
@@ -508,7 +537,7 @@ namespace Team_Todo_Management.Migrations
                         {
                             Id = "927e4f6a-62ed-4e13-b002-7e133eb47bbc",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "b3b7ea1f-968e-4d84-8395-f6017c684601",
+                            ConcurrencyStamp = "15472dea-e6eb-4dea-a8c9-36d58f4efef5",
                             CreatedAt = new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "phantantrung@gmail.com",
                             EmailConfirmed = true,
@@ -517,7 +546,7 @@ namespace Team_Todo_Management.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "PHANTANTRUNG@GMAIL.COM",
                             NormalizedUserName = "PHANTANTRUNG@GMAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEDbnKt8xw6zRUTlZhLlDUhSaScrV1hinV2UTBE9oH9/rKgl1LOEiuUfUCIO/vaU5hA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEEWN/9t/K4ET3s9F9LcTXqVsjQCYXm6fL8n1TsNDwiUaUQABrJZR9YD3f7ieiIgFzg==",
                             PhoneNumber = "0901234561",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
@@ -528,7 +557,7 @@ namespace Team_Todo_Management.Migrations
                         {
                             Id = "e7610feb-110c-47d0-9a88-1bfdc12742a4",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "0aed2e0e-99ed-4fdf-bfce-1f0bbd7ad4aa",
+                            ConcurrencyStamp = "2aa1f3bf-b016-4953-ad3f-855a38a0b731",
                             CreatedAt = new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "truongtuantu@gmail.com",
                             EmailConfirmed = true,
@@ -537,7 +566,7 @@ namespace Team_Todo_Management.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "TRUONGTUANTU@GMAIL.COM",
                             NormalizedUserName = "TRUONGTUANTU@GMAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEHXNNOLYWBKgJTUUfZM+mVRZOpxE7nHqtk6hJKDjTfwYJNiZnmeawk5ads1SqLX6uQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEBP+oDoDO++OLQa6PIRWeynFnhb+ayu7cNk0f7Rl3ofi5YetMoDk0Xcs2VOtI8FS5g==",
                             PhoneNumber = "0901234578",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
@@ -584,44 +613,6 @@ namespace Team_Todo_Management.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Comment");
-                });
-
-            modelBuilder.Entity("Team_Todo_Management.Models.Log", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("CreatedById")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime>("LastModifiedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("LastModifiedById")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("LogType")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserFullName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Log");
                 });
 
             modelBuilder.Entity("Team_Todo_Management.Models.Media", b =>
@@ -800,6 +791,13 @@ namespace Team_Todo_Management.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Team_Todo_Management.Models.Activity", b =>
+                {
+                    b.HasOne("Team_Todo_Management.Models.ApplicationUser", "User")
+                        .WithMany("Activities")
+                        .HasForeignKey("UserId");
+                });
+
             modelBuilder.Entity("Team_Todo_Management.Models.Comment", b =>
                 {
                     b.HasOne("Team_Todo_Management.Models.Todo", "Todo")
@@ -810,13 +808,6 @@ namespace Team_Todo_Management.Migrations
 
                     b.HasOne("Team_Todo_Management.Models.ApplicationUser", "User")
                         .WithMany()
-                        .HasForeignKey("UserId");
-                });
-
-            modelBuilder.Entity("Team_Todo_Management.Models.Log", b =>
-                {
-                    b.HasOne("Team_Todo_Management.Models.ApplicationUser", "User")
-                        .WithMany("Logs")
                         .HasForeignKey("UserId");
                 });
 
