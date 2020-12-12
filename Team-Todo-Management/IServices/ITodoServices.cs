@@ -19,5 +19,6 @@ namespace Team_Todo_Management.IServices
             ApplicationUser currentUser,
             int todoId,
             string participantUserId);
+        Task<List<TodoViewModel>> GetTodayTodos(ApplicationUser currentUser);
     }
 }

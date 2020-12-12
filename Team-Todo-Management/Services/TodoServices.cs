@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -38,6 +39,23 @@ namespace Team_Todo_Management.Services
         {
             var listOfTodo = await _context.Todos
                 .Where(x => x.PersonInChargeId == currentUser.Id)
+                .Include(x => x.PersonInCharge)
+                .OrderByDescending(x => x.CreatedAt)
+                .ToListAsync();
+            var todoViewModels = _mapper.Map<List<TodoViewModel>>(listOfTodo);
+
+            return todoViewModels;
+        }
+
+        public async Task<List<TodoViewModel>> GetTodayTodos(ApplicationUser currentUser)
+        {
+            DateTime startOfTheDay = DateTime.Today;
+            DateTime tomorrow = DateTime.Today.AddDays(1);
+            
+            var listOfTodo = await _context.Todos
+                .Where(x => x.PersonInChargeId == currentUser.Id && 
+                    x.StartDate >= startOfTheDay &&
+                    x.StartDate < tomorrow)
                 .Include(x => x.PersonInCharge)
                 .OrderByDescending(x => x.CreatedAt)
                 .ToListAsync();

@@ -1,17 +1,11 @@
 ﻿@model IEnumerable<TodoViewModel>
 
 @{
-    ViewData["Title"] = "Inbox";
+    ViewData["Title"] = "Today Tasks";
 }
 
 @section Scripts {
-    <script>
-        $('span[ title="New"]').addClass('badge-new-lighten');
-        $('span[ title="Processing"]').addClass('badge-proccesing-lighten');
-        $('span[ title="Done"]').addClass('badge-done-lighten');
-        $('span[ title="Cancelled"]').addClass('badge-cancelled-lighten');
-        $('span[ title="Overdue"]').addClass('badge-cancelled-lighten');
-    </script>
+    <script src="~/js/highlight-status-label-script.js" asp-append-version="true"></script>
 }
 
 @*@section CustomStyles
@@ -21,8 +15,9 @@
 
 <div class="page-title-box border-bottom">
     <h4 class="page-title">
-        Inbox <a class="btn btn-success btn-sm ml-3" asp-action="Create" asp-controller="Todo">Add New</a>
+        Today Tasks <a class="btn btn-success btn-sm ml-3" asp-action="Create" asp-controller="Todo">Add New</a>
     </h4>
+    <small>@DateTime.Now.ToShortDateString()</small>
 </div>
 
 
