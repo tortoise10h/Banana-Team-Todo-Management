@@ -16,7 +16,7 @@
 </div>
 
 
-<div class="container">
+<div class="container-fluid">
     @if (Model.Where(item => item.Status == TodoStatusEnum.New).Count() > 0)
     {
         <div class="mt-2">
@@ -46,7 +46,7 @@
                                             @item.Name
                                         </label>
                                         <select
-                                            class="change-task-status-box"
+                                            class="change-task-status-box form-control"
                                             style="width: 200px; height: 30px; padding: 0px 20px;"
                                             asp-for="@item.Status"
                                             class="form-control"
@@ -178,12 +178,12 @@
                             <!-- task -->
                             <div class="row justify-content-sm-between pb-2 mb-2 border-bottom">
                                 <div class="col-sm-5 mb-2 mb-sm-0">
-                                    <div class="custom-control custom-checkbox">
+                                    <div class="d-flex align-items-baseline">
                                         <label class="mr-3" for="@item.Id" asp-action="Edit" asp-controller="Todo" asp-route-id="@item.Id">
                                             @item.Name
                                         </label>
                                         <select
-                                            class="change-task-status-box"
+                                            class="change-task-status-box  form-control"
                                             style="width: 200px; height: 30px; padding: 0px 20px;"
                                             asp-for="@item.Status"
                                             class="form-control"
@@ -315,12 +315,12 @@
                             <!-- task -->
                             <div class="row justify-content-sm-between pb-2 mb-2 border-bottom">
                                 <div class="col-sm-5 mb-2 mb-sm-0">
-                                    <div class="custom-control custom-checkbox">
+                                    <div class="d-flex align-items-baseline">
                                         <label class="mr-3" for="@item.Id" asp-action="Edit" asp-controller="Todo" asp-route-id="@item.Id">
                                             @item.Name
                                         </label>
                                         <select
-                                            class="change-task-status-box"
+                                            class="change-task-status-box  form-control"
                                             style="width: 200px; height: 30px; padding: 0px 20px;"
                                             asp-for="@item.Status"
                                             class="form-control"
@@ -452,12 +452,12 @@
                             <!-- task -->
                             <div class="row justify-content-sm-between pb-2 mb-2 border-bottom">
                                 <div class="col-sm-5 mb-2 mb-sm-0">
-                                    <div class="custom-control custom-checkbox">
+                                    <div class="d-flex align-items-baseline">
                                         <label class="mr-3" for="@item.Id" asp-action="Edit" asp-controller="Todo" asp-route-id="@item.Id">
                                             @item.Name
                                         </label>
                                         <select
-                                            class="change-task-status-box"
+                                            class="change-task-status-box  form-control"
                                             style="width: 200px; height: 30px; padding: 0px 20px;"
                                             asp-for="@item.Status"
                                             class="form-control"
@@ -589,12 +589,12 @@
                             <!-- task -->
                             <div class="row justify-content-sm-between pb-2 mb-2 border-bottom">
                                 <div class="col-sm-5 mb-2 mb-sm-0">
-                                    <div class="custom-control custom-checkbox">
+                                    <div class="d-flex align-items-baseline">
                                         <label class="mr-3" for="@item.Id" asp-action="Edit" asp-controller="Todo" asp-route-id="@item.Id">
                                             @item.Name
                                         </label>
                                         <select
-                                            class="change-task-status-box"
+                                            class="change-task-status-box  form-control"
                                             style="width: 200px; height: 30px; padding: 0px 20px;"
                                             asp-for="@item.Status"
                                             class="form-control"
