@@ -60,13 +60,31 @@ namespace Team_Todo_Management.Controllers
             {
                 return NotFound();
             }
-            var todo = await _context.Todos.FindAsync(id);
+
+            var todo = await _context.Todos
+                .Include(x => x.PersonInCharge)
+                .Include(x => x.Participants)
+                .SingleOrDefaultAsync(x => x.Id == id);
             if (todo == null)
             {
                 return NotFound();
             }
 
-            return View(todo);
+            var users = await _userServices.GetAllUsers();
+            var userIdsInTodo = todo.Participants.Select(x => x.UserId);
+            var usersInTodo = users.Where(x => userIdsInTodo.Contains(x.Id));
+            var usersNotInTodo = users.Except(usersInTodo);
+
+            TodoUpdateModel viewModel = new TodoUpdateModel
+            {
+                TodoId = todo.Id,
+                TodoInfo = _mapper.Map<TodoInfoEditModel>(todo),
+                AllUsers = _mapper.Map<List<UserViewModel>>(users),
+                Participants = _mapper.Map<List<UserViewModel>>(usersInTodo),
+                UsersNotInTodo = _mapper.Map<List<UserViewModel>>(usersNotInTodo)
+            };
+
+            return View(viewModel);
         }
 
         [HttpGet]

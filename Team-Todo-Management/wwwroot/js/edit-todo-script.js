@@ -58,4 +58,3 @@ const removeAParticipantBtns = document.querySelectorAll('.remove-a-participant-
 for (let i = 0; i < removeAParticipantBtns.length; i++) {
     removeAParticipantBtns[i].addEventListener('click', removeAParticipantAction);
 }
-
