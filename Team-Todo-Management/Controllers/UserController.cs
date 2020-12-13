@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -13,6 +14,7 @@ using Team_Todo_Management.ViewModels;
 
 namespace Team_Todo_Management.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class UserController : Controller
     {
         private readonly DataContext _context;
@@ -58,7 +60,7 @@ namespace Team_Todo_Management.Controllers
                 item.Role = matchedUserRole.RoleName;
             }
 
-            return View(userViewModels);
+            return View(userViewModels.OrderBy(x => x.Role));
         }
 
         [HttpGet]
@@ -105,6 +107,95 @@ namespace Team_Todo_Management.Controllers
                 return RedirectToAction(nameof(List));
             }
             return View(createModel);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Edit(string id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var user = await _userManager.FindByIdAsync(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var userRole = await _userManager.GetRolesAsync(user);
+            UserUpdateModel updateModel = new UserUpdateModel
+            {
+                UserId = user.Id,
+                Email = user.Email,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                PhoneNumber = user.PhoneNumber,
+                RoleName = userRole[0]
+            };
+
+            return View(updateModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(string id, UserUpdateModel updateModel)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var userRole = await _userManager.GetRolesAsync(user);
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    user.FirstName = updateModel.FirstName;
+                    user.LastName = updateModel.LastName;
+                    user.UserName = updateModel.Email;
+                    user.NormalizedUserName = updateModel.Email.ToUpper();
+                    user.Email = updateModel.Email;
+                    user.NormalizedEmail = updateModel.Email.ToUpper();
+                    user.PhoneNumber = updateModel.PhoneNumber;
+
+                    await _userManager.RemoveFromRoleAsync(user, userRole[0]);
+                    await _userManager.AddToRoleAsync(user, updateModel.RoleName);
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    throw;
+                }
+                return RedirectToAction(nameof(List));
+            }
+            return View(updateModel);
+        }
+
+        public async Task<IActionResult> Delete(string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var userInTodos = await _context.Todos.FirstOrDefaultAsync(x => x.PersonInChargeId == user.Id);
+            if (userInTodos != null)
+            {
+                TempData["Message"] = "User " +user.Email+ " has been already in use";
+                return RedirectToAction(nameof(List));
+            }
+
+            var userInParticipants = await _context.Participants.FirstOrDefaultAsync(x => x.UserId == user.Id);
+            if (userInParticipants != null)
+            {
+                TempData["Message"] = "User " + user.Email + " has been already in use";
+                return RedirectToAction(nameof(List));
+            }
+
+            await _userManager.DeleteAsync(user);
+            TempData["Message"] = "Delete user " + user.Email + " successfully";
+            return RedirectToAction(nameof(List));
         }
     }
 }

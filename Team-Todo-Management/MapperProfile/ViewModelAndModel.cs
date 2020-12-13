@@ -28,6 +28,9 @@ namespace Team_Todo_Management.MapperProfile
 
             CreateMap<ApplicationUser, UserCreateModel>();
             CreateMap<UserCreateModel, ApplicationUser>();
+
+            CreateMap<ApplicationUser, UserUpdateModel>();
+            CreateMap<UserUpdateModel, ApplicationUser>();
         }
     }
 }

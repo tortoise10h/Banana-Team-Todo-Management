@@ -27,6 +27,7 @@ namespace Team_Todo_Management.Extensions
              |-----------------------------------| */
             string bossRoleId = "c2d4b743-d9da-443c-9f5a-c2682750c805";
             string staffRoleId = "b979036b-d165-4bea-b6b6-16b22a3f54dd";
+            string adminRoleId = "04df88e4-3cee-11eb-adc1-0242ac120002";
 
             string staffId1 = "cc2a0eb3-8736-441d-9130-5b421db3ac0e";
             string staffId2 = "423e498c-fc67-4853-ac4f-f3cd91d32e87";
@@ -55,27 +56,18 @@ namespace Team_Todo_Management.Extensions
                         Id = staffRoleId,
                         Name = "Staff",
                         NormalizedName = "staff"
+                    },
+                    new IdentityRole
+                    {
+                        Id = adminRoleId,
+                        Name = "Admin",
+                        NormalizedName = "admin"
                     }
                 );
 
             var hasher = new PasswordHasher<ApplicationUser>();
             modelBuilder.Entity<ApplicationUser>()
                 .HasData(
-                    new ApplicationUser
-                    {
-                        Id = bossId1,
-                        FirstName = "Super Admin",
-                        LastName = "Lil",
-                        UserName = "lilsuperadmin@gmail.com",
-                        NormalizedUserName = "lilsuperadmin@gmail.com".ToUpper(),
-                        Email = "lilsuperadmin@gmail.com",
-                        NormalizedEmail = "lilsuperadmin@gmail.com".ToUpper(),
-                        PhoneNumber = "0901234573",
-                        CreatedAt = new DateTime(2020, 1, 1),
-                        EmailConfirmed = true,
-                        PasswordHash = hasher.HashPassword(null, "12345678"),
-                        SecurityStamp = string.Empty
-                    },
                     new ApplicationUser
                     {
                         Id = bossId2,
@@ -247,12 +239,7 @@ namespace Team_Todo_Management.Extensions
                 .HasData(
                     new IdentityUserRole<string>
                     {
-                        RoleId = bossRoleId,
-                        UserId = bossId1
-                    },
-                    new IdentityUserRole<string>
-                    {
-                        RoleId = bossRoleId,
+                        RoleId = adminRoleId,
                         UserId = bossId2
                     },
                     new IdentityUserRole<string>
