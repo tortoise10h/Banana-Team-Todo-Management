@@ -21,6 +21,7 @@ namespace Team_Todo_Management.IServices
             int todoId,
             string participantUserId);
         Task<List<TodoViewModel>> GetTodayTodos(ApplicationUser currentUser);
+        Task<List<TodoViewModel>> GetWeekTodos(ApplicationUser currentUser);
         Task UpdateTodo(
             TodoInfoEditModel updatedInfo,
             Todo oldTodo,

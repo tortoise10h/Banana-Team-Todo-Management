@@ -80,7 +80,7 @@
                         </a>
                     </li>
                     <li class="side-nav-item">
-                        <a href="#" class="side-nav-link active">
+                        <a asp-action="WeekTasks" asp-controller="Todo" class="side-nav-link active">
                             <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-calendar2-week mr-2"
                                 fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                 <path fill-rule="evenodd"
@@ -109,18 +109,14 @@
                     {
                         <li class="side-nav-title side-nav-item">Manager</li>
                         <li class="side-nav-item">
-                            <ul class="side-nav-second-level" aria-expanded="false">
-                                <li>
-                                    <a asp-controller="User" asp-action="List">
-                                        <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-person-fill mr-2"
-                                            fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                            <path fill-rule="evenodd"
-                                                d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
-                                        </svg>
-                                        Manage Users
-                                    </a>
-                                </li>
-                            </ul>
+                            <a asp-controller="User" asp-action="List" class="side-nav-link active">
+                                <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-person-fill mr-2"
+                                    fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd"
+                                        d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
+                                </svg>
+                                Manage Users
+                            </a>
                         </li>
 
                     }
@@ -128,22 +124,18 @@
                     {
                         <li class="side-nav-title side-nav-item">Manager</li>
                         <li class="side-nav-item">
-                            <ul class="side-nav-second-level" aria-expanded="false">
-                                <li>
-                                    <a asp-controller="Activity" asp-action="Index">
-                                        <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-card-heading mr-2"
-                                            fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                            <path fill-rule="evenodd"
-                                                d="M14.5 3h-13a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5h13a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-13z" />
-                                            <path fill-rule="evenodd"
-                                                d="M3 8.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5z" />
-                                            <path
-                                                d="M3 5.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5v-1z" />
-                                        </svg>
-                                        Log
-                                    </a>
-                                </li>
-                            </ul>
+                            <a asp-controller="Activity" asp-action="Index" class="side-nav-link active">
+                                <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-card-heading mr-2"
+                                    fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd"
+                                        d="M14.5 3h-13a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5h13a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-13z" />
+                                    <path fill-rule="evenodd"
+                                        d="M3 8.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5z" />
+                                    <path
+                                        d="M3 5.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5v-1z" />
+                                </svg>
+                                Log
+                            </a>
                         </li>
                     }
                 </ul>
@@ -187,8 +179,13 @@
                                     </span>
                                     <span>
                                         <span class="account-user-name">@User.Identity.Name</span>
-                                        @if (User.IsInRole("Boss"))
+                                        @if (User.IsInRole("Admin"))
                                         {
+                                            <span class="account-position">
+                                                Admin
+                                            </span>
+                                        }
+                                        else if (User.IsInRole("Boss")){
                                             <span class="account-position">
                                                 Boss
                                             </span>
