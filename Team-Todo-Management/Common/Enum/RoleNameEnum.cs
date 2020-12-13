@@ -9,5 +9,6 @@ namespace Team_Todo_Management.Common.Enum
     {
         public static string Boss { get; } = "Boss";
         public static string Staff { get; } = "Staff";
+        public static string Admin { get; } = "Admin";
     }
 }
