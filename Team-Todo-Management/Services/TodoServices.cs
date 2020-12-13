@@ -111,6 +111,23 @@ namespace Team_Todo_Management.Services
             return todoViewModels;
         }
 
+        public async Task<List<TodoViewModel>> GetWeekTodos(ApplicationUser currentUser)
+        {
+            DateTime startOfTheDay = DateTime.Today;
+            DateTime sevenDaysLater = DateTime.Today.AddDays(7);
+
+            var listOfTodo = await _context.Todos
+                .Where(x => x.PersonInChargeId == currentUser.Id &&
+                    x.StartDate >= startOfTheDay &&
+                    x.StartDate < sevenDaysLater)
+                .Include(x => x.PersonInCharge)
+                .OrderByDescending(x => x.CreatedAt)
+                .ToListAsync();
+            var todoViewModels = _mapper.Map<List<TodoViewModel>>(listOfTodo);
+
+            return todoViewModels;
+        }
+
         public async Task<AjaxResultViewModel> AddParticipantsToTodo(
             ApplicationUser currentUser,
             List<string> selectedUserIds,
