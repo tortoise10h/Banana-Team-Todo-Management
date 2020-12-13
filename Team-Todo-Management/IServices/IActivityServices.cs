@@ -20,8 +20,6 @@ namespace Team_Todo_Management.IServices
             string userId,
             DataContext ctx);
 
-        Task<ActivityListViewModel> List(
-            int page,
-            int limit);
+        Task<PagedResultModel<ActivityViewModel>> List(ActivityQueryModel query);
     }
 }

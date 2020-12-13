@@ -1,17 +1,53 @@
-﻿@model ActivityListViewModel
+﻿@model PagedResultModel<ActivityViewModel>
 
 @{
 
     ViewData["Title"] = "Activity List";
 }
 
+<!-- Header of page --->
 <div class="page-title-box border-bottom">
     <h4 class="page-title">
-        All Users <a class="btn btn-success btn-sm ml-3" asp-controller="User" asp-action="Create">Add New User</a>
+        Activity Log
     </h4>
 </div>
 
-@if (Model.Activites.Any())
+<!-- Search zone --->
+<div class="float-right py-2">
+    <form class="form-inline" asp-action="Index" asp-controller="Activity" method="get">
+        <div class="form-group mx-2">
+            <label class="control-label"></label>
+            <input name="FirstName" class="form-control" placeholder="Search first name" value="@ViewBag.currentFirstNameParam" />
+        </div>
+        <div class="form-group mx-2">
+            <label class="control-label"></label>
+            <input name="LastName" class="form-control" placeholder="Search last name" value="@ViewBag.currentLastNameParam" />
+        </div>
+
+        <select
+            id = "activtyTypeSelect"
+            name="ActivityType"
+            class="form-control mx-2"
+            class="form-control">
+            <option value="0">Choose an action</option>
+            <option value="1">Create a task</option>
+            <option value="2">Update a task</option>
+            <option value="3">Add new participants</option>
+            <option value="4">Remove a participant</option>
+            <option value="5">Create a user</option>
+            <option value="6">Update a user</option>
+            <option value="7">Delete a user</option>
+        </select>
+
+        <a asp-action="Index" asp-asp-controller="Activity" class="btn btn-default mx-2 box-shadow">
+            Clear all
+        </a>
+        <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+</div>
+
+<!-- Activity log table --->
+@if (Model.Data.Any())
 {
     <table class="table table-bordered table-striped" style="width:100%">
         <thead>
@@ -20,7 +56,7 @@
                     Detail
                 </th>
                 <th>
-                    Type
+                    Action
                 </th>
                 <th>
                     At a time
@@ -28,9 +64,10 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var activity in Model.Activites)
+            @foreach (var activity in Model.Data)
             {
                 <tr>
+                    <!-- Base on activity log type to display detail and action correctly --->
                     @switch (activity.ActivityType)
                     {
                         case ActivityTypeEnum.CreateTodo:
@@ -116,23 +153,60 @@
             }
         </tbody>
     </table>
+    <!-- Pagination --->
     <nav class="float-right" aria-label="Page navigation example">
         <ul class="pagination">
             <li class="page-item">
-                <a class="page-link" asp-action="Index" asp-controller="Activity" aria-label="Previous">
+                <a
+                    class="page-link"
+                    asp-action="Index"
+                    asp-controller="Activity"
+                    aria-label="Previous">
                     <span aria-hidden="true">&laquo;</span>
                 </a>
             </li>
             @for (int i = 1; i <= Model.TotalPage; i++)
             {
-                <li class="page-item">
-                    <a asp-action="Index" asp-controller="Activity" asp-route-page="@i" class="page-link">
-                        @i
-                    </a>
-                </li>
+                @if(i == Model.CurrentPage)
+                {
+                    <li class="page-item active">
+                        <a
+                            asp-action="Index"
+                            asp-route-firstName="@ViewBag.currentFirstNameParam"
+                            asp-route-lastName="@ViewBag.currentLastNameParam"
+                            asp-route-activityType="@ViewBag.currentActivityTypeParam"
+                            asp-controller="Activity"
+                            asp-route-page="@i"
+                            class="page-link">
+                            @i
+                        </a>
+                    </li>
+                }
+                else
+                {
+                    <li class="page-item">
+                        <a
+                            asp-action="Index"
+                            asp-route-firstName="@ViewBag.currentFirstNameParam"
+                            asp-route-lastName="@ViewBag.currentLastNameParam"
+                            asp-route-activityType="@ViewBag.currentActivityTypeParam"
+                            asp-controller="Activity"
+                            asp-route-page="@i"
+                            class="page-link">
+                            @i
+                        </a>
+                    </li>
+                }
             }
             <li class="page-item">
-                <a class="page-link" asp-action="Index" asp-controller="Activity" asp-route-page="@Model.TotalPage"
+                <a
+                    class="page-link"
+                    asp-action="Index"
+                    asp-route-firstName="@ViewBag.currentFirstNameParam"
+                    asp-route-lastName="@ViewBag.currentLastNameParam"
+                    asp-route-activityType="@ViewBag.currentActivityTypeParam"
+                    asp-controller="Activity"
+                    asp-route-page="@Model.TotalPage"
                     aria-label="Next">
                     <span aria-hidden="true">&raquo;</span>
                 </a>
@@ -142,15 +216,25 @@
 }
 else
 {
-    <h1>
-        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" class="bi bi-info-circle"
-            viewBox="0 0 16 16">
-            <path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
-            <path
-                d="M8.93 6.588l-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588z" />
-            <circle cx="8" cy="4.5" r="1" />
-        </svg>
-        No activities found
-    </h1>
+    <div class="clearfix"></div>
+    <div class="mt-3">
+        <h1>
+            <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" class="bi bi-info-circle"
+                viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                <path
+                    d="M8.93 6.588l-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588z" />
+                <circle cx="8" cy="4.5" r="1" />
+            </svg>
+            No activities found
+        </h1>
+    </div>
+}
 
+@section Scripts {
+    <script>
+        $(function() {
+            $("#activtyTypeSelect").val(@ViewBag.currentActivityTypeParam);
+        });
+    </script>
 }
