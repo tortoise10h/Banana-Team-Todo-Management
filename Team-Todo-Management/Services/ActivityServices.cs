@@ -23,24 +23,40 @@ namespace Team_Todo_Management.Services
             _mapper = mapper;
         }
 
-        public async Task<ActivityListViewModel> List(
-            int page,
-            int limit)
+        public async Task<PagedResultModel<ActivityViewModel>> List(ActivityQueryModel query)
         {
-            int skip = (page - 1) * limit;
+            int skip = (query.Page - 1) * query.Limit;
 
-            var activities = await _context.Activities
-                .Skip(skip)
-                .Take(limit)
-                .ToListAsync();
-            int totalActivities = await _context.Activities.CountAsync();
-            int totalPage = (int)Math.Ceiling((double)totalActivities / limit);
+            var queryable = _context.Activities.AsQueryable();
 
-            return new ActivityListViewModel
+            if (!string.IsNullOrEmpty(query.FirstName))
             {
-                PageSize = limit,
-                CurrentPage = page,
-                Activites = _mapper.Map<List<ActivityViewModel>>(activities),
+                queryable = queryable.Where(x => x.FirstName.Contains(query.FirstName));
+            }
+
+            if (!string.IsNullOrEmpty(query.LastName))
+            {
+                queryable = queryable.Where(x => x.LastName.Contains(query.LastName));
+            }
+
+            if (query.ActivityType != 0)
+            {
+                queryable = queryable.Where(x => x.ActivityType == query.ActivityType);
+            }
+
+            var activities = await queryable
+                .Skip(skip)
+                .Take(query.Limit)
+                .ToListAsync();
+
+            int totalActivities = await queryable.CountAsync();
+            int totalPage = (int)Math.Ceiling((double)totalActivities / query.Limit);
+
+            return new PagedResultModel<ActivityViewModel>
+            {
+                PageSize = query.Limit,
+                CurrentPage = query.Page,
+                Data = _mapper.Map<List<ActivityViewModel>>(activities),
                 TotalPage = totalPage,
                 TotalRecord = totalActivities
             };

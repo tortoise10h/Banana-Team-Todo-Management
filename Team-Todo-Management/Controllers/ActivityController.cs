@@ -23,14 +23,13 @@ namespace Team_Todo_Management.Controllers
 
         [HttpGet]
         public async Task<IActionResult> Index(
-            [FromQuery] string firstName,
-            [FromQuery] string lastName,
-            [FromQuery] ActivityTypeEnum activityType,
-            [FromQuery] int page = 1,
-            [FromQuery] int limit = 20)
+            [FromQuery] ActivityQueryModel query)
         {
-            var result = await _activityServices
-                .List(page, limit);
+            ViewBag.currentFirstNameParam = query.FirstName;
+            ViewBag.currentLastNameParam = query.LastName;
+            ViewBag.currentActivityTypeParam = (int)query.ActivityType;
+
+            var result = await _activityServices.List(query);
 
             return View(result);
         }

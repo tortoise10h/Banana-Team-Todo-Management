@@ -38,7 +38,6 @@ namespace Team_Todo_Management.Extensions
             string staffId7 = "927e4f6a-62ed-4e13-b002-7e133eb47bbc";
             string staffId8 = "e7610feb-110c-47d0-9a88-1bfdc12742a4";
 
-            string bossId1 = "e9012ef1-cd3c-49a1-8726-7f8f8aba9f98";
             string bossId2 = "3b488e0f-eb92-4994-a555-cbe4ecdf3672";
             string bossId3 = "52999f6b-a605-45b0-b98f-b8880fc46027";
             string bossId4 = "39b465e2-c398-494f-bb62-d1eb02aa5471";
