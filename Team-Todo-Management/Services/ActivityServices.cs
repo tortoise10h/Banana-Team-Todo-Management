@@ -47,6 +47,7 @@ namespace Team_Todo_Management.Services
             var activities = await queryable
                 .Skip(skip)
                 .Take(query.Limit)
+                .OrderByDescending(x => x.CreatedAt)
                 .ToListAsync();
 
             int totalActivities = await queryable.CountAsync();
