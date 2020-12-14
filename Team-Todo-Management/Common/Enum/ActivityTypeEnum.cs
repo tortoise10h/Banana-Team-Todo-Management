@@ -13,6 +13,8 @@ namespace Team_Todo_Management.Common.Enum
         RemoveAParticipantFromTodo = 4,
         CreateUser = 5,
         UpdateUser = 6,
-        DeleteUser = 7
+        DeleteUser = 7,
+        PostComment = 8,
+        DeleteComment = 9
     }
 }

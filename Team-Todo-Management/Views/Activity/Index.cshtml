@@ -27,8 +27,7 @@
         <select
             id = "activtyTypeSelect"
             name="ActivityType"
-            class="form-control mx-2"
-            class="form-control">
+            class="form-control mx-2">
             <option value="0">Choose an action</option>
             <option value="1">Create a task</option>
             <option value="2">Update a task</option>
@@ -37,6 +36,7 @@
             <option value="5">Create a user</option>
             <option value="6">Update a user</option>
             <option value="7">Delete a user</option>
+            <option value="8">Post a comment</option>
         </select>
 
         <a asp-action="Index" asp-asp-controller="Activity" class="btn btn-default mx-2 box-shadow">
@@ -145,6 +145,17 @@
                                     at @activity.CreatedAt.ToLocalTime().ToString("dd/MM/yyyy HH:mm:ss")
                                 </td>
                                 <td width="20%">Delete user</td>
+                                break;
+                            }
+                        case ActivityTypeEnum.PostComment:
+                            {
+                                <td width="60%">
+                                    <strong>@activity.LastName @activity.FirstName</strong>
+                                    (@activity.Email) posted a comment
+                                    @activity.Description
+                                    at @activity.CreatedAt.ToLocalTime().ToString("dd/MM/yyyy HH:mm:ss")
+                                </td>
+                                <td width="20%">Post a comment</td>
                                 break;
                             }
                     }

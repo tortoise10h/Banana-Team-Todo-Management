@@ -223,6 +223,14 @@ namespace Team_Todo_Management.Controllers
             return RedirectToAction("Edit", new { id = todo.Id });
         }
 
+        public async Task<IActionResult> AssignedTasks()
+        {
+            ApplicationUser currentUser = await _userManager.GetUserAsync(User);
+            var result = await _todoServices.GetAssignedTasks(currentUser);
+
+            return View(result);
+        }
+
         [HttpPost]
         public async Task<IActionResult> RemoveAParticipant(
             [FromRoute] string id,
@@ -284,7 +292,7 @@ namespace Team_Todo_Management.Controllers
             {
                 ApplicationUser currentUser = await _userManager.GetUserAsync(User);
                 if (todo.PersonInChargeId != currentUser.Id)
-                { 
+                {
                     var participantIds = todo.Participants
                         .Select(x => x.UserId);
 

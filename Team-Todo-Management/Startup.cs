@@ -74,6 +74,7 @@ namespace Team_Todo_Management
             services.AddScoped<ITodoServices, TodoServices>();
             services.AddScoped<IUserServices, UserServices>();
             services.AddScoped<IActivityServices, ActivityServices>();
+            services.AddScoped<ICommentServices, CommentServices>();
 
         }
 
