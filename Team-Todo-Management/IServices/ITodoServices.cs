@@ -35,5 +35,11 @@ namespace Team_Todo_Management.IServices
             TodoStatusEnum newStatus,
             ApplicationUser currentUser
         );
+
+        Task PostCommentToTodo(
+            string commentContent,
+            ApplicationUser currentUser,
+            Todo todo
+        );
     }
 }

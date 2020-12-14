@@ -79,6 +79,7 @@ namespace Team_Todo_Management.Controllers
 
             var todo = await _context.Todos
                 .Include(x => x.PersonInCharge)
+                .Include(x => x.Comments)
                 .Include(x => x.Participants)
                 .SingleOrDefaultAsync(x => x.Id == id);
             if (todo == null)
@@ -91,10 +92,10 @@ namespace Team_Todo_Management.Controllers
             var usersInTodo = users.Where(x => userIdsInTodo.Contains(x.Id));
             var usersNotInTodo = users.Except(usersInTodo);
 
-            TodoUpdateModel viewModel = new TodoUpdateModel
+            TodoDetailViewModel viewModel = new TodoDetailViewModel
             {
                 TodoId = todo.Id,
-                TodoInfo = _mapper.Map<TodoInfoEditModel>(todo),
+                TodoInfo = _mapper.Map<TodoViewModel>(todo),
                 AllUsers = _mapper.Map<List<UserViewModel>>(users),
                 Participants = _mapper.Map<List<UserViewModel>>(usersInTodo),
                 UsersNotInTodo = _mapper.Map<List<UserViewModel>>(usersNotInTodo)
@@ -259,6 +260,34 @@ namespace Team_Todo_Management.Controllers
             {
                 return Ok(new AjaxResultViewModel(false, "There is something wrong, please try again"));
             }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> PostComment(
+            [FromRoute] int id,
+            [FromForm] PostCommentModel model)
+        {
+            var todo = await _context.Todos
+                .SingleOrDefaultAsync(x => x.Id == id);
+
+            if (todo == null)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                ApplicationUser currentUser = await _userManager.GetUserAsync(User);
+                await _todoServices.PostCommentToTodo(
+                    model.CommentContent,
+                    currentUser,
+                    todo
+                );
+
+                return RedirectToAction(nameof(Details), new { id });
+            }
+
+            return View(model);
         }
 
         // GET: Todoes/Delete/5

@@ -34,6 +34,9 @@ namespace Team_Todo_Management.MapperProfile
 
             /** Activity */
             CreateMap<Activity, ActivityViewModel>();
+
+            /** Comment */
+            CreateMap<Comment, CommentViewModel>();
         }
     }
 }
