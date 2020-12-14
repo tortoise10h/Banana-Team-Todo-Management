@@ -38,8 +38,10 @@ namespace Team_Todo_Management.IServices
 
         Task PostCommentToTodo(
             string commentContent,
-            ApplicationUser currentUser,
+            ApplicationUser currenUser,
             Todo todo
         );
+
+        Task<List<TodoViewModel>> GetAssignedTasks(ApplicationUser currentUser);
     }
 }

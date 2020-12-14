@@ -131,6 +131,21 @@ namespace Team_Todo_Management.Services
             return todoViewModels;
         }
 
+        public async Task<List<TodoViewModel>> GetAssignedTasks(ApplicationUser currentUser)
+        {
+            var participatedTodos = await _context.Participants
+                .Include(x => x.Todo)
+                .Where(x => x.UserId == currentUser.Id)
+                .ToListAsync();
+
+            var listOfTodo = participatedTodos
+                .Select(x => x.Todo);
+
+            var todoViewModels = _mapper.Map<List<TodoViewModel>>(listOfTodo);
+
+            return todoViewModels;
+        }
+
         public async Task<List<TodoViewModel>> GetWeekTodos(ApplicationUser currentUser)
         {
             DateTime startOfTheDay = DateTime.Today;
@@ -147,6 +162,7 @@ namespace Team_Todo_Management.Services
 
             return todoViewModels;
         }
+
 
         public async Task<AjaxResultViewModel> AddParticipantsToTodo(
             ApplicationUser currentUser,
@@ -342,7 +358,7 @@ namespace Team_Todo_Management.Services
                 currentUser.FirstName,
                 currentUser.LastName,
                 currentUser.Email,
-                ActivityTypeEnum.RemoveAParticipantFromTodo,
+                ActivityTypeEnum.PostComment,
                 activtyDescription,
                 currentUser.Id,
                 _context
