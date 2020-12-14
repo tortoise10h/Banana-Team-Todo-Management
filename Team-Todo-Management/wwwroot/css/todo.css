@@ -13801,24 +13801,50 @@ body[data-layout="topnav"] .container-xl {
     background-color: rgba(238, 242, 247, 0.18);
 }
 
-    .badge-light-lighten[href]:focus,
-    .badge-light-lighten[href]:hover {
-        color: #eef2f7;
-        text-decoration: none;
-        background-color: rgba(238, 242, 247, 0.4);
-    }
+.badge-light-lighten[href]:focus,
+.badge-light-lighten[href]:hover {
+    color: #eef2f7;
+    text-decoration: none;
+    background-color: rgba(238, 242, 247, 0.4);
+}
 
 .badge-dark-lighten {
     color: #313a46;
     background-color: rgba(49, 58, 70, 0.18);
 }
 
-    .badge-dark-lighten[href]:focus,
-    .badge-dark-lighten[href]:hover {
-        color: #313a46;
-        text-decoration: none;
-        background-color: rgba(49, 58, 70, 0.4);
-    }
+.badge-dark-lighten[href]:focus,
+.badge-dark-lighten[href]:hover {
+    color: #313a46;
+    text-decoration: none;
+    background-color: rgba(49, 58, 70, 0.4);
+}
+
+.badge-public-lighten {
+    color: white;
+    background-color: #00a693;
+}
+
+.badge-public-lighten[href]:focus,
+.badge-public-lighten[href]:hover {
+    color: white;
+    text-decoration: none;
+    background-color: #00a693;
+}
+
+.badge-private-lighten {
+    color: white;
+    background-color: #ff596c;
+}
+
+.badge-private-lighten[href]:focus,
+.badge-private-lighten[href]:hover {
+    color: #b39eb5;
+    text-decoration: none;
+    background-color: #ff596c;
+}
+
+
 
 .badge-outline-primary {
     color: #727cf5;
