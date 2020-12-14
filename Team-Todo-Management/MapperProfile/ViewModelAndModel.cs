@@ -37,6 +37,10 @@ namespace Team_Todo_Management.MapperProfile
 
             /** Comment */
             CreateMap<Comment, CommentViewModel>();
+
+            /** Media */
+            CreateMap<Media, TodoListFileModel>();
+            CreateMap<TodoListFileModel, Media>();
         }
     }
 }
