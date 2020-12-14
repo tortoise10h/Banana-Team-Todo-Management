@@ -37,6 +37,7 @@
             <option value="6">Update a user</option>
             <option value="7">Delete a user</option>
             <option value="8">Post a comment</option>
+            <option value="9">Delete a comment</option>
         </select>
 
         <a asp-action="Index" asp-asp-controller="Activity" class="btn btn-default mx-2 box-shadow">
@@ -156,6 +157,17 @@
                                     at @activity.CreatedAt.ToLocalTime().ToString("dd/MM/yyyy HH:mm:ss")
                                 </td>
                                 <td width="20%">Post a comment</td>
+                                break;
+                            }
+                        case ActivityTypeEnum.DeleteComment:
+                            {
+                                <td width="60%">
+                                    <strong>@activity.LastName @activity.FirstName</strong>
+                                    (@activity.Email) Delete a comment
+                                    @activity.Description
+                                    at @activity.CreatedAt.ToLocalTime().ToString("dd/MM/yyyy HH:mm:ss")
+                                </td>
+                                <td width="20%">Delete a comment</td>
                                 break;
                             }
                     }
