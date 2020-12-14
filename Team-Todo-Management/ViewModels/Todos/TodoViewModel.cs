@@ -10,7 +10,7 @@ namespace Team_Todo_Management.ViewModels
     {
         public TodoStatusEnum Status { get; set; }
         public TodoScopeEnum Scope { get; set; }
-        public CommentViewModel CommentInfo { get; set; }
+        public List<CommentViewModel> Comments { get; set; }
         public UserViewModel PersonInCharge { get; set; }
         public int Id { get; set; }
         public string Name { get; set; }

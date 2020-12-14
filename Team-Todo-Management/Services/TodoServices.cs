@@ -325,8 +325,7 @@ namespace Team_Todo_Management.Services
                 Content = commentContent
             };
 
-            string activtyDescription = "";
-            activtyDescription = $"\"{commentContent}\" to a task \"{todo.Name}\"";
+            string activtyDescription = $"\"{commentContent}\" to a task \"{todo.Name}\"";
 
             await _context.Comments.AddAsync(newComment);
 
