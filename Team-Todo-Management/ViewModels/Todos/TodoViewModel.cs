@@ -10,13 +10,15 @@ namespace Team_Todo_Management.ViewModels
     {
         public TodoStatusEnum Status { get; set; }
         public TodoScopeEnum Scope { get; set; }
+        public CommentViewModel CommentInfo { get; set; }
         public UserViewModel PersonInCharge { get; set; }
         public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
-        public string StatusName {
+        public string StatusName
+        {
             get
             {
                 if (Status == TodoStatusEnum.New)
@@ -41,7 +43,8 @@ namespace Team_Todo_Management.ViewModels
                 }
             }
         }
-        public string ScopeName {
+        public string ScopeName
+        {
             get
             {
                 if (Scope == TodoScopeEnum.Private)
@@ -55,7 +58,8 @@ namespace Team_Todo_Management.ViewModels
             }
         }
 
-        public string PersonInChargeName {
+        public string PersonInChargeName
+        {
             get
             {
                 return PersonInCharge.FullName;

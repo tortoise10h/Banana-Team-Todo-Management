@@ -311,5 +311,36 @@ namespace Team_Todo_Management.Services
 
             return new AjaxResultViewModel(true, "");
         }
+
+        public async Task PostCommentToTodo(
+            string commentContent,
+            ApplicationUser currentUser,
+            Todo todo
+        )
+        {
+            var newComment = new Comment
+            {
+                UserId = currentUser.Id,
+                TodoId = todo.Id,
+                Content = commentContent
+            };
+
+            string activtyDescription = "";
+            activtyDescription = $"\"{commentContent}\" to a task \"{todo.Name}\"";
+
+            await _context.Comments.AddAsync(newComment);
+
+            await _activityServices.TrackActivity(
+                currentUser.FirstName,
+                currentUser.LastName,
+                currentUser.Email,
+                ActivityTypeEnum.RemoveAParticipantFromTodo,
+                activtyDescription,
+                currentUser.Id,
+                _context
+            );
+
+            await _context.SaveChangesAsync();
+        }
     }
 }
