@@ -86,6 +86,12 @@ namespace Team_Todo_Management.Services
         public async Task<List<TodoViewModel>> GetAllTodos(ApplicationUser currentUser)
         {
             var listOfTodo = new List<Todo>();
+            var participatedTodos = await _context.Participants
+                .Where(x => x.UserId == currentUser.Id)
+                .ToListAsync();
+            var participatedTodoIds = participatedTodos
+                .Select(x => x.TodoId);
+
             var isBoss = await _userManager.IsInRoleAsync(currentUser, RoleNameEnum.Boss);
             if (isBoss)
             {
@@ -98,7 +104,8 @@ namespace Team_Todo_Management.Services
             {
                 listOfTodo = await _context.Todos
                 .Where(x => x.PersonInChargeId == currentUser.Id ||
-                            x.Scope == TodoScopeEnum.Public)
+                            x.Scope == TodoScopeEnum.Public ||
+                            participatedTodoIds.Contains(x.Id))
                 .Include(x => x.PersonInCharge)
                 .OrderByDescending(x => x.CreatedAt)
                 .ToListAsync();

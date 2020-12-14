@@ -200,6 +200,7 @@
                             placeholder="Your comment..."
                             required
                         ></textarea>
+                        @* // TODO: Cho nut submit qua phai *@
                         <div class="p-2 bg-light d-flex justify-content-between align-items-center">
                             <button type="submit" class="btn btn-sm btn-success">
                                 <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-cursor mr-1" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
@@ -222,14 +223,15 @@
             <div class="card-body">
                 <h5 class="card-title mb-3">Attachments</h5>
 
+                @* // TODO: xoa drop file here to upload *@
                 <form asp-route-id="@Model.TodoId" asp-action="UploadFile"
-                      method="post"
-                      enctype="multipart/form-data"
-                      class="dropzone dz-clickable"
-                      id="myAwesomeDropzone"
-                      data-plugin="dropzone"
-                      data-previews-container="#file-previews"
-                      data-upload-preview-template="#uploadPreviewTemplate">
+                        method="post"
+                        enctype="multipart/form-data"
+                        class="dropzone dz-clickable"
+                        id="myAwesomeDropzone"
+                        data-plugin="dropzone"
+                        data-previews-container="#file-previews"
+                        data-upload-preview-template="#uploadPreviewTemplate">
                     <div class="dz-message needsclick">
                         <input name="file" type="file" />
                         <i class="h3 text-muted dripicons-cloud-upload"></i>
@@ -275,109 +277,46 @@
                     var listFiles = Model.ListFiles;
                     foreach(var file in listFiles)
                     {
-                                <div class="card my-1 shadow-none border">
-                                    <div class="p-2">
-                                        <div class="row align-items-center">
-                                            <div class="col-auto">
-                                                <div class="avatar-sm">
-                                                    <span class="avatar-title rounded text-uppercase"> @file.FileExtension </span>
-                                                </div>
-                                            </div>
-                                            <div class="col pl-0">
-                                                <a 
-                                                   class="text-muted font-weight-bold"
-                                                   asp-action="DownloadFile"
-                                                   asp-controller="Todo"
-                                                   asp-route-id="@file.Id"
-                                                   >@file.FileName @file.FileExtension</a>
-                                                <p class="mb-0">2.3 MB</p>
-                                            </div>
-                                            <div class="col-auto">
-                                                <!-- Button -->
-                                                <a href="javascript:void(0);"
-                                                   class="btn btn-link btn-lg text-muted">
-                                                    <i class="dripicons-download"></i>
-                                                </a>
-                                            </div>
+                        @* // TODO: chinh lai UI list file *@
+                        <div class="card my-1 shadow-none border">
+                            <div class="p-2">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="">
+                                        <div class="avatar-sm">
+                                            <span class="avatar-title rounded text-uppercase"> @file.FileExtension </span>
                                         </div>
                                     </div>
+                                    <div class="pl-0">
+                                        @file.FileName @file.FileExtension
+                                    </div>
+                                    <div class="">
+                                        <a 
+                                            data-bs-toggle="tooltip"
+                                            data-bs-placement="top"
+                                            title="Download this file"
+                                            class="ml-2 text-muted font-weight-bold"
+                                            asp-action="DownloadFile"
+                                            asp-controller="Todo"
+                                            asp-route-id="@file.Id"
+                                        >
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-download" viewBox="0 0 16 16">
+                                                <path fill-rule="evenodd" d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
+                                                <path fill-rule="evenodd" d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>
+                                            </svg>
+                                        </a>
+                                    </div>
+                                    <div class="">
+                                        <!-- Button -->
+                                        <a href="javascript:void(0);"
+                                            class="btn btn-link btn-lg text-muted">
+                                            <i class="dripicons-download"></i>
+                                        </a>
+                                    </div>
                                 </div>
+                            </div>
+                        </div>
                     }
                 }
-
-                <div class="card my-1 shadow-none border">
-                    <div class="p-2">
-                        <div class="row align-items-center">
-                            <div class="col-auto">
-                                <div class="avatar-sm">
-                                    <span class="avatar-title rounded"> .ZIP </span>
-                                </div>
-                            </div>
-                            <div class="col pl-0">
-                                <a href="javascript:void(0);"
-                                    class="text-muted font-weight-bold">Hyper-admin-design.zip</a>
-                                <p class="mb-0">2.3 MB</p>
-                            </div>
-                            <div class="col-auto">
-                                <!-- Button -->
-                                <a href="javascript:void(0);"
-                                    class="btn btn-link btn-lg text-muted">
-                                    <i class="dripicons-download"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card mb-1 shadow-none border">
-                    <div class="p-2">
-                        <div class="row align-items-center">
-                            <div class="col-auto">
-                                <img src="assets/images/projects/project-1.jpg"
-                                    class="avatar-sm rounded"
-                                    alt="file-image" />
-                            </div>
-                            <div class="col pl-0">
-                                <a href="javascript:void(0);"
-                                    class="text-muted font-weight-bold">Dashboard-design.jpg</a>
-                                <p class="mb-0">3.25 MB</p>
-                            </div>
-                            <div class="col-auto">
-                                <!-- Button -->
-                                <a href="javascript:void(0);"
-                                    class="btn btn-link btn-lg text-muted">
-                                    <i class="dripicons-download"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card mb-0 shadow-none border">
-                    <div class="p-2">
-                        <div class="row align-items-center">
-                            <div class="col-auto">
-                                <div class="avatar-sm">
-                                    <span class="avatar-title bg-secondary rounded">
-                                        .MP4
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="col pl-0">
-                                <a href="javascript:void(0);"
-                                    class="text-muted font-weight-bold">Admin-bug-report.mp4</a>
-                                <p class="mb-0">7.05 MB</p>
-                            </div>
-                            <div class="col-auto">
-                                <!-- Button -->
-                                <a href="javascript:void(0);"
-                                    class="btn btn-link btn-lg text-muted">
-                                    <i class="dripicons-download"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
