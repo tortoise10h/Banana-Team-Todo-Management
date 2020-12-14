@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Team_Todo_Management.Common.Enum;
 using Team_Todo_Management.Data;
 using Team_Todo_Management.Models;
 using Team_Todo_Management.ViewModels;
@@ -27,5 +28,11 @@ namespace Team_Todo_Management.IServices
             Todo oldTodo,
             ApplicationUser user,
             DataContext ctx);
+
+        Task<AjaxResultViewModel> ChangeStatusOfTodo(
+            int todoId,
+            TodoStatusEnum newStatus,
+            ApplicationUser currentUser
+        );
     }
 }
