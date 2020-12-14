@@ -58,6 +58,8 @@ namespace Team_Todo_Management.Services
             ApplicationUser currentUser,
             DataContext ctx)
         {
+            // TODO: validate permission updatee todo
+
             string oldName = oldTodo.Name;
             oldTodo.Name = updatedInfo.Name;
             oldTodo.StartDate = updatedInfo.StartDate;
@@ -83,12 +85,24 @@ namespace Team_Todo_Management.Services
         }
         public async Task<List<TodoViewModel>> GetAllTodos(ApplicationUser currentUser)
         {
-            var listOfTodo = await _context.Todos
+            var listOfTodo = new List<Todo>();
+            var isBoss = await _userManager.IsInRoleAsync(currentUser, RoleNameEnum.Boss);
+            if (isBoss)
+            {
+                listOfTodo = await _context.Todos
+                    .Include(x => x.PersonInCharge)
+                    .OrderByDescending(x => x.CreatedAt)
+                    .ToListAsync();
+            }
+            else
+            {
+                listOfTodo = await _context.Todos
                 .Where(x => x.PersonInChargeId == currentUser.Id ||
                             x.Scope == TodoScopeEnum.Public)
                 .Include(x => x.PersonInCharge)
                 .OrderByDescending(x => x.CreatedAt)
                 .ToListAsync();
+            }
             var todoViewModels = _mapper.Map<List<TodoViewModel>>(listOfTodo);
 
             return todoViewModels;
