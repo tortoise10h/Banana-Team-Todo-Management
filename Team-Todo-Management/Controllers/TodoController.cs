@@ -93,6 +93,9 @@ namespace Team_Todo_Management.Controllers
             var usersInTodo = users.Where(x => userIdsInTodo.Contains(x.Id));
             var usersNotInTodo = users.Except(usersInTodo);
 
+            ApplicationUser currentUser = await _userManager.GetUserAsync(User);
+            ViewBag.UserId = currentUser.Id;
+
             TodoDetailViewModel viewModel = new TodoDetailViewModel
             {
                 TodoId = todo.Id,
