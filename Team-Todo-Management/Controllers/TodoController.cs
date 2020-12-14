@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
+using Grpc.Core;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -96,13 +98,28 @@ namespace Team_Todo_Management.Controllers
             ApplicationUser currentUser = await _userManager.GetUserAsync(User);
             ViewBag.UserId = currentUser.Id;
 
+            var medias = await _context.Medias
+                .Where(x => x.TodoId == id)
+                .ToListAsync();
+
+            var todoListFileModels = _mapper.Map<List<TodoListFileModel>>(medias);
+
+            foreach (var item in todoListFileModels)
+            {
+                var matchedMedia = medias.SingleOrDefault(x => x.Id == item.Id);
+
+                item.FileName = Path.GetFileNameWithoutExtension(matchedMedia.Location);
+                item.FileExtension = Path.GetExtension(matchedMedia.Location);
+            }
+
             TodoDetailViewModel viewModel = new TodoDetailViewModel
             {
                 TodoId = todo.Id,
                 TodoInfo = _mapper.Map<TodoViewModel>(todo),
                 AllUsers = _mapper.Map<List<UserViewModel>>(users),
                 Participants = _mapper.Map<List<UserViewModel>>(usersInTodo),
-                UsersNotInTodo = _mapper.Map<List<UserViewModel>>(usersNotInTodo)
+                UsersNotInTodo = _mapper.Map<List<UserViewModel>>(usersNotInTodo),
+                ListFiles = todoListFileModels
             };
 
             return View(viewModel);
@@ -346,6 +363,96 @@ namespace Team_Todo_Management.Controllers
         private bool TodoExists(int id)
         {
             return _context.Todos.Any(e => e.Id == id);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UploadFile([FromRoute] int id, IFormFile file)
+        {
+            if (file == null || file.Length == 0)
+            {
+                TempData["Message"] = "Please select file";
+                return RedirectToAction(nameof(Details), new { id });
+            }
+
+            var supportedContent = new[]
+            {
+                //Image
+                "image/png",
+                "image/jpeg",
+                "image/x-citrix-jpeg",
+                "image/pjpeg",
+                "image/x-citrix-png",
+                "image/x-png",
+                //Compressed
+                "application/x-rar-compressed",
+                "application/zip",
+                "application/x-tar",
+                "application/x-7z-compressed",
+                //Office
+                "application/msword",
+                "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                "application/vnd.ms-excel",
+                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                "application/vnd.ms-powerpoint",
+                "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+                //Text
+                "text/plain",
+                "text/csv",
+                //Pdf
+                "application/pdf"
+            };
+
+            if (!supportedContent.Contains(file.ContentType))
+            {
+                TempData["Message"] = "Invalid file type";
+                return RedirectToAction(nameof(Details), new { id });
+            }
+
+            string date = DateTime.Now.ToString("ddmmyyyyHHmmss");
+            string extension = Path.GetExtension(file.FileName);
+            string name = Path.GetFileNameWithoutExtension(file.FileName);
+            string fullFileName = name + "_" + date + extension;
+            var path = Path.Combine(Directory.GetCurrentDirectory(), "Upload", fullFileName);
+
+            using (var stream = new FileStream(path, FileMode.Create))
+            {
+                await file.CopyToAsync(stream);
+            }
+
+            var newMedia = new Media
+            {
+                TodoId = id,
+                Filemime = file.ContentType,
+                Location = Path.Combine("Upload", fullFileName)
+            };
+
+            _context.Medias.Add(newMedia);
+            await _context.SaveChangesAsync();
+
+            TempData["Message"] = "Upload file successfully";
+            return RedirectToAction(nameof(Details), new { id });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> DownloadFile(int id)
+        {
+            var media = await _context.Medias.SingleOrDefaultAsync(x => x.Id == id);
+            if (media == null)
+            {
+                return NotFound();
+            }
+
+            var fileFullName = Path.GetFileNameWithoutExtension(media.Location) + Path.GetExtension(media.Location);
+
+            var path = Path.Combine(Directory.GetCurrentDirectory(), "Upload", fileFullName);
+
+            var memory = new MemoryStream();
+            using (var stream = new FileStream(path, FileMode.Open))
+            {
+                await stream.CopyToAsync(memory);
+            }
+            memory.Position = 0;
+            return File(memory, media.Filemime, Path.GetFileName(path));
         }
     }
 }

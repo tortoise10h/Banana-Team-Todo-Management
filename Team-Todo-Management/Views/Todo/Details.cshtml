@@ -1,8 +1,6 @@
 ﻿@model TodoDetailViewModel;
 
-@{
-    ViewData["Title"] = "Details";
-}
+@{ ViewData["Title"] = "Details"; }
 
 <div class="row">
     <div class="col-12">
@@ -75,9 +73,9 @@
                         <!-- assignee -->
                         @if (@Model.TodoInfo.PersonInCharge != null)
                         {
-                            <p class="mt-2 mb-1 text-muted font-weight-bold font-12 text-uppercase">
-                                Person in charge
-                            </p>
+            <p class="mt-2 mb-1 text-muted font-weight-bold font-12 text-uppercase">
+                Person in charge
+            </p>
                             <div class="media">
                                 <img src="~/images//avatars//avatar-demo.jpg"
                                     alt="Arya S"
@@ -86,8 +84,7 @@
                                 <div class="media-body">
                                     <h5 class="mt-1 font-14">@Model.TodoInfo.PersonInCharge.LastName  @Model.TodoInfo.PersonInCharge.FirstName</h5>
                                 </div>
-                            </div>
-                        }
+                            </div>}
                         <!-- end assignee -->
                     </div>
                     <!-- end col -->
@@ -112,15 +109,14 @@
 
                 @if (@Model.TodoInfo.Description != null && @Model.TodoInfo.Description.Length > 0)
                 {
-                    <h5 class="mt-3">Description:</h5>
+    <h5 class="mt-3">Description:</h5>
 
                     <p class="text-muted mb-4">
                         @Model.TodoInfo.Description
-                    </p>
-                }
+                    </p>}
                 @if (Model.Participants != null)
                 {
-                    <h5 class="mt-3">Participants:</h5>
+    <h5 class="mt-3">Participants:</h5>
 
                     @foreach (var user in Model.Participants)
                     {
@@ -226,16 +222,19 @@
             <div class="card-body">
                 <h5 class="card-title mb-3">Attachments</h5>
 
-                <form action="/"
-                    method="post"
-                    class="dropzone dz-clickable"
-                    id="myAwesomeDropzone"
-                    data-plugin="dropzone"
-                    data-previews-container="#file-previews"
-                    data-upload-preview-template="#uploadPreviewTemplate">
+                <form asp-route-id="@Model.TodoId" asp-action="UploadFile"
+                      method="post"
+                      enctype="multipart/form-data"
+                      class="dropzone dz-clickable"
+                      id="myAwesomeDropzone"
+                      data-plugin="dropzone"
+                      data-previews-container="#file-previews"
+                      data-upload-preview-template="#uploadPreviewTemplate">
                     <div class="dz-message needsclick">
+                        <input name="file" type="file" />
                         <i class="h3 text-muted dripicons-cloud-upload"></i>
                         <h4>Drop files here or click to upload.</h4>
+                        <input type="submit" />
                     </div>
                 </form>
 
@@ -272,6 +271,39 @@
                     </div>
                 </div>
                 <!-- end file preview template -->
+                @{ 
+                    var listFiles = Model.ListFiles;
+                    foreach(var file in listFiles)
+                    {
+                                <div class="card my-1 shadow-none border">
+                                    <div class="p-2">
+                                        <div class="row align-items-center">
+                                            <div class="col-auto">
+                                                <div class="avatar-sm">
+                                                    <span class="avatar-title rounded text-uppercase"> @file.FileExtension </span>
+                                                </div>
+                                            </div>
+                                            <div class="col pl-0">
+                                                <a 
+                                                   class="text-muted font-weight-bold"
+                                                   asp-action="DownloadFile"
+                                                   asp-controller="Todo"
+                                                   asp-route-id="@file.Id"
+                                                   >@file.FileName @file.FileExtension</a>
+                                                <p class="mb-0">2.3 MB</p>
+                                            </div>
+                                            <div class="col-auto">
+                                                <!-- Button -->
+                                                <a href="javascript:void(0);"
+                                                   class="btn btn-link btn-lg text-muted">
+                                                    <i class="dripicons-download"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                    }
+                }
 
                 <div class="card my-1 shadow-none border">
                     <div class="p-2">
@@ -354,4 +386,12 @@
 @section Scripts {
     <script src="~/js/highlight-status-label-script.js" asp-append-version="true"></script>
     <script src="~/js/todo-detail.js" asp-append-version="true"></script>
+}
+@if (@TempData["Message"] != null)
+{
+    <script type="text/javascript">
+        window.onload = function () {
+            alert("@TempData["Message"]");
+        }
+    </script>
 }
