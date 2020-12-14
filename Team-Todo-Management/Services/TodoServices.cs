@@ -110,13 +110,22 @@ namespace Team_Todo_Management.Services
             DateTime startOfTheDay = DateTime.Today;
             DateTime tomorrow = DateTime.Today.AddDays(1);
 
+            var participatedTodos = await _context.Participants
+                .Where(x => x.UserId == currentUser.Id)
+                .ToListAsync();
+            var participatedTodoIds = participatedTodos
+                .Select(x => x.TodoId)
+                .ToList();
+
             var listOfTodo = await _context.Todos
-                .Where(x => x.PersonInChargeId == currentUser.Id &&
+                .Where(x => (x.PersonInChargeId == currentUser.Id ||
+                    participatedTodoIds.Contains(x.Id)) &&
                     x.StartDate >= startOfTheDay &&
                     x.StartDate < tomorrow)
                 .Include(x => x.PersonInCharge)
                 .OrderByDescending(x => x.CreatedAt)
                 .ToListAsync();
+
             var todoViewModels = _mapper.Map<List<TodoViewModel>>(listOfTodo);
 
             return todoViewModels;
