@@ -351,6 +351,6 @@ MigrationBackup/
 
 
 # Personal Setting For Development
-appsettings.Development.json
+./Team-Todo-Management/appsettings.Development.json
 
 *.vscode
