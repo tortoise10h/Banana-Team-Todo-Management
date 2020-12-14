@@ -81,7 +81,18 @@ namespace Team_Todo_Management.Services
 
             await ctx.SaveChangesAsync();
         }
+        public async Task<List<TodoViewModel>> GetAllTodos(ApplicationUser currentUser)
+        {
+            var listOfTodo = await _context.Todos
+                .Where(x => x.PersonInChargeId == currentUser.Id ||
+                            x.Scope == TodoScopeEnum.Public)
+                .Include(x => x.PersonInCharge)
+                .OrderByDescending(x => x.CreatedAt)
+                .ToListAsync();
+            var todoViewModels = _mapper.Map<List<TodoViewModel>>(listOfTodo);
 
+            return todoViewModels;
+        }
         public async Task<List<TodoViewModel>> GetInboxTodos(ApplicationUser currentUser)
         {
             var listOfTodo = await _context.Todos
