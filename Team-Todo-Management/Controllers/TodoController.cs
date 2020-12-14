@@ -231,6 +231,28 @@ namespace Team_Todo_Management.Controllers
             }
         }
 
+        [HttpPost]
+        public async Task<IActionResult> ChangeStatusOfTodo(
+            [FromRoute] int id,
+            [FromBody] ChangeTodoStatusModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                ApplicationUser currentUser = await _userManager.GetUserAsync(User);
+                var result = await _todoServices.ChangeStatusOfTodo(
+                    id,
+                    model.Status,
+                    currentUser
+                );
+
+                return Ok(result);
+            }
+            else
+            {
+                return Ok(new AjaxResultViewModel(false, "There is something wrong, please try again"));
+            }
+        }
+
         // GET: Todoes/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {

@@ -255,5 +255,50 @@ namespace Team_Todo_Management.Services
 
             return new AjaxResultViewModel(true, "");
         }
+
+        public async Task<AjaxResultViewModel> ChangeStatusOfTodo(
+            int todoId,
+            TodoStatusEnum newStatus,
+            ApplicationUser currentUser
+        )
+        {
+            var todo = await _context.Todos
+                .SingleOrDefaultAsync(x => x.Id == todoId);
+            if (todo == null)
+            {
+                return new AjaxResultViewModel(false, $"Todo with id {todoId} does not exist");
+            }
+
+            TodoStatusEnum oldStatus = todo.Status;
+
+            /** Only allow user who own this todo or boss can add participant to this todo */
+            if (currentUser.Id != todo.PersonInChargeId)
+            {
+                bool isBoss = await _userManager.IsInRoleAsync(
+                    currentUser,
+                    RoleNameEnum.Boss);
+                if (!isBoss)
+                {
+                    return new AjaxResultViewModel(false, "You don't have a permission to change status of this task");
+                }
+            }
+
+            todo.Status = newStatus;
+            _context.Todos.Update(todo);
+
+            await _activityServices.TrackActivity(
+                currentUser.FirstName,
+                currentUser.LastName,
+                currentUser.Email,
+                ActivityTypeEnum.RemoveAParticipantFromTodo,
+                $"\"{todo.Name}\" from \"{oldStatus.ToString()}\" to \"{newStatus.ToString()}\"",
+                currentUser.Id,
+                _context
+            );
+
+            await _context.SaveChangesAsync();
+
+            return new AjaxResultViewModel(true, "");
+        }
     }
 }
