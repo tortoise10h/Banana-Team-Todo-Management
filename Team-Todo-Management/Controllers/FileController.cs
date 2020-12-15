@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Team_Todo_Management.Data;
 
 namespace Team_Todo_Management.Controllers
 {
+    [Authorize]
     public class FileController : Controller
     {
         private readonly DataContext _context;

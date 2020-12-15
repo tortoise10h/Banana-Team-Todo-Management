@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,7 @@ using Team_Todo_Management.ViewModels;
 
 namespace Team_Todo_Management.Controllers
 {
+    [Authorize(Roles = "Boss")]
     public class ActivityController : Controller
     {
         private readonly IActivityServices _activityServices;
