@@ -140,10 +140,22 @@
                                         </a>
                                         <div class="dropdown-divider"></div>
                                         <!-- item-->
-                                        <a href="javascript:void(0);"
+                                        @* <a href="javascript:void(0);"
                                            class="dropdown-item text-danger">
                                             <i class="uil uil-trash-alt mr-1"></i>Delete
-                                        </a>
+                                        </a> *@
+                                        <form
+                                            asp-route-id="@item.Id"
+                                            asp-action="Delete"
+                                            asp-controller="Todo"> 
+                                            <button
+                                                class="dropdown-item text-danger"
+                                                onclick="return confirm('Are you sure to delete this task?')"
+                                                type="submit">
+                                                Delete
+                                            </button>
+                                        </form>
+
                                     </div>
                                 </div>
                                 <!-- end col -->

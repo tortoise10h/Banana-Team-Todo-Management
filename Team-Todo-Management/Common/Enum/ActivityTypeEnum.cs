@@ -17,5 +17,6 @@ namespace Team_Todo_Management.Common.Enum
         PostComment = 8,
         DeleteComment = 9,
         UploadFile = 10,
+        DeleteTodo = 11
     }
 }
