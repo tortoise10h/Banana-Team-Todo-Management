@@ -46,6 +46,7 @@ namespace Team_Todo_Management.Controllers
         {
             ApplicationUser currentUser = await _userManager.GetUserAsync(User);
             var result = await _todoServices.GetInboxTodos(currentUser);
+            ViewBag.UserId = currentUser.Id;
 
             return View(result);
         }
@@ -62,6 +63,7 @@ namespace Team_Todo_Management.Controllers
         {
             ApplicationUser currentUser = await _userManager.GetUserAsync(User);
             var result = await _todoServices.GetTodayTodos(currentUser);
+            ViewBag.UserId = currentUser.Id;
 
             return View(result);
         }
@@ -70,6 +72,7 @@ namespace Team_Todo_Management.Controllers
         {
             ApplicationUser currentUser = await _userManager.GetUserAsync(User);
             var result = await _todoServices.GetWeekTodos(currentUser);
+            ViewBag.UserId = currentUser.Id;
 
             return View(result);
         }
@@ -254,6 +257,7 @@ namespace Team_Todo_Management.Controllers
         {
             ApplicationUser currentUser = await _userManager.GetUserAsync(User);
             var result = await _todoServices.GetAssignedTasks(currentUser);
+            ViewBag.UserId = currentUser.Id;
 
             return View(result);
         }
