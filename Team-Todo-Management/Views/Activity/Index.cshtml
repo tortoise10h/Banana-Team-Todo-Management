@@ -45,6 +45,7 @@
             <option value="8">Post a comment</option>
             <option value="9">Delete a comment</option>
             <option value="10">Upload a file</option>
+            <option value="11">Delete a task</option>
         </select>
         <input type="datetime-local" name="FromDate" value="@fromDateStr">
         &nbsp;
@@ -187,6 +188,17 @@
                                 <td width="60%">
                                     <strong>@activity.LastName @activity.FirstName</strong>
                                     (@activity.Email) Upload a file name
+                                    @activity.Description
+                                    at @activity.CreatedAt.ToLocalTime().ToString("dd/MM/yyyy HH:mm:ss")
+                                </td>
+                                <td width="20%">Upload a file</td>
+                                break;
+                            }
+                        case ActivityTypeEnum.DeleteTodo:
+                            {
+                                <td width="60%">
+                                    <strong>@activity.LastName @activity.FirstName</strong>
+                                    (@activity.Email) delete a task
                                     @activity.Description
                                     at @activity.CreatedAt.ToLocalTime().ToString("dd/MM/yyyy HH:mm:ss")
                                 </td>

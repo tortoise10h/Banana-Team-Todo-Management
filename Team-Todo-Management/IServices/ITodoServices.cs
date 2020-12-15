@@ -29,19 +29,17 @@ namespace Team_Todo_Management.IServices
             Todo oldTodo,
             ApplicationUser user,
             DataContext ctx);
-
         Task<AjaxResultViewModel> ChangeStatusOfTodo(
             int todoId,
             TodoStatusEnum newStatus,
             ApplicationUser currentUser
         );
-
         Task PostCommentToTodo(
             string commentContent,
             ApplicationUser currenUser,
             Todo todo
         );
-
         Task<List<TodoViewModel>> GetAssignedTasks(ApplicationUser currentUser);
+        Task DeleteTodo(Todo todo, ApplicationUser currentUser);
     }
 }
