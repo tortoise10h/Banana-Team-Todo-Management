@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -9,6 +10,7 @@ using Team_Todo_Management.ViewModels;
 
 namespace Team_Todo_Management.Controllers
 {
+    [Authorize]
     public class CommentController : Controller
     {
         private readonly DataContext _context;

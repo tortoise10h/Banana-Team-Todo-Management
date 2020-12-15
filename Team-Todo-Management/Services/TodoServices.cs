@@ -173,8 +173,15 @@ namespace Team_Todo_Management.Services
             DateTime startOfTheDay = DateTime.Today;
             DateTime sevenDaysLater = DateTime.Today.AddDays(7);
 
+            var participatedTodos = await _context.Participants
+                .Where(x => x.UserId == currentUser.Id)
+                .ToListAsync();
+            var participatedTodoIds = participatedTodos
+                .Select(x => x.TodoId);
+
             var listOfTodo = await _context.Todos
-                .Where(x => x.PersonInChargeId == currentUser.Id &&
+                .Where(x => (x.PersonInChargeId == currentUser.Id ||
+                    participatedTodoIds.Contains(x.Id)) &&
                     x.StartDate >= startOfTheDay &&
                     x.StartDate < sevenDaysLater)
                 .Include(x => x.PersonInCharge)

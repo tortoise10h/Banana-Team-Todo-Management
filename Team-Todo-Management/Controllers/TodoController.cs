@@ -322,17 +322,17 @@ namespace Team_Todo_Management.Controllers
             if (ModelState.IsValid)
             {
                 ApplicationUser currentUser = await _userManager.GetUserAsync(User);
-                if (todo.PersonInChargeId != currentUser.Id)
-                {
-                    var participantIds = todo.Participants
-                        .Select(x => x.UserId);
+                // if (todo.PersonInChargeId != currentUser.Id)
+                // {
+                //     var participantIds = todo.Participants
+                //         .Select(x => x.UserId);
 
-                    if (!User.IsInRole(RoleNameEnum.Boss) &&
-                        !participantIds.Contains(currentUser.Id))
-                    {
-                        return BadRequest("You don't have a permission to comment to this todo");
-                    }
-                }
+                //     if (!User.IsInRole(RoleNameEnum.Boss) &&
+                //         !participantIds.Contains(currentUser.Id))
+                //     {
+                //         return BadRequest("You don't have a permission to comment to this todo");
+                //     }
+                // }
                 await _todoServices.PostCommentToTodo(
                     model.CommentContent,
                     currentUser,
