@@ -1,7 +1,8 @@
-﻿@inject SignInManager<ApplicationUser> signInManager; 
+﻿@inject SignInManager<ApplicationUser> signInManager;
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -10,18 +11,16 @@
     <link rel="stylesheet" href="~/css/site.css" />
     @RenderSection("CustomStyles", false)
 </head>
-<body>
+
+<body class="m-0">
     <header>
-        <nav
-             class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light"
-             style="background: #28334aff"
-        >
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light" style="background: #28334aff">
             <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
                 <img src="~/images/logo.svg" width="30" height="30" />
                 <strong class="text-light">Banana Team</strong>
             </a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                    aria-expanded="false" aria-label="Toggle navigation">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
@@ -29,7 +28,7 @@
                 </ul>
                 <div class="clearfix"></div>
                 <ul class="navbar-nav">
-                    @if(signInManager.IsSignedIn(User))
+                    @if (signInManager.IsSignedIn(User))
                     {
                         <li class="nav-item">
                             @*Use form for button logout because we need to send a POST request*@
@@ -43,7 +42,8 @@
                     else
                     {
                         <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-controller="Auth" asp-action="Register">Register</a>
+                            <a class="nav-link text-light" asp-area="" asp-controller="Auth"
+                                asp-action="Register">Register</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-light" asp-area="" asp-controller="Auth" asp-action="Login">Login</a>
@@ -54,10 +54,8 @@
             </div>
         </nav>
     </header>
-    <div class="container" style="background: #fafbfc">
-        <main role="main">
-            @RenderBody()
-        </main>
+    <div class="container-fluid p-2 d-flex justify-content-center align-items-center" style="background: #fafbfc; height: 91.5vh;">
+        @RenderBody()
     </div>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
@@ -65,4 +63,5 @@
     <script src="~/js/site.js" asp-append-version="true"></script>
     @RenderSection("Scripts", required: false)
 </body>
+
 </html>
