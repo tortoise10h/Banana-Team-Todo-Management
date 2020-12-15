@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Team_Todo_Management.Common.Enum;
 using Team_Todo_Management.Data;
 using Team_Todo_Management.Models;
 using Team_Todo_Management.ViewModels;
@@ -34,12 +35,8 @@ namespace Team_Todo_Management.Controllers
             [FromQuery] DateTime? toDate
         )
         {
-            var user = await _context.Users
-                .SingleOrDefaultAsync(x => x.Id == id);
-            if (user == null)
-            {
-                return NotFound();
-            }
+            ViewBag.currentFromDateParam = fromDate;
+            ViewBag.currentToDateParam = toDate;
 
             var allUsers = await _context.Users.ToListAsync();
             ApplicationUser currentUser = await _userManager.GetUserAsync(User);
@@ -68,11 +65,44 @@ namespace Team_Todo_Management.Controllers
 
             ViewBag.UserId = currentUser.Id;
 
-            return Ok(new StatisticByUserViewModel
+            return View(new StatisticByUserViewModel
             {
                 Todos = _mapper.Map<List<TodoViewModel>>(todos),
                 Users = _mapper.Map<List<UserViewModel>>(allUsers)
             });
+        }
+
+        public async Task<IActionResult> StatisticByStatus(
+            [FromQuery] TodoStatusEnum status,
+            [FromQuery] DateTime? fromDate,
+            [FromQuery] DateTime? toDate
+        )
+        {
+            ViewBag.currentFromDateParam = fromDate;
+            ViewBag.currentToDateParam = toDate;
+
+            ApplicationUser currentUser = await _userManager.GetUserAsync(User);
+
+            var queryable = _context.Todos.AsQueryable();
+
+            if (fromDate != null)
+            {
+                queryable = queryable.Where(x => x.CreatedAt >= fromDate);
+            }
+
+            if (toDate != null)
+            {
+                queryable = queryable.Where(x => x.CreatedAt <= toDate);
+            }
+
+            var todos = await queryable
+                .Where(x => x.Status == status)
+                .Include(x => x.PersonInCharge)
+                .ToListAsync();
+
+            ViewBag.UserId = currentUser.Id;
+
+            return View(_mapper.Map<List<TodoViewModel>>(todos));
         }
     }
 }
