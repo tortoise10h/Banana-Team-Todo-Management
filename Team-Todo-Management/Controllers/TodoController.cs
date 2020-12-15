@@ -25,12 +25,13 @@ namespace Team_Todo_Management.Controllers
     {
         private readonly ITodoServices _todoServices;
         private readonly IUserServices _userServices;
+        private readonly IActivityServices _activityServices;
         private readonly DataContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IMapper _mapper;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public TodoController(DataContext context, ITodoServices todoServices, IMapper mapper, IHttpContextAccessor httpContextAccessor, UserManager<ApplicationUser> userManager, IUserServices userServices)
+        public TodoController(DataContext context, ITodoServices todoServices, IMapper mapper, IHttpContextAccessor httpContextAccessor, UserManager<ApplicationUser> userManager, IUserServices userServices, IActivityServices activityServices)
         {
             _context = context;
             _todoServices = todoServices;
@@ -38,6 +39,7 @@ namespace Team_Todo_Management.Controllers
             _httpContextAccessor = httpContextAccessor;
             _userManager = userManager;
             _userServices = userServices;
+            _activityServices = activityServices;
         }
 
         public async Task<IActionResult> Inbox()
@@ -194,6 +196,14 @@ namespace Team_Todo_Management.Controllers
             if (ModelState.IsValid)
             {
                 ApplicationUser currentUser = await _userManager.GetUserAsync(User);
+                /** Only allow task owner and boss can edit task */
+                if (todo.PersonInChargeId != currentUser.Id)
+                {
+                    if (!User.IsInRole(RoleNameEnum.Boss))
+                    {
+                        return Forbid();
+                    }
+                }
                 await _todoServices.UpdateTodo(updateModel.TodoInfo, todo, currentUser, _context);
                 return RedirectToAction(nameof(Inbox));
             }
@@ -374,6 +384,14 @@ namespace Team_Todo_Management.Controllers
                 return RedirectToAction(nameof(Details), new { id });
             }
 
+            var todo = await _context.Todos
+                .SingleOrDefaultAsync(x => x.Id == id);
+
+            if (todo == null)
+            {
+                return NotFound();
+            }
+
             var supportedContent = new[]
             {
                 //Image
@@ -426,7 +444,18 @@ namespace Team_Todo_Management.Controllers
                 Location = Path.Combine("Upload", fullFileName)
             };
 
+            ApplicationUser currentUser = await _userManager.GetUserAsync(User);
+
             _context.Medias.Add(newMedia);
+            await _activityServices.TrackActivity(
+                currentUser.FirstName,
+                currentUser.LastName,
+                currentUser.Email,
+                ActivityTypeEnum.UploadFile,
+                $"\"{name}\" to a task \"{todo.Name}\"",
+                currentUser.Id,
+                _context
+            );
             await _context.SaveChangesAsync();
 
             TempData["Message"] = "Upload file successfully";
