@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Team_Todo_Management.Common.Enum;
@@ -385,6 +386,35 @@ namespace Team_Todo_Management.Services
                 _context
             );
 
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task DeleteTodo(Todo todo, ApplicationUser currentUser)
+        {
+            List<string> fileLocations = todo.Medias
+                .Select(x => x.Location)
+                .ToList();
+
+            /** Delete all medias if exist */
+            foreach (var location in fileLocations)
+            {
+                string fullPath = Path.Combine(Directory.GetCurrentDirectory(), location);
+                if (File.Exists(fullPath))
+                {
+                    File.Delete(fullPath);
+                }
+            }
+
+            _context.Todos.Remove(todo);
+            await _activityServices.TrackActivity(
+                currentUser.FirstName,
+                currentUser.LastName,
+                currentUser.Email,
+                ActivityTypeEnum.DeleteTodo,
+                $"\"{todo.Name}\"",
+                currentUser.Id,
+                _context
+            );
             await _context.SaveChangesAsync();
         }
     }

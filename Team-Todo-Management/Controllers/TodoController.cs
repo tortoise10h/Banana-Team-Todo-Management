@@ -341,33 +341,29 @@ namespace Team_Todo_Management.Controllers
             return View(model);
         }
 
-        // GET: Todoes/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var todo = await _context.Todos
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (todo == null)
-            {
-                return NotFound();
-            }
-
-            return View(todo);
-        }
-
         // POST: Todoes/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var todo = await _context.Todos.FindAsync(id);
-            _context.Todos.Remove(todo);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            var todo = await _context.Todos
+                .Include(x => x.Medias)
+                .Include(x => x.Comments)
+                .Include(x => x.Participants)
+                .SingleOrDefaultAsync(x => x.Id == id);
+            ApplicationUser currentUser = await _userManager.GetUserAsync(User);
+
+            /** Only allow task owner and boss can edit task */
+            if (todo.PersonInChargeId != currentUser.Id)
+            {
+                if (!User.IsInRole(RoleNameEnum.Boss))
+                {
+                    return Forbid();
+                }
+            }
+
+            await _todoServices.DeleteTodo(todo, currentUser);
+            return Redirect(HttpContext.Request.Headers["Referer"]);
         }
 
         private bool TodoExists(int id)
