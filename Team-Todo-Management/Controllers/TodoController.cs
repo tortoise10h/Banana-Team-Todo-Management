@@ -471,9 +471,7 @@ namespace Team_Todo_Management.Controllers
                 return NotFound();
             }
 
-            var fileFullName = Path.GetFileNameWithoutExtension(media.Location) + Path.GetExtension(media.Location);
-
-            var path = Path.Combine(Directory.GetCurrentDirectory(), "Upload", fileFullName);
+            var path = Path.Combine(Directory.GetCurrentDirectory(), media.Location);
 
             var memory = new MemoryStream();
             using (var stream = new FileStream(path, FileMode.Open))
