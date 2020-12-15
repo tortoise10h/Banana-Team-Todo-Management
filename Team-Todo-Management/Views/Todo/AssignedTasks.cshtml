@@ -59,8 +59,7 @@
                                 </div>
                                 <!-- end col -->
                                 <div class="col-sm-6">
-                                    <div clas
-                                    s="d-flex justify-content-between">
+                                    <div class="d-flex justify-content-between">
                                         <div>
                                             @if (@item.PersonInCharge != null)
                                             {
@@ -125,7 +124,7 @@
                                            asp-route-id="@item.Id">
                                             <i class="uil uil-file-upload mr-1"></i>View
                                         </a>
-                                        @if(@User.IsInRole("Boss") || @item.PersonInCharge.Id == @ViewBag.UserId)
+                                        @if(@User.IsInRole("Boss") ||  @item.PersonInChargeId == @ViewBag.UserId)
                                         {
                                             <!-- item-->
                                             <a class="dropdown-item" asp-action="Edit"
@@ -272,7 +271,7 @@
                                            asp-route-id="@item.Id">
                                             <i class="uil uil-file-upload mr-1"></i>View
                                         </a>
-                                        @if(@User.IsInRole("Boss") || @item.PersonInCharge.Id == @ViewBag.UserId)
+                                        @if(@User.IsInRole("Boss") || @item.PersonInChargeId == @ViewBag.UserId)
                                         {
                                             <!-- item-->
                                             <a class="dropdown-item" asp-action="Edit"
@@ -419,7 +418,7 @@
                                            asp-route-id="@item.Id">
                                             <i class="uil uil-file-upload mr-1"></i>View
                                         </a>
-                                        @if(@User.IsInRole("Boss") || @item.PersonInCharge.Id == @ViewBag.UserId)
+                                        @if(@User.IsInRole("Boss") || @item.PersonInChargeId == @ViewBag.UserId)
                                         {
                                             <!-- item-->
                                             <a class="dropdown-item" asp-action="Edit"
@@ -566,7 +565,7 @@
                                            asp-route-id="@item.Id">
                                             <i class="uil uil-file-upload mr-1"></i>View
                                         </a>
-                                        @if(@User.IsInRole("Boss") || @item.PersonInCharge.Id == @ViewBag.UserId)
+                                        @if(@User.IsInRole("Boss") || @item.PersonInChargeId == @ViewBag.UserId)
                                         {
                                             <!-- item-->
                                             <a class="dropdown-item" asp-action="Edit"
@@ -713,7 +712,7 @@
                                            asp-route-id="@item.Id">
                                             <i class="uil uil-file-upload mr-1"></i>View
                                         </a>
-                                        @if(@User.IsInRole("Boss") || @item.PersonInCharge.Id == @ViewBag.UserId)
+                                        @if(@User.IsInRole("Boss") || @item.PersonInChargeId == @ViewBag.UserId)
                                         {
                                             <!-- item-->
                                             <a class="dropdown-item" asp-action="Edit"

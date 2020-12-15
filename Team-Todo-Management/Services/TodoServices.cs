@@ -157,6 +157,7 @@ namespace Team_Todo_Management.Services
         {
             var participatedTodos = await _context.Participants
                 .Include(x => x.Todo)
+                    .ThenInclude(x => x.PersonInCharge)
                 .Where(x => x.UserId == currentUser.Id)
                 .ToListAsync();
 
