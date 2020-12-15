@@ -44,10 +44,20 @@ namespace Team_Todo_Management.Services
                 queryable = queryable.Where(x => x.ActivityType == query.ActivityType);
             }
 
+            if (query.FromDate != null)
+            {
+                queryable = queryable.Where(x => x.CreatedAt >= query.FromDate);
+            }
+
+            if (query.ToDate != null)
+            {
+                queryable = queryable.Where(x => x.CreatedAt <= query.ToDate);
+            }
+
             var activities = await queryable
+                .OrderByDescending(x => x.CreatedAt)
                 .Skip(skip)
                 .Take(query.Limit)
-                .OrderByDescending(x => x.CreatedAt)
                 .ToListAsync();
 
             int totalActivities = await queryable.CountAsync();

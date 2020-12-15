@@ -1,8 +1,14 @@
 ﻿@model PagedResultModel<ActivityViewModel>
 
 @{
-
     ViewData["Title"] = "Activity List";
+    string fromDateStr = ViewBag.currentFromDateParam != null
+        ? ViewBag.currentFromDateParam.ToString("yyyy-MM-dd HH:mm:ss").Replace(' ','T')
+        : null;
+
+    string toDateStr = ViewBag.currentToDateParam != null
+        ? ViewBag.currentToDateParam.ToString("yyyy-MM-dd HH:mm:ss").Replace(' ','T')
+        : null;
 }
 
 <!-- Header of page --->
@@ -39,6 +45,11 @@
             <option value="8">Post a comment</option>
             <option value="9">Delete a comment</option>
         </select>
+        <input type="datetime-local" name="FromDate" value="@fromDateStr">
+        &nbsp;
+        ~
+        &nbsp;
+        <input type="datetime-local" name="ToDate" value="@toDateStr">
 
         <a asp-action="Index" asp-asp-controller="Activity" class="btn btn-default mx-2 box-shadow">
             Clear all
@@ -184,6 +195,11 @@
                     class="page-link"
                     asp-action="Index"
                     asp-controller="Activity"
+                    asp-route-firstName="@ViewBag.currentFirstNameParam"
+                    asp-route-lastName="@ViewBag.currentLastNameParam"
+                    asp-route-activityType="@ViewBag.currentActivityTypeParam"
+                    asp-route-fromDate="@ViewBag.currentFromDateParam"
+                    asp-route-toDate="@ViewBag.currentToDateParam"
                     aria-label="Previous">
                     <span aria-hidden="true">&laquo;</span>
                 </a>
@@ -198,6 +214,8 @@
                             asp-route-firstName="@ViewBag.currentFirstNameParam"
                             asp-route-lastName="@ViewBag.currentLastNameParam"
                             asp-route-activityType="@ViewBag.currentActivityTypeParam"
+                            asp-route-fromDate="@ViewBag.currentFromDateParam"
+                            asp-route-toDate="@ViewBag.currentToDateParam"
                             asp-controller="Activity"
                             asp-route-page="@i"
                             class="page-link">
@@ -213,6 +231,8 @@
                             asp-route-firstName="@ViewBag.currentFirstNameParam"
                             asp-route-lastName="@ViewBag.currentLastNameParam"
                             asp-route-activityType="@ViewBag.currentActivityTypeParam"
+                            asp-route-fromDate="@ViewBag.currentFromDateParam"
+                            asp-route-toDate="@ViewBag.currentToDateParam"
                             asp-controller="Activity"
                             asp-route-page="@i"
                             class="page-link">
@@ -227,6 +247,8 @@
                     asp-action="Index"
                     asp-route-firstName="@ViewBag.currentFirstNameParam"
                     asp-route-lastName="@ViewBag.currentLastNameParam"
+                    asp-route-fromDate="@ViewBag.currentFromDateParam"
+                    asp-route-toDate="@ViewBag.currentToDateParam"
                     asp-route-activityType="@ViewBag.currentActivityTypeParam"
                     asp-controller="Activity"
                     asp-route-page="@Model.TotalPage"

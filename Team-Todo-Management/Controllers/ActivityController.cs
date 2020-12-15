@@ -27,6 +27,8 @@ namespace Team_Todo_Management.Controllers
         {
             ViewBag.currentFirstNameParam = query.FirstName;
             ViewBag.currentLastNameParam = query.LastName;
+            ViewBag.currentFromDateParam = query.FromDate;
+            ViewBag.currentToDateParam = query.ToDate;
             ViewBag.currentActivityTypeParam = (int)query.ActivityType;
 
             var result = await _activityServices.List(query);
