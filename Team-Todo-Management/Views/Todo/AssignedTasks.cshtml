@@ -59,15 +59,9 @@
                                 </div>
                                 <!-- end col -->
                                 <div class="col-sm-6">
-                                    <div class="d-flex justify-content-between">
+                                    <div clas
+                                    s="d-flex justify-content-between">
                                         <div>
-                                            @*<img src="assets/images/users/avatar-9.jpg"
-                                                alt="image"
-                                                class="avatar-xs rounded-circle mr-1"
-                                                data-toggle="tooltip"
-                                                data-placement="bottom"
-                                                title=""
-                                                data-original-title="Assigned to Arya S" />*@
                                             @if (@item.PersonInCharge != null)
                                             {
                                                 <p>Person in charge: <strong>@item.PersonInChargeName</strong></p>
@@ -131,18 +125,28 @@
                                            asp-route-id="@item.Id">
                                             <i class="uil uil-file-upload mr-1"></i>View
                                         </a>
-                                        <!-- item-->
-                                        <a class="dropdown-item" asp-action="Edit"
-                                           asp-controller="Todo"
-                                           asp-route-id="@item.Id">
-                                            <i class="uil uil-edit mr-1"></i>Edit
-                                        </a>
-                                        <div class="dropdown-divider"></div>
-                                        <!-- item-->
-                                        <a href="javascript:void(0);"
-                                           class="dropdown-item text-danger">
-                                            <i class="uil uil-trash-alt mr-1"></i>Delete
-                                        </a>
+                                        @if(@User.IsInRole("Boss") || @item.PersonInCharge.Id == @ViewBag.UserId)
+                                        {
+                                            <!-- item-->
+                                            <a class="dropdown-item" asp-action="Edit"
+                                            asp-controller="Todo"
+                                            asp-route-id="@item.Id">
+                                                <i class="uil uil-edit mr-1"></i>Edit
+                                            </a>
+                                            <div class="dropdown-divider"></div>
+                                            <!-- item-->
+                                            <form
+                                                asp-route-id="@item.Id"
+                                                asp-action="Delete"
+                                                asp-controller="Todo"> 
+                                                <button
+                                                    class="dropdown-item text-danger"
+                                                    onclick="return confirm('Are you sure to delete this task?')"
+                                                    type="submit">
+                                                    Delete
+                                                </button>
+                                            </form>
+                                        }
                                     </div>
                                 </div>
                                 <!-- end col -->
@@ -268,18 +272,28 @@
                                            asp-route-id="@item.Id">
                                             <i class="uil uil-file-upload mr-1"></i>View
                                         </a>
-                                        <!-- item-->
-                                        <a class="dropdown-item" asp-action="Edit"
-                                           asp-controller="Todo"
-                                           asp-route-id="@item.Id">
-                                            <i class="uil uil-edit mr-1"></i>Edit
-                                        </a>
-                                        <div class="dropdown-divider"></div>
-                                        <!-- item-->
-                                        <a href="javascript:void(0);"
-                                           class="dropdown-item text-danger">
-                                            <i class="uil uil-trash-alt mr-1"></i>Delete
-                                        </a>
+                                        @if(@User.IsInRole("Boss") || @item.PersonInCharge.Id == @ViewBag.UserId)
+                                        {
+                                            <!-- item-->
+                                            <a class="dropdown-item" asp-action="Edit"
+                                            asp-controller="Todo"
+                                            asp-route-id="@item.Id">
+                                                <i class="uil uil-edit mr-1"></i>Edit
+                                            </a>
+                                            <div class="dropdown-divider"></div>
+                                            <!-- item-->
+                                            <form
+                                                asp-route-id="@item.Id"
+                                                asp-action="Delete"
+                                                asp-controller="Todo"> 
+                                                <button
+                                                    class="dropdown-item text-danger"
+                                                    onclick="return confirm('Are you sure to delete this task?')"
+                                                    type="submit">
+                                                    Delete
+                                                </button>
+                                            </form>
+                                        }
                                     </div>
                                 </div>
                                 <!-- end col -->
@@ -405,18 +419,28 @@
                                            asp-route-id="@item.Id">
                                             <i class="uil uil-file-upload mr-1"></i>View
                                         </a>
-                                        <!-- item-->
-                                        <a class="dropdown-item" asp-action="Edit"
-                                           asp-controller="Todo"
-                                           asp-route-id="@item.Id">
-                                            <i class="uil uil-edit mr-1"></i>Edit
-                                        </a>
-                                        <div class="dropdown-divider"></div>
-                                        <!-- item-->
-                                        <a href="javascript:void(0);"
-                                           class="dropdown-item text-danger">
-                                            <i class="uil uil-trash-alt mr-1"></i>Delete
-                                        </a>
+                                        @if(@User.IsInRole("Boss") || @item.PersonInCharge.Id == @ViewBag.UserId)
+                                        {
+                                            <!-- item-->
+                                            <a class="dropdown-item" asp-action="Edit"
+                                            asp-controller="Todo"
+                                            asp-route-id="@item.Id">
+                                                <i class="uil uil-edit mr-1"></i>Edit
+                                            </a>
+                                            <div class="dropdown-divider"></div>
+                                            <!-- item-->
+                                            <form
+                                                asp-route-id="@item.Id"
+                                                asp-action="Delete"
+                                                asp-controller="Todo"> 
+                                                <button
+                                                    class="dropdown-item text-danger"
+                                                    onclick="return confirm('Are you sure to delete this task?')"
+                                                    type="submit">
+                                                    Delete
+                                                </button>
+                                            </form>
+                                        }
                                     </div>
                                 </div>
                                 <!-- end col -->
@@ -542,18 +566,28 @@
                                            asp-route-id="@item.Id">
                                             <i class="uil uil-file-upload mr-1"></i>View
                                         </a>
-                                        <!-- item-->
-                                        <a class="dropdown-item" asp-action="Edit"
-                                           asp-controller="Todo"
-                                           asp-route-id="@item.Id">
-                                            <i class="uil uil-edit mr-1"></i>Edit
-                                        </a>
-                                        <div class="dropdown-divider"></div>
-                                        <!-- item-->
-                                        <a href="javascript:void(0);"
-                                           class="dropdown-item text-danger">
-                                            <i class="uil uil-trash-alt mr-1"></i>Delete
-                                        </a>
+                                        @if(@User.IsInRole("Boss") || @item.PersonInCharge.Id == @ViewBag.UserId)
+                                        {
+                                            <!-- item-->
+                                            <a class="dropdown-item" asp-action="Edit"
+                                            asp-controller="Todo"
+                                            asp-route-id="@item.Id">
+                                                <i class="uil uil-edit mr-1"></i>Edit
+                                            </a>
+                                            <div class="dropdown-divider"></div>
+                                            <!-- item-->
+                                            <form
+                                                asp-route-id="@item.Id"
+                                                asp-action="Delete"
+                                                asp-controller="Todo"> 
+                                                <button
+                                                    class="dropdown-item text-danger"
+                                                    onclick="return confirm('Are you sure to delete this task?')"
+                                                    type="submit">
+                                                    Delete
+                                                </button>
+                                            </form>
+                                        }
                                     </div>
                                 </div>
                                 <!-- end col -->
@@ -679,18 +713,28 @@
                                            asp-route-id="@item.Id">
                                             <i class="uil uil-file-upload mr-1"></i>View
                                         </a>
-                                        <!-- item-->
-                                        <a class="dropdown-item" asp-action="Edit"
-                                           asp-controller="Todo"
-                                           asp-route-id="@item.Id">
-                                            <i class="uil uil-edit mr-1"></i>Edit
-                                        </a>
-                                        <div class="dropdown-divider"></div>
-                                        <!-- item-->
-                                        <a href="javascript:void(0);"
-                                           class="dropdown-item text-danger">
-                                            <i class="uil uil-trash-alt mr-1"></i>Delete
-                                        </a>
+                                        @if(@User.IsInRole("Boss") || @item.PersonInCharge.Id == @ViewBag.UserId)
+                                        {
+                                            <!-- item-->
+                                            <a class="dropdown-item" asp-action="Edit"
+                                            asp-controller="Todo"
+                                            asp-route-id="@item.Id">
+                                                <i class="uil uil-edit mr-1"></i>Edit
+                                            </a>
+                                            <div class="dropdown-divider"></div>
+                                            <!-- item-->
+                                            <form
+                                                asp-route-id="@item.Id"
+                                                asp-action="Delete"
+                                                asp-controller="Todo"> 
+                                                <button
+                                                    class="dropdown-item text-danger"
+                                                    onclick="return confirm('Are you sure to delete this task?')"
+                                                    type="submit">
+                                                    Delete
+                                                </button>
+                                            </form>
+                                        }
                                     </div>
                                 </div>
                                 <!-- end col -->
